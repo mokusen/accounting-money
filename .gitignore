@@ -3,3 +3,4 @@ accounting
 __pycache__
 *.csv
 *.sh
+*.db
