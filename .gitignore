@@ -1,0 +1,5 @@
+.vscode
+accounting
+__pycache__
+*.csv
+*.sh
