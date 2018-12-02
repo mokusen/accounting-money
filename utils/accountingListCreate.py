@@ -17,8 +17,8 @@ def create_list():
         base_list = []
         for row in reader:
             add_list = []
-            add_list.append(int(row[0]))
-            add_list.append(row[1])
+            add_list.append(row[0])
+            add_list.append(int(row[1]))
             add_list.append(int(row[2]))
             add_list.append(int(row[3]))
             add_list.append(int(row[4]))

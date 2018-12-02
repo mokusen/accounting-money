@@ -16,4 +16,8 @@ def register(duble_list):
             duble_list[i][4] = int(duble_list[i][4])
         except:
             return "選択肢からのみ選択してください"
-    print(duble_list)
+    # TODO log処理追加
+
+    # インサートする
+    for item in duble_list:
+        insert.insert_accounting(item)
