@@ -1,8 +1,8 @@
 import wx
 import datetime
 from . import mainGui
-from services import useListCreate, dataListCreate
-from method import register
+from utils import useListCreate, dataListCreate
+from services import register
 
 class Register(wx.Frame):
     def __init__(self, parent, id, title):
@@ -32,15 +32,15 @@ class Register(wx.Frame):
             layout_list.append(wx.BoxSizer(wx.HORIZONTAL))
         size = (100,25)
 
-        # 金額入力欄
-        text_money = wx.StaticText(self.panel, wx.ID_ANY, '金額', size=size, style=wx.TE_CENTER | wx.SIMPLE_BORDER)
-        layout_list[0].Add(text_money)
-        self.spinctrl_money_list = []
-
         # 用途入力欄
         text_use = wx.StaticText(self.panel, wx.ID_ANY, '用途', size=size, style=wx.TE_CENTER | wx.SIMPLE_BORDER)
         layout_list[0].Add(text_use)
         self.combobox_use_list = []
+
+        # 金額入力欄
+        text_money = wx.StaticText(self.panel, wx.ID_ANY, '金額', size=size, style=wx.TE_CENTER | wx.SIMPLE_BORDER)
+        layout_list[0].Add(text_money)
+        self.spinctrl_money_list = []
 
         # 年度入力欄
         text_year = wx.StaticText(self.panel, wx.ID_ANY, '年', size=size, style=wx.TE_CENTER | wx.SIMPLE_BORDER)
@@ -65,16 +65,16 @@ class Register(wx.Frame):
 
         # インプット要素生成
         for i in range(self.input_length):
-            self.spinctrl_money_list.append(wx.SpinCtrl(self.panel, wx.ID_ANY, max=1000000, size=size))
             self.combobox_use_list.append(wx.ComboBox(self.panel, wx.ID_ANY, self.input_defalut_text, choices=use_list, style=wx.CB_DROPDOWN, size=size))
+            self.spinctrl_money_list.append(wx.SpinCtrl(self.panel, wx.ID_ANY, max=1000000, size=size))
             self.spinctrl_year_list.append(wx.SpinCtrl(self.panel, wx.ID_ANY, value=self.year, max=3000, size=size))
             self.combobox_month_list.append(wx.ComboBox(self.panel, wx.ID_ANY, self.month, choices=month_list, style=wx.CB_DROPDOWN, size=size))
             self.combobox_day_list.append(wx.ComboBox(self.panel, wx.ID_ANY, self.day, choices=day_list, style=wx.CB_DROPDOWN, size=size))
 
         # インプット要素をレイアウトする
         for i in range(self.input_length):
-            layout_list[i+1].Add(self.spinctrl_money_list[i])
             layout_list[i+1].Add(self.combobox_use_list[i])
+            layout_list[i+1].Add(self.spinctrl_money_list[i])
             layout_list[i+1].Add(self.spinctrl_year_list[i])
             layout_list[i+1].Add(self.combobox_month_list[i])
             layout_list[i+1].Add(self.combobox_day_list[i])
@@ -94,8 +94,8 @@ class Register(wx.Frame):
             if self.spinctrl_money_list[i].GetValue() != 0 and self.combobox_use_list[i].GetValue() != self.input_defalut_text:
                 give_register_info.append([])
                 give_length = len(give_register_info) - 1
-                give_register_info[give_length].append(self.spinctrl_money_list[i].GetValue())
                 give_register_info[give_length].append(self.combobox_use_list[i].GetValue())
+                give_register_info[give_length].append(self.spinctrl_money_list[i].GetValue())
                 give_register_info[give_length].append(self.spinctrl_year_list[i].GetValue())
                 give_register_info[give_length].append(self.combobox_month_list[i].GetValue())
                 give_register_info[give_length].append(self.combobox_day_list[i].GetValue())

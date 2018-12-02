@@ -3,7 +3,6 @@ import os
 from contextlib import closing
 
 path = os.getcwd()
-print(path)
 dbpath = path + '\data.db'
 detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
 
@@ -33,8 +32,8 @@ def create_accounting():
         create table accounting
         (
         id integer primary key,
-        money integer,
         use text,
+        money integer,
         year integer,
         month integer,
         day integer,
