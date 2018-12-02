@@ -23,7 +23,7 @@ def select_accounting():
         c = conn.cursor()
 
         # executeメソッドでSQL文を実行する
-        sql = 'select * from accounting'
+        sql = 'select money, use, year, month, day, create_ts, update_ts from accounting'
         result = []
         for i in c.execute(sql):
             result.append(i)
