@@ -36,7 +36,7 @@ def insert_accounting(insert_list):
         print(insert_list)
 
         # executeメソッドでSQL文を実行する
-        sql = 'insert into accounting (money, use, year, month, day, create_ts, update_ts) values (?,?,?,?,?,?,?)'
+        sql = 'insert into accounting (use, money, year, month, day, create_ts, update_ts) values (?,?,?,?,?,?,?)'
         c.executemany(sql, insert_list)
         conn.commit()
     print("===EXIT_INSERT_ACCOUNTING===")
