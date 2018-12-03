@@ -27,13 +27,10 @@ accounting_list = accountingListCreate.create_list()
 
 # 初期課金履歴挿入
 for item in accounting_list:
-    # item.append(datetime.now())
-    # item.append(datetime.now())
-    # item = [tuple(item)]
     insert.insert_accounting(item)
 
 # 挿入されている課金履歴を検索
-accountinged_list = select.select_accounting()
+accountinged_list = select.select_accounting('','','','','','','','','',)
 
 # 出力
 for item in accountinged_list:

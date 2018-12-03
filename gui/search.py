@@ -45,16 +45,16 @@ class Graph(wx.Frame):
         text_day = wx.StaticText(self.panel, wx.ID_ANY, '日', size=size, style=wx.TE_CENTER | wx.SIMPLE_BORDER)
 
         # 検索フォーム作成
-        search_use = wx.ComboBox(self.panel, wx.ID_ANY, self.input_defalut_text, choices=use_list, style=wx.CB_DROPDOWN, size=size)
-        search_money_list = []
-        search_year_list = []
-        search_month_list = []
-        search_day_list = []
+        self.search_use = wx.ComboBox(self.panel, wx.ID_ANY, self.input_defalut_text, choices=use_list, style=wx.CB_DROPDOWN, size=size)
+        self.search_money_list = []
+        self.search_year_list = []
+        self.search_month_list = []
+        self.search_day_list = []
         for i in range(2):
-            search_money_list.append(wx.TextCtrl(self.panel, wx.ID_ANY, size=size))
-            search_year_list.append(wx.TextCtrl(self.panel, wx.ID_ANY, size=size))
-            search_month_list.append(wx.ComboBox(self.panel, wx.ID_ANY, choices=month_list, style=wx.CB_DROPDOWN, size=size))
-            search_day_list.append(wx.ComboBox(self.panel, wx.ID_ANY, choices=day_list, style=wx.CB_DROPDOWN, size=size))
+            self.search_money_list.append(wx.TextCtrl(self.panel, wx.ID_ANY, size=size))
+            self.search_year_list.append(wx.TextCtrl(self.panel, wx.ID_ANY, size=size))
+            self.search_month_list.append(wx.ComboBox(self.panel, wx.ID_ANY, choices=month_list, style=wx.CB_DROPDOWN, size=size))
+            self.search_day_list.append(wx.ComboBox(self.panel, wx.ID_ANY, choices=day_list, style=wx.CB_DROPDOWN, size=size))
 
         # ~を作成する
         text_tilde_list = []
@@ -70,16 +70,16 @@ class Graph(wx.Frame):
         # 検索フォームのレイアウト設定
         search_layout = wx.GridBagSizer(0,0)
         search_layout.Add(text_use, (0, 0), (1, 1), flag=wx.EXPAND)
-        search_layout.Add(search_use, (0, 1), (1, 1), flag=wx.EXPAND)
+        search_layout.Add(self.search_use, (0, 1), (1, 1), flag=wx.EXPAND)
         search_layout.Add(text_money, (1, 0), (1,1), flag=wx.EXPAND)
         search_layout.Add(text_year, (0, 4), (1,1), flag=wx.EXPAND)
         search_layout.Add(text_month, (1, 4), (1,1), flag=wx.EXPAND)
         search_layout.Add(text_day, (2, 4), (1,1), flag=wx.EXPAND)
         for i in range(2):
-            search_layout.Add(search_money_list[i], (1, 1 + i*2), (1, 1), flag=wx.EXPAND)
-            search_layout.Add(search_year_list[i], (0, 5 + i*2), (1, 1), flag=wx.EXPAND)
-            search_layout.Add(search_month_list[i], (1, 5 + i*2), (1, 1), flag=wx.EXPAND)
-            search_layout.Add(search_day_list[i], (2, 5 + i*2), (1, 1), flag=wx.EXPAND)
+            search_layout.Add(self.search_money_list[i], (1, 1 + i*2), (1, 1), flag=wx.EXPAND)
+            search_layout.Add(self.search_year_list[i], (0, 5 + i*2), (1, 1), flag=wx.EXPAND)
+            search_layout.Add(self.search_month_list[i], (1, 5 + i*2), (1, 1), flag=wx.EXPAND)
+            search_layout.Add(self.search_day_list[i], (2, 5 + i*2), (1, 1), flag=wx.EXPAND)
         search_layout.Add(text_tilde_list[0], (1, 2), (1, 1), flag=wx.EXPAND)
         for i in range(3):
             search_layout.Add(text_tilde_list[i+1], (i, 6), (1, 1), flag=wx.EXPAND)
@@ -91,9 +91,25 @@ class Graph(wx.Frame):
         layout.Add(self.search_result_text, flag=wx.EXPAND)
         self.panel.SetSizer(layout)
 
+    def adjust_search_info(self):
+        use_value = self.search_use.GetValue()
+        money_value_1 = self.search_money_list[0].GetValue()
+        money_value_2 = self.search_money_list[1].GetValue()
+        year_value_1 = self.search_year_list[0].GetValue()
+        year_value_2 = self.search_year_list[1].GetValue()
+        month_value_1 = self.search_month_list[0].GetValue()
+        month_value_2 = self.search_month_list[1].GetValue()
+        day_value_1 = self.search_day_list[0].GetValue()
+        day_value_2 = self.search_day_list[1].GetValue()
+        return use_value,money_value_1,money_value_2,year_value_1,year_value_2,month_value_1,month_value_2,day_value_1,day_value_2
+
     def call_select(self, event):
+        # 初期化する
+        self.search_result_text.DeleteAllItems()
+
         # 全件データ取得
-        all_data = search.all_search()
+        use_value,money_value_1,money_value_2,year_value_1,year_value_2,month_value_1,month_value_2,day_value_1,day_value_2 = self.adjust_search_info()
+        all_data = search.search_accounting(use_value,money_value_1,money_value_2,year_value_1,year_value_2,month_value_1,month_value_2,day_value_1,day_value_2)
         Add_line = self.search_result_text.GetItemCount()
         for index, items in enumerate(all_data):
             self.search_result_text.InsertItem(Add_line, str(items[0]))
