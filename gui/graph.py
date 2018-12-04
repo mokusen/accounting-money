@@ -17,6 +17,6 @@ class Graph(wx.Frame):
         mainGui.call_mainGui()
 
 def call_graph():
-    app = wx.App(True)
+    app = wx.App(False)
     Graph(None, wx.ID_ANY, title=u'BRS')
     app.MainLoop()
