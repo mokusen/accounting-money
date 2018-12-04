@@ -2,7 +2,7 @@ import csv
 
 def create_list():
     """
-    課金れ履歴のデータリストを作成する
+    課金履歴履歴のデータリストを作成する
 
     Returns
     -------

@@ -1,5 +1,5 @@
 import wx
-from . import mainGui
+from . import mainGui, detail
 from utils import useListCreate, dataListCreate
 from services import search
 
@@ -7,7 +7,14 @@ class Graph(wx.Frame):
     def __init__(self, parent, id, title):
         self.frame_size = (675,600)
         wx.Frame.__init__(self, parent, id, title, size=self.frame_size)
+        # 要素の作成
         self.myinit()
+
+        # ステータスバー作成
+        self.CreateStatusBar()
+
+        # 詳細ページ表示イベント
+        self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.detail_open)
 
         # 閉じるイベント
         self.Bind(wx.EVT_CLOSE, self.frame_close)
@@ -19,47 +26,50 @@ class Graph(wx.Frame):
         self.panel = wx.Panel(self, wx.ID_ANY, size=self.frame_size)
         # 初期設定
         self.input_defalut_text = "選択"
-        Text = (u'用途', u'金額', u'年', u'月', u'日', u'作成日', u'更新日')
+        Text = (u'ID', u'用途', u'金額', u'年', u'月', u'日', u'作成日', u'更新日')
         use_list = useListCreate.create_list()
         month_list = dataListCreate.create_month()
         day_list = dataListCreate.create_day()
-        self.search_result_text = wx.ListCtrl(self.panel, wx.ID_ANY, size=self.frame_size, style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
+        form_size = (100,25)
+        text_size = (50,25)
+
+        # 検索結果を表示するリストコントローラ
+        self.search_result_text = wx.ListCtrl(self.panel, wx.ID_ANY, size=self.frame_size, style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES | wx.LC_EDIT_LABELS)
         for i, text in enumerate(Text):
             self.search_result_text.InsertColumn(i, text)
-        size = (100,25)
 
         # Textの幅を個別設定する
-        self.search_result_text.SetColumnWidth(0, 80)
-        self.search_result_text.SetColumnWidth(1, 70)
-        self.search_result_text.SetColumnWidth(2, 70)
-        self.search_result_text.SetColumnWidth(3, 60)
-        self.search_result_text.SetColumnWidth(4, 60)
-        self.search_result_text.SetColumnWidth(5, 150)
-        self.search_result_text.SetColumnWidth(6, 150)
+        width_list = [0, 80, 70, 70, 60, 60, 150, 150]
+        for index, width in enumerate(width_list):
+            self.search_result_text.SetColumnWidth(index, width)
 
         # 検索フォームのラベル作成
-        text_use = wx.StaticText(self.panel, wx.ID_ANY, '用途', size=size, style=wx.TE_CENTER | wx.SIMPLE_BORDER)
-        text_money = wx.StaticText(self.panel, wx.ID_ANY, '金額', size=size, style=wx.TE_CENTER | wx.SIMPLE_BORDER)
-        text_year = wx.StaticText(self.panel, wx.ID_ANY, '年', size=size, style=wx.TE_CENTER | wx.SIMPLE_BORDER)
-        text_month = wx.StaticText(self.panel, wx.ID_ANY, '月', size=size, style=wx.TE_CENTER | wx.SIMPLE_BORDER)
-        text_day = wx.StaticText(self.panel, wx.ID_ANY, '日', size=size, style=wx.TE_CENTER | wx.SIMPLE_BORDER)
+        text_use = wx.StaticText(self.panel, wx.ID_ANY, '用途', size=text_size, style=wx.TE_CENTER)
+        text_money = wx.StaticText(self.panel, wx.ID_ANY, '金額', size=text_size, style=wx.TE_CENTER)
+        text_year = wx.StaticText(self.panel, wx.ID_ANY, '年', size=text_size, style=wx.TE_CENTER)
+        text_month = wx.StaticText(self.panel, wx.ID_ANY, '月', size=text_size, style=wx.TE_CENTER)
+        text_day = wx.StaticText(self.panel, wx.ID_ANY, '日', size=text_size, style=wx.TE_CENTER)
 
         # 検索フォーム作成
-        self.search_use = wx.ComboBox(self.panel, wx.ID_ANY, self.input_defalut_text, choices=use_list, style=wx.CB_DROPDOWN, size=size)
+        self.search_use = wx.ComboBox(self.panel, wx.ID_ANY, self.input_defalut_text, choices=use_list, style=wx.CB_DROPDOWN, size=form_size)
         self.search_money_list = []
         self.search_year_list = []
         self.search_month_list = []
         self.search_day_list = []
+        # タブの進行方向設定のため、分けて行う
         for i in range(2):
-            self.search_money_list.append(wx.TextCtrl(self.panel, wx.ID_ANY, size=size))
-            self.search_year_list.append(wx.TextCtrl(self.panel, wx.ID_ANY, size=size))
-            self.search_month_list.append(wx.ComboBox(self.panel, wx.ID_ANY, choices=month_list, style=wx.CB_DROPDOWN, size=size))
-            self.search_day_list.append(wx.ComboBox(self.panel, wx.ID_ANY, choices=day_list, style=wx.CB_DROPDOWN, size=size))
+            self.search_money_list.append(wx.TextCtrl(self.panel, wx.ID_ANY, size=form_size))
+        for i in range(2):
+            self.search_year_list.append(wx.TextCtrl(self.panel, wx.ID_ANY, size=form_size))
+        for i in range(2):
+            self.search_month_list.append(wx.ComboBox(self.panel, wx.ID_ANY, choices=month_list, style=wx.CB_DROPDOWN, size=form_size))
+        for i in range(2):
+            self.search_day_list.append(wx.ComboBox(self.panel, wx.ID_ANY, choices=day_list, style=wx.CB_DROPDOWN, size=form_size))
 
         # ~を作成する
         text_tilde_list = []
         for i in range(4):
-            text_tilde_list.append(wx.StaticText(self.panel, wx.ID_ANY, '~', size=(25,25), style=wx.TE_CENTER))
+            text_tilde_list.append(wx.StaticText(self.panel, wx.ID_ANY, '～', size=(25,25), style=wx.TE_CENTER))
 
         # 検索ボタン
         search_button = wx.Button(self.panel, wx.ID_ANY, '検索')
@@ -68,7 +78,7 @@ class Graph(wx.Frame):
         search_button.Bind(wx.EVT_BUTTON, self.call_select)
 
         # 検索フォームのレイアウト設定
-        search_layout = wx.GridBagSizer(0,0)
+        search_layout = wx.GridBagSizer(10, 5)
         search_layout.Add(text_use, (0, 0), (1, 1), flag=wx.EXPAND)
         search_layout.Add(self.search_use, (0, 1), (1, 1), flag=wx.EXPAND)
         search_layout.Add(text_money, (1, 0), (1,1), flag=wx.EXPAND)
@@ -87,7 +97,7 @@ class Graph(wx.Frame):
 
         # レイアウト設定
         layout = wx.BoxSizer(wx.VERTICAL)
-        layout.Add(search_layout, flag=wx.EXPAND)
+        layout.Add(search_layout, flag=wx.EXPAND | wx.TOP | wx.BOTTOM, border=10)
         layout.Add(self.search_result_text, flag=wx.EXPAND)
         self.panel.SetSizer(layout)
 
@@ -107,19 +117,40 @@ class Graph(wx.Frame):
         # 初期化する
         self.search_result_text.DeleteAllItems()
 
-        # 全件データ取得
+        # 検索ワード取得
         use_value,money_value_1,money_value_2,year_value_1,year_value_2,month_value_1,month_value_2,day_value_1,day_value_2 = self.adjust_search_info()
-        all_data = search.search_accounting(use_value,money_value_1,money_value_2,year_value_1,year_value_2,month_value_1,month_value_2,day_value_1,day_value_2)
+
+        # 検索結果取得
+        all_data, all_money = search.search_accounting(use_value,money_value_1,money_value_2,year_value_1,year_value_2,month_value_1,month_value_2,day_value_1,day_value_2)
+
+        # 追加する行の指定
         Add_line = self.search_result_text.GetItemCount()
+
+        # 検索結果を行に追加する
         for index, items in enumerate(all_data):
+            # 行の追加を行う
             self.search_result_text.InsertItem(Add_line, str(items[0]))
             for item in range(1, len(items)):
-                if item == 5 or item == 6:
+                if item == 6 or item == 7:
                     # 作成日と更新日をYY/MM/DD HH:MM:SSに変換する
                     self.search_result_text.SetItem(Add_line, item, str(items[item].strftime('%Y/%m/%d %H:%M:%S')))
                 else:
                     self.search_result_text.SetItem(Add_line, item, str(items[item]))
             Add_line += 1
+
+        # 累計金額をステータスバーに表示する
+        self.SetStatusText(f'累計金額：{all_money:,}円です。')
+
+    def detail_open(self, event):
+        # 選択されたindexを取得する
+        index = event.GetIndex()
+
+        # 用途から日までを取得し、リストに格納する
+        detail_info_list = []
+        for i in range(6):
+            item = self.search_result_text.GetItem(itemIdx=index, col=i)
+            detail_info_list.append(item.GetText())
+        detail.call_detail(detail_info_list)
 
     def frame_close(self, event):
         self.Destroy()

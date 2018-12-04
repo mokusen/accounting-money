@@ -38,7 +38,7 @@ def select_accounting(use_value=None,money_value_1=None,money_value_2=None,
     with closing(sqlite3.connect(dbpath,detect_types=detect_types)) as conn:
         c = conn.cursor()
         # executeメソッドでSQL文を実行する
-        sql = 'select money, use, year, month, day, create_ts, update_ts from accounting '
+        sql = 'select * from accounting '
         add_sql = 'where '
         add_item = []
 
