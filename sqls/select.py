@@ -80,11 +80,9 @@ def select_accounting(use_value=None,money_value_1=None,money_value_2=None,
         result = []
         if len(add_item) == 0:
             for i in c.execute(sql):
-                print(i)
                 result.append(i)
         else:
             for i in c.execute(sql, add_item):
-                print(i)
                 result.append(i)
         print("===EXIT_SELECT_ACCOUNTING===")
     return result

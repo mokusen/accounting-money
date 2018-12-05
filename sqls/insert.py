@@ -19,7 +19,6 @@ def insert_base(insert_list):
 
         # 作成時間と更新時間を追加する
         insert_list = _add_time(insert_list)
-        print(insert_list)
 
         # executeメソッドでSQL文を実行する
         sql = 'insert into base (name, create_ts, update_ts) values (?,?,?)'
@@ -33,7 +32,6 @@ def insert_accounting(insert_list):
 
         # 作成時間と更新時間を追加する
         insert_list = _add_time(insert_list)
-        print(insert_list)
 
         # executeメソッドでSQL文を実行する
         sql = 'insert into accounting (use, money, year, month, day, create_ts, update_ts) values (?,?,?,?,?,?,?)'
