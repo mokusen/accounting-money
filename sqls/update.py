@@ -57,7 +57,7 @@ def update_base(update_list):
         sql = 'update base set name = ?, update_ts = ? where id = ?'
         c.executemany(sql, update_list)
         conn.commit()
-    print("===EXIT_INSERT_BASE===")
+    print("===EXIT_UPDATE_BASE===")
 
 def update_accounting(update_list):
     with closing(sqlite3.connect(dbpath,detect_types=detect_types)) as conn:
@@ -71,4 +71,4 @@ def update_accounting(update_list):
         sql = 'update accounting set use = ?, money = ?, year = ?, month = ?, day = ?, update_ts = ? where id = ?'
         c.executemany(sql, update_list)
         conn.commit()
-    print("===EXIT_INSERT_ACCOUNTING===")
+    print("===EXIT_UPDATE_ACCOUNTING===")
