@@ -3,7 +3,7 @@ from . import mainGui, detail
 from utils import useListCreate, dataListCreate
 from services import search
 
-class Graph(wx.Frame):
+class Search(wx.Frame):
     def __init__(self, parent, id, title):
         self.frame_size = (675,600)
         wx.Frame.__init__(self, parent, id, title, size=self.frame_size)
@@ -150,6 +150,8 @@ class Graph(wx.Frame):
         for i in range(6):
             item = self.search_result_text.GetItem(itemIdx=index, col=i)
             detail_info_list.append(item.GetText())
+        self.Destroy()
+        wx.Exit()
         detail.call_detail(detail_info_list)
 
     def frame_close(self, event):
@@ -159,5 +161,5 @@ class Graph(wx.Frame):
 
 def call_search():
     app = wx.App(False)
-    Graph(None, wx.ID_ANY, title=u'BRS')
+    Search(None, wx.ID_ANY, title=u'BRS')
     app.MainLoop()
