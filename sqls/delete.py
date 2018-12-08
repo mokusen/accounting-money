@@ -22,6 +22,6 @@ def delete_accounting(delete_id):
 
         # executeメソッドでSQL文を実行する
         sql = 'delete from accounting where id = ?'
-        c.executemany(sql, delete_id)
+        c.executemany(sql, [delete_id])
         conn.commit()
     print("===EXIT_DELETE_ACCOUNTING===")

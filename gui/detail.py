@@ -151,8 +151,8 @@ class Detail(wx.Frame):
         dlg = wx.MessageDialog(None, f"{temple_text}",' 削除内容確認', wx.YES_NO | wx.ICON_INFORMATION)
         result = dlg.ShowModal()
         if result == wx.ID_YES:
-            # 更新する
-            detail.delete_accounting([delete_list[0]])
+            # 削除する
+            detail.delete_accounting(tuple([delete_list[0]]))
             wx.MessageBox("削除完了しました。", "削除完了", wx.ICON_INFORMATION)
             self.Destroy()
             wx.Exit()
