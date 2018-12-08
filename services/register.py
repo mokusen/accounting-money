@@ -15,7 +15,7 @@ def register(duble_list):
             duble_list[i][3] = int(duble_list[i][3])
             duble_list[i][4] = int(duble_list[i][4])
         except:
-            return "選択肢からのみ選択してください"
+            return "月、日は選択肢からのみ選択してください"
     # TODO log処理追加
 
     # インサートする
