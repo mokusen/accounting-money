@@ -6,7 +6,7 @@ from services import register
 
 class Register(wx.Frame):
     def __init__(self, parent, id, title):
-        wx.Frame.__init__(self, parent, id, title, size=(550,400))
+        wx.Frame.__init__(self, parent, id, title, size=(560,390))
 
         # icon設定
         self.SetIcon(common.get_icon())
@@ -27,7 +27,8 @@ class Register(wx.Frame):
         self.Show()
 
     def myinit(self):
-        self.panel = wx.Panel(self, wx.ID_ANY, size=(500,500))
+        self.panel = wx.Panel(self, wx.ID_ANY, size=(560,390))
+
         # 初期設定
         self.input_length = 10
         self.input_defalut_text = "選択"
@@ -35,45 +36,35 @@ class Register(wx.Frame):
         month_list = dataListCreate.create_month()
         day_list = dataListCreate.create_day()
 
-        # レイアウトの階層設定
-        layout_list = []
-        for i in range(11):
-            layout_list.append(wx.BoxSizer(wx.HORIZONTAL))
-
         # size設定
-        size = (100,23)
+        size = (100, 23)
+        num_size = (30, 23)
+        btn_size = (200,46)
 
         # font設定
         self.font = common.defalut_font_size()
 
         # テキスト設定
-        text_use = wx.StaticText(self.panel, wx.ID_ANY, '用途', size=size, style=wx.TE_CENTER)
-        text_money = wx.StaticText(self.panel, wx.ID_ANY, '金額', size=size, style=wx.TE_CENTER)
-        text_year = wx.StaticText(self.panel, wx.ID_ANY, '年', size=size, style=wx.TE_CENTER)
-        text_month = wx.StaticText(self.panel, wx.ID_ANY, '月', size=size, style=wx.TE_CENTER)
-        text_day = wx.StaticText(self.panel, wx.ID_ANY, '日', size=size, style=wx.TE_CENTER)
+        text_list = []
+        text_list.append(wx.StaticText(self.panel, wx.ID_ANY, '', size=num_size))
+        text_list.append(wx.StaticText(self.panel, wx.ID_ANY, '用途', size=size, style=wx.TE_CENTER))
+        text_list.append(wx.StaticText(self.panel, wx.ID_ANY, '金額', size=size, style=wx.TE_CENTER))
+        text_list.append(wx.StaticText(self.panel, wx.ID_ANY, '年', size=size, style=wx.TE_CENTER))
+        text_list.append(wx.StaticText(self.panel, wx.ID_ANY, '月', size=size, style=wx.TE_CENTER))
+        text_list.append(wx.StaticText(self.panel, wx.ID_ANY, '日', size=size, style=wx.TE_CENTER))
 
         # テキストフォント設定
-        text_use.SetFont(self.font)
-        text_money.SetFont(self.font)
-        text_year.SetFont(self.font)
-        text_month.SetFont(self.font)
-        text_day.SetFont(self.font)
+        for text in text_list:
+            text.SetFont(self.font)
 
-        # テキストレイアウト
-        layout_list[0].Add(text_use, flag= wx.TOP | wx.LEFT , border=10)
-        layout_list[0].Add(text_money, flag= wx.TOP, border=10)
-        layout_list[0].Add(text_year, flag= wx.TOP, border=10)
-        layout_list[0].Add(text_month, flag= wx.TOP, border=10)
-        layout_list[0].Add(text_day, flag= wx.TOP | wx.RIGHT , border=10)
+        # リセット、登録ボタン作成
+        register_button = wx.Button(self.panel, wx.ID_ANY, '登録', size=btn_size)
 
-        # 登録ボタン作成
-        register_button = wx.Button(self.panel, wx.ID_ANY, '登録')
-
-        # 登録ボタンにイベントを登録する
+        # リセット、登録ボタンにイベントを登録する
         register_button.Bind(wx.EVT_BUTTON, self.get_register_info)
 
         # 入力欄リスト
+        self.text_number_list = []
         self.combobox_use_list = []
         self.spinctrl_money_list = []
         self.spinctrl_year_list = []
@@ -82,25 +73,34 @@ class Register(wx.Frame):
 
         # 入力欄リスト要素生成
         for i in range(self.input_length):
+            self.text_number_list.append(wx.StaticText(self.panel, wx.ID_ANY, str(i+1), size=num_size, style=wx.TE_CENTER))
             self.combobox_use_list.append(wx.ComboBox(self.panel, wx.ID_ANY, self.input_defalut_text, choices=use_list, style=wx.CB_DROPDOWN, size=size))
             self.spinctrl_money_list.append(wx.SpinCtrl(self.panel, wx.ID_ANY, max=1000000, size=size))
             self.spinctrl_year_list.append(wx.SpinCtrl(self.panel, wx.ID_ANY, value=self.year, max=3000, size=size))
-            self.combobox_month_list.append(wx.ComboBox(self.panel, wx.ID_ANY, self.month, choices=month_list, style=wx.CB_DROPDOWN, size=size))
-            self.combobox_day_list.append(wx.ComboBox(self.panel, wx.ID_ANY, self.day, choices=day_list, style=wx.CB_DROPDOWN, size=size))
+            self.combobox_month_list.append(wx.ComboBox(self.panel, wx.ID_ANY, self.month, choices=month_list, style=wx.CB_READONLY, size=size))
+            self.combobox_day_list.append(wx.ComboBox(self.panel, wx.ID_ANY, self.day, choices=day_list, style=wx.CB_READONLY, size=size))
 
-        # 入力欄リスト要素をレイアウトする
-        for i in range(self.input_length):
-            layout_list[i+1].Add(self.combobox_use_list[i], flag= wx.LEFT, border=10)
-            layout_list[i+1].Add(self.spinctrl_money_list[i])
-            layout_list[i+1].Add(self.spinctrl_year_list[i])
-            layout_list[i+1].Add(self.combobox_month_list[i])
-            layout_list[i+1].Add(self.combobox_day_list[i], flag= wx.RIGHT, border=10)
+        # テキストナンバーリストのフォント設定
+        for text_number in self.text_number_list:
+            text_number.SetFont(self.font)
 
-        # 全体レイアウトを設定する
         layout = wx.GridBagSizer(0,0)
-        for i in range(len(layout_list)):
-            layout.Add(layout_list[i], (i,0), (1,5))
-        layout.Add(register_button, (11,3), (1,2), flag=wx.EXPAND)
+
+        # テキストレイアウト追加
+        for t, text in enumerate(text_list):
+            layout.Add(text, (0,t), (1,1), flag=wx.TOP, border=10)
+
+        # 入力欄レイアウト追加
+        for i in range(self.input_length):
+            layout.Add(self.text_number_list[i], (i+1,0), (1,1))
+            layout.Add(self.combobox_use_list[i], (i+1,1), (1,1))
+            layout.Add(self.spinctrl_money_list[i], (i+1,2), (1,1))
+            layout.Add(self.spinctrl_year_list[i], (i+1,3), (1,1))
+            layout.Add(self.combobox_month_list[i], (i+1,4), (1,1))
+            layout.Add(self.combobox_day_list[i], (i+1,5), (1,1))
+
+        # 登録ボタンレイアウト追加
+        layout.Add(register_button, (12,3), (2,3), flag=wx.GROW)
 
         self.panel.SetSizer(layout)
 
