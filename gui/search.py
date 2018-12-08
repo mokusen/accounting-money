@@ -1,5 +1,5 @@
 import wx
-from . import mainGui, detail
+from . import mainGui, detail, common
 from utils import useListCreate, dataListCreate
 from services import search
 
@@ -30,8 +30,13 @@ class Search(wx.Frame):
         use_list = useListCreate.create_list()
         month_list = dataListCreate.create_month()
         day_list = dataListCreate.create_day()
+
+        # size設定
         form_size = (100,25)
         text_size = (50,25)
+
+        # font設定
+        self.font = common.defalut_font_size()
 
         # 検索結果を表示するリストコントローラ
         self.search_result_text = wx.ListCtrl(self.panel, wx.ID_ANY, size=self.frame_size, style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES | wx.LC_EDIT_LABELS)
@@ -49,6 +54,13 @@ class Search(wx.Frame):
         text_year = wx.StaticText(self.panel, wx.ID_ANY, '年', size=text_size, style=wx.TE_CENTER)
         text_month = wx.StaticText(self.panel, wx.ID_ANY, '月', size=text_size, style=wx.TE_CENTER)
         text_day = wx.StaticText(self.panel, wx.ID_ANY, '日', size=text_size, style=wx.TE_CENTER)
+
+        # 検索フォームのラベルフォント設定
+        text_use.SetFont(self.font)
+        text_money.SetFont(self.font)
+        text_year.SetFont(self.font)
+        text_month.SetFont(self.font)
+        text_day.SetFont(self.font)
 
         # 検索フォーム作成
         self.search_use = wx.ComboBox(self.panel, wx.ID_ANY, self.input_defalut_text, choices=use_list, style=wx.CB_DROPDOWN, size=form_size)

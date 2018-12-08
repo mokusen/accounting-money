@@ -1,7 +1,7 @@
 import wx
 import datetime
 from utils import useListCreate, dataListCreate
-from . import search
+from . import search, common
 from services import detail
 
 class Detail(wx.Frame):
@@ -25,9 +25,14 @@ class Detail(wx.Frame):
         use_list = useListCreate.create_list()
         month_list = dataListCreate.create_month()
         day_list = dataListCreate.create_day()
+
+        # size設定
         form_size = (100,25)
         text_size = (50,25)
         button_size = (100,25)
+
+        # font設定
+        self.font = common.defalut_font_size()
 
         # 修正フォームのラベル作成
         text_id = wx.StaticText(self.panel, wx.ID_ANY, 'ID', size=text_size, style=wx.TE_CENTER)
@@ -36,6 +41,14 @@ class Detail(wx.Frame):
         text_year = wx.StaticText(self.panel, wx.ID_ANY, '年', size=text_size, style=wx.TE_CENTER)
         text_month = wx.StaticText(self.panel, wx.ID_ANY, '月', size=text_size, style=wx.TE_CENTER)
         text_day = wx.StaticText(self.panel, wx.ID_ANY, '日', size=text_size, style=wx.TE_CENTER)
+
+        # 修正フォームのラベルフォント設定
+        text_id.SetFont(self.font)
+        text_use.SetFont(self.font)
+        text_money.SetFont(self.font)
+        text_year.SetFont(self.font)
+        text_month.SetFont(self.font)
+        text_day.SetFont(self.font)
 
         # 修正フォーム作成
         self.detail_id = wx.StaticText(self.panel, wx.ID_ANY, self.detail_info_list[0], size=form_size, style=wx.TE_CENTER)

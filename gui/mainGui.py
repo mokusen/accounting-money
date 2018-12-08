@@ -2,6 +2,7 @@ import wx
 from . import registration
 from . import search
 from . import graph
+from . import common
 
 class Main(wx.Frame):
     def __init__(self, parent, id, title):
@@ -11,6 +12,9 @@ class Main(wx.Frame):
         self.Show()
 
     def myinit(self):
+        # 初期設定
+        self.font = common.main_defalut_font_size()
+
         # 表示するためのパネル生成
         self.panel = wx.Panel(self, wx.ID_ANY, size=(750,200))
 
@@ -18,6 +22,11 @@ class Main(wx.Frame):
         self.button1 = wx.Button(self.panel, wx.ID_ANY, u'登録', size=(200, 100))
         self.button2 = wx.Button(self.panel, wx.ID_ANY, u'検索', size=(200, 100))
         self.button3 = wx.Button(self.panel, wx.ID_ANY, u'グラフ', size=(200, 100))
+
+        # ボタンにフォントサイズを適応する
+        self.button1.SetFont(self.font)
+        self.button2.SetFont(self.font)
+        self.button3.SetFont(self.font)
 
         # ボタンにアクションを追加する
         self.button1.Bind(wx.EVT_BUTTON, self.click_button1)
