@@ -35,6 +35,9 @@ class Search(wx.Frame):
         month_list = dataListCreate.create_month()
         day_list = dataListCreate.create_day()
 
+        # 初期値追加
+        use_list.insert(0,'')
+
         # size設定
         form_size = (100,25)
         text_size = (50,25)
@@ -67,20 +70,21 @@ class Search(wx.Frame):
         text_day.SetFont(self.font)
 
         # 検索フォーム作成
-        self.search_use = wx.ComboBox(self.panel, wx.ID_ANY, self.input_defalut_text, choices=use_list, style=wx.CB_DROPDOWN, size=form_size)
+        self.search_use = wx.ComboBox(self.panel, wx.ID_ANY, self.input_defalut_text, choices=use_list, style=wx.CB_READONLY, size=form_size)
         self.search_money_list = []
         self.search_year_list = []
         self.search_month_list = []
         self.search_day_list = []
+
         # タブの進行方向設定のため、分けて行う
         for i in range(2):
             self.search_money_list.append(wx.TextCtrl(self.panel, wx.ID_ANY, size=form_size))
         for i in range(2):
             self.search_year_list.append(wx.TextCtrl(self.panel, wx.ID_ANY, size=form_size))
         for i in range(2):
-            self.search_month_list.append(wx.ComboBox(self.panel, wx.ID_ANY, choices=month_list, style=wx.CB_DROPDOWN, size=form_size))
+            self.search_month_list.append(wx.ComboBox(self.panel, wx.ID_ANY, choices=month_list, style=wx.CB_READONLY, size=form_size))
         for i in range(2):
-            self.search_day_list.append(wx.ComboBox(self.panel, wx.ID_ANY, choices=day_list, style=wx.CB_DROPDOWN, size=form_size))
+            self.search_day_list.append(wx.ComboBox(self.panel, wx.ID_ANY, choices=day_list, style=wx.CB_READONLY, size=form_size))
 
         # ~を作成する
         text_tilde_list = []
@@ -115,6 +119,10 @@ class Search(wx.Frame):
         layout = wx.BoxSizer(wx.VERTICAL)
         layout.Add(search_layout, flag=wx.EXPAND | wx.TOP | wx.BOTTOM, border=10)
         layout.Add(self.search_result_text, flag=wx.EXPAND)
+
+        # ソートイベントを登録する
+        self.panel.Bind(wx.EVT_LIST_COL_CLICK, self.call_sort)
+
         self.panel.SetSizer(layout)
 
     def adjust_search_info(self):
@@ -156,6 +164,10 @@ class Search(wx.Frame):
 
         # 累計金額をステータスバーに表示する
         self.SetStatusText(f'累計金額：{all_money:,}円です。')
+
+    def call_sort(self, event):
+        idx = event.GetIndex()
+
 
     def detail_open(self, event):
         # 選択されたindexを取得する
