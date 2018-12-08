@@ -149,5 +149,5 @@ class Detail(wx.Frame):
 
 def call_detail(detail_info_list):
     app = wx.App(False)
-    Detail(None, wx.ID_ANY, title=u'BRS', detail_info_list=detail_info_list)
+    Detail(None, wx.ID_ANY, title=u'BRS | 更新 削除', detail_info_list=detail_info_list)
     app.MainLoop()

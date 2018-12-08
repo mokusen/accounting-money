@@ -18,5 +18,5 @@ class Graph(wx.Frame):
 
 def call_graph():
     app = wx.App(False)
-    Graph(None, wx.ID_ANY, title=u'BRS')
+    Graph(None, wx.ID_ANY, title=u'BRS | グラフ')
     app.MainLoop()

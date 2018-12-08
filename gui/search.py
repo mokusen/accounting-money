@@ -161,5 +161,5 @@ class Search(wx.Frame):
 
 def call_search():
     app = wx.App(False)
-    Search(None, wx.ID_ANY, title=u'BRS')
+    Search(None, wx.ID_ANY, title=u'BRS | 検索')
     app.MainLoop()

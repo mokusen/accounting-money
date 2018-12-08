@@ -31,30 +31,31 @@ class Register(wx.Frame):
         for i in range(11):
             layout_list.append(wx.BoxSizer(wx.HORIZONTAL))
         size = (100,25)
+        co_size = (100,30)
 
         # 用途入力欄
         text_use = wx.StaticText(self.panel, wx.ID_ANY, '用途', size=size, style=wx.TE_CENTER | wx.SIMPLE_BORDER)
-        layout_list[0].Add(text_use)
+        layout_list[0].Add(text_use, flag= wx.TOP | wx.LEFT , border=10)
         self.combobox_use_list = []
 
         # 金額入力欄
         text_money = wx.StaticText(self.panel, wx.ID_ANY, '金額', size=size, style=wx.TE_CENTER | wx.SIMPLE_BORDER)
-        layout_list[0].Add(text_money)
+        layout_list[0].Add(text_money, flag= wx.TOP, border=10)
         self.spinctrl_money_list = []
 
         # 年度入力欄
         text_year = wx.StaticText(self.panel, wx.ID_ANY, '年', size=size, style=wx.TE_CENTER | wx.SIMPLE_BORDER)
-        layout_list[0].Add(text_year)
+        layout_list[0].Add(text_year, flag= wx.TOP, border=10)
         self.spinctrl_year_list = []
 
         # 月入力欄
         text_month = wx.StaticText(self.panel, wx.ID_ANY, '月', size=size, style=wx.TE_CENTER | wx.SIMPLE_BORDER)
-        layout_list[0].Add(text_month)
+        layout_list[0].Add(text_month, flag= wx.TOP, border=10)
         self.combobox_month_list = []
 
         # 日入力欄
         text_day = wx.StaticText(self.panel, wx.ID_ANY, '日', size=size, style=wx.TE_CENTER | wx.SIMPLE_BORDER)
-        layout_list[0].Add(text_day)
+        layout_list[0].Add(text_day, flag= wx.TOP | wx.RIGHT , border=10)
         self.combobox_day_list = []
 
         # 登録ボタン作成
@@ -65,19 +66,19 @@ class Register(wx.Frame):
 
         # インプット要素生成
         for i in range(self.input_length):
-            self.combobox_use_list.append(wx.ComboBox(self.panel, wx.ID_ANY, self.input_defalut_text, choices=use_list, style=wx.CB_DROPDOWN, size=size))
+            self.combobox_use_list.append(wx.ComboBox(self.panel, wx.ID_ANY, self.input_defalut_text, choices=use_list, style=wx.CB_DROPDOWN, size=co_size))
             self.spinctrl_money_list.append(wx.SpinCtrl(self.panel, wx.ID_ANY, max=1000000, size=size))
             self.spinctrl_year_list.append(wx.SpinCtrl(self.panel, wx.ID_ANY, value=self.year, max=3000, size=size))
-            self.combobox_month_list.append(wx.ComboBox(self.panel, wx.ID_ANY, self.month, choices=month_list, style=wx.CB_DROPDOWN, size=size))
-            self.combobox_day_list.append(wx.ComboBox(self.panel, wx.ID_ANY, self.day, choices=day_list, style=wx.CB_DROPDOWN, size=size))
+            self.combobox_month_list.append(wx.ComboBox(self.panel, wx.ID_ANY, self.month, choices=month_list, style=wx.CB_DROPDOWN, size=co_size))
+            self.combobox_day_list.append(wx.ComboBox(self.panel, wx.ID_ANY, self.day, choices=day_list, style=wx.CB_DROPDOWN, size=co_size))
 
         # インプット要素をレイアウトする
         for i in range(self.input_length):
-            layout_list[i+1].Add(self.combobox_use_list[i])
+            layout_list[i+1].Add(self.combobox_use_list[i], flag= wx.LEFT, border=10)
             layout_list[i+1].Add(self.spinctrl_money_list[i])
             layout_list[i+1].Add(self.spinctrl_year_list[i])
             layout_list[i+1].Add(self.combobox_month_list[i])
-            layout_list[i+1].Add(self.combobox_day_list[i])
+            layout_list[i+1].Add(self.combobox_day_list[i], flag= wx.RIGHT, border=10)
 
         # 全体レイアウトを設定する
         layout = wx.GridBagSizer(0,0)
@@ -118,5 +119,5 @@ class Register(wx.Frame):
 
 def call_register():
     app = wx.App(False)
-    Register(None, wx.ID_ANY, title=u'BRS')
+    Register(None, wx.ID_ANY, title=u'BRS | 登録')
     app.MainLoop()
