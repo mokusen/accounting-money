@@ -15,8 +15,8 @@ class Detail(wx.Frame):
         # 課金情報リスト
         self.detail_info_list = detail_info_list
 
-        # 要素の作成
-        self.myinit()
+        # panel作成
+        panel = MainPanel(self)
 
         # 閉じるイベント
         self.Bind(wx.EVT_CLOSE, self.frame_close)
@@ -24,8 +24,18 @@ class Detail(wx.Frame):
         self.Centre()
         self.Show()
 
+    def frame_close(self, event):
+        self.Destroy()
+        wx.Exit()
+        search.call_search()
+
+class MainPanel(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent=parent)
+        self.frame = parent
+        self.myinit()
+
     def myinit(self):
-        self.panel = wx.Panel(self, wx.ID_ANY, size=self.frame_size)
         use_list = useListCreate.create_list()
         month_list = dataListCreate.create_month()
         day_list = dataListCreate.create_day()
@@ -39,12 +49,12 @@ class Detail(wx.Frame):
         self.font = common.defalut_font_size()
 
         # 修正フォームのラベル作成
-        text_id = wx.StaticText(self.panel, wx.ID_ANY, 'ID', size=text_size, style=wx.TE_CENTER)
-        text_use = wx.StaticText(self.panel, wx.ID_ANY, '用途', size=text_size, style=wx.TE_CENTER)
-        text_money = wx.StaticText(self.panel, wx.ID_ANY, '金額', size=text_size, style=wx.TE_CENTER)
-        text_year = wx.StaticText(self.panel, wx.ID_ANY, '年', size=text_size, style=wx.TE_CENTER)
-        text_month = wx.StaticText(self.panel, wx.ID_ANY, '月', size=text_size, style=wx.TE_CENTER)
-        text_day = wx.StaticText(self.panel, wx.ID_ANY, '日', size=text_size, style=wx.TE_CENTER)
+        text_id = wx.StaticText(self, wx.ID_ANY, 'ID', size=text_size, style=wx.TE_CENTER)
+        text_use = wx.StaticText(self, wx.ID_ANY, '用途', size=text_size, style=wx.TE_CENTER)
+        text_money = wx.StaticText(self, wx.ID_ANY, '金額', size=text_size, style=wx.TE_CENTER)
+        text_year = wx.StaticText(self, wx.ID_ANY, '年', size=text_size, style=wx.TE_CENTER)
+        text_month = wx.StaticText(self, wx.ID_ANY, '月', size=text_size, style=wx.TE_CENTER)
+        text_day = wx.StaticText(self, wx.ID_ANY, '日', size=text_size, style=wx.TE_CENTER)
 
         # 修正フォームのラベルフォント設定
         text_id.SetFont(self.font)
@@ -55,18 +65,18 @@ class Detail(wx.Frame):
         text_day.SetFont(self.font)
 
         # 修正フォーム作成
-        self.detail_id = wx.StaticText(self.panel, wx.ID_ANY, self.detail_info_list[0], size=form_size, style=wx.TE_CENTER)
-        self.detail_use = wx.ComboBox(self.panel, wx.ID_ANY, value=self.detail_info_list[1], choices=use_list, style=wx.CB_DROPDOWN, size=form_size)
-        self.detail_money = wx.TextCtrl(self.panel, wx.ID_ANY, value=self.detail_info_list[2],size=form_size)
+        self.detail_id = wx.StaticText(self, wx.ID_ANY, self.frame.detail_info_list[0], size=form_size, style=wx.TE_CENTER)
+        self.detail_use = wx.ComboBox(self, wx.ID_ANY, value=self.frame.detail_info_list[1], choices=use_list, style=wx.CB_DROPDOWN, size=form_size)
+        self.detail_money = wx.TextCtrl(self, wx.ID_ANY, value=self.frame.detail_info_list[2],size=form_size)
         self.detail_money.SetMaxLength(5)
-        self.detail_year = wx.TextCtrl(self.panel, wx.ID_ANY, value=self.detail_info_list[3],size=form_size)
+        self.detail_year = wx.TextCtrl(self, wx.ID_ANY, value=self.frame.detail_info_list[3],size=form_size)
         self.detail_year.SetMaxLength(4)
-        self.detail_month = wx.ComboBox(self.panel, wx.ID_ANY, value=self.detail_info_list[4],choices=month_list, style=wx.CB_DROPDOWN, size=form_size)
-        self.detail_day = wx.ComboBox(self.panel, wx.ID_ANY, value=self.detail_info_list[5],choices=day_list, style=wx.CB_DROPDOWN, size=form_size)
+        self.detail_month = wx.ComboBox(self, wx.ID_ANY, value=self.frame.detail_info_list[4],choices=month_list, style=wx.CB_DROPDOWN, size=form_size)
+        self.detail_day = wx.ComboBox(self, wx.ID_ANY, value=self.frame.detail_info_list[5],choices=day_list, style=wx.CB_DROPDOWN, size=form_size)
 
         # 更新、削除ボタン
-        update_button = wx.Button(self.panel, wx.ID_ANY, '更新', size=button_size)
-        delete_button = wx.Button(self.panel, wx.ID_ANY, '削除', size=button_size)
+        update_button = wx.Button(self, wx.ID_ANY, '更新', size=button_size)
+        delete_button = wx.Button(self, wx.ID_ANY, '削除', size=button_size)
 
         # 更新、削除ボタンにイベントを登録する
         update_button.Bind(wx.EVT_BUTTON, self.call_update)
@@ -93,7 +103,7 @@ class Detail(wx.Frame):
         layout = wx.BoxSizer(wx.HORIZONTAL)
         layout.Add(detail_layout, flag=wx.EXPAND | wx.TOP | wx.BOTTOM, border=10)
 
-        self.panel.SetSizer(layout)
+        self.SetSizer(layout)
 
     def call_update(self, event):
         # 更新情報を取得する
@@ -106,7 +116,7 @@ class Detail(wx.Frame):
         after_list.append(self.detail_day.GetValue())
 
         # 更新内容に変更があるか確認する
-        if self.detail_info_list == after_list:
+        if self.frame.detail_info_list == after_list:
             wx.MessageBox("最低限1つの項目は変更して下さい。", "ERROR", wx.ICON_ERROR)
         else:
             # 更新するか確認する
@@ -154,15 +164,10 @@ class Detail(wx.Frame):
             # 削除する
             detail.delete_accounting(tuple([delete_list[0]]))
             wx.MessageBox("削除完了しました。", "削除完了", wx.ICON_INFORMATION)
-            self.Destroy()
+            self.frame.Destroy()
             wx.Exit()
             search.call_search()
         dlg.Destroy()
-
-    def frame_close(self, event):
-        self.Destroy()
-        wx.Exit()
-        search.call_search()
 
 def call_detail(detail_info_list):
     app = wx.App(False)
