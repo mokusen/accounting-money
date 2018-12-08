@@ -1,5 +1,5 @@
-# bhms
-課金履歴管理システム（Billing history management system）<br>
+# chms
+課金履歴管理システム（Charge history management system）<br>
 課金履歴を登録、参照、更新、削除するGUIアプリケーション
 
 ## 出来ること

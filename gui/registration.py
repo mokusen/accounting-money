@@ -8,6 +8,9 @@ class Register(wx.Frame):
     def __init__(self, parent, id, title):
         wx.Frame.__init__(self, parent, id, title, size=(550,400))
 
+        # icon設定
+        self.SetIcon(common.get_icon())
+
         # デフォルト設定
         now = datetime.datetime.now()
         self.year = str(now.year)
@@ -132,5 +135,5 @@ class Register(wx.Frame):
 
 def call_register():
     app = wx.App(False)
-    Register(None, wx.ID_ANY, title=u'BRS | 登録')
+    Register(None, wx.ID_ANY, title=u'CHMS | 登録')
     app.MainLoop()

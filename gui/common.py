@@ -5,3 +5,6 @@ def defalut_font_size():
 
 def main_defalut_font_size():
     return wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, 'Meiryo UI')
+
+def get_icon():
+    return wx.Icon('image/chms.ico',wx.BITMAP_TYPE_ICO)

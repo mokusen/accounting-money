@@ -8,6 +8,10 @@ class Detail(wx.Frame):
     def __init__(self, parent, id, title, detail_info_list):
         self.frame_size = (675,600)
         wx.Frame.__init__(self, parent, id, title, size=(300,300))
+
+        # icon設定
+        self.SetIcon(common.get_icon())
+
         # 課金情報リスト
         self.detail_info_list = detail_info_list
 
@@ -162,5 +166,5 @@ class Detail(wx.Frame):
 
 def call_detail(detail_info_list):
     app = wx.App(False)
-    Detail(None, wx.ID_ANY, title=u'BRS | 更新 削除', detail_info_list=detail_info_list)
+    Detail(None, wx.ID_ANY, title=u'CHMS | 更新 削除', detail_info_list=detail_info_list)
     app.MainLoop()

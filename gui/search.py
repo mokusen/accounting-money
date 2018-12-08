@@ -7,6 +7,10 @@ class Search(wx.Frame):
     def __init__(self, parent, id, title):
         self.frame_size = (675,600)
         wx.Frame.__init__(self, parent, id, title, size=self.frame_size)
+
+        # icon設定
+        self.SetIcon(common.get_icon())
+
         # 要素の作成
         self.myinit()
 
@@ -173,5 +177,5 @@ class Search(wx.Frame):
 
 def call_search():
     app = wx.App(False)
-    Search(None, wx.ID_ANY, title=u'BRS | 検索')
+    Search(None, wx.ID_ANY, title=u'CHMS | 検索')
     app.MainLoop()
