@@ -10,7 +10,7 @@ def select_base():
     with closing(sqlite3.connect(dbpath,detect_types=detect_types)) as conn:
         c = conn.cursor()
         # executeメソッドでSQL文を実行する
-        sql = 'select name from base'
+        sql = 'select name from base order by name'
         result = []
         for i in c.execute(sql):
             result.append(i[0])
