@@ -123,36 +123,54 @@ class MainPanel(wx.Panel):
 
     # TODO 関数の名前変更:　取得ではない、登録機構（分裂可能）
     def get_register_info(self, event):
-        # TODO 変更する
-        dlg = wx.MessageDialog(None, f"",' 登録内容確認', wx.YES_NO | wx.ICON_INFORMATION)
+        temp_text = "以下の内容で登録しますが、よろしいでしょうか？\n"
+        input_list = [self.combobox_use_list, self.spinctrl_money_list, self.spinctrl_year_list, self.combobox_month_list, self.combobox_day_list]
+        error_counter = 0
+        # 確認コメント作成
+        for i in range(self.input_length):
+            temp_text += f"{str(i+1):<2} : "
+            # 用途がデフォルトまたは、金額が0円の行数をカウントする
+            if input_list[0][i].GetValue() == self.input_defalut_text or input_list[1][i].GetValue() == 0:
+                error_counter += 1
+            if input_list[0][i].GetValue() == self.input_defalut_text:
+                temp_text += f"{'':<8} "
+            else:
+                temp_text += f"{input_list[0][i].GetValue():<8} "
+            temp_text += f"{input_list[1][i].GetValue():>5}円 "
+            temp_text += f"{input_list[2][i].GetValue():>4}/"
+            temp_text += f"{input_list[3][i].GetValue():>2}/"
+            temp_text += f"{input_list[4][i].GetValue():>2}\n"
+        # エラー処理
+        if error_counter == self.input_length:
+            return wx.MessageBox("最低限1行入力して、登録データを作成してください", "入力エラー", wx.ICON_ERROR)
+
+        # 登録確認
+        dlg = wx.MessageDialog(None, f"{temp_text}",' 登録内容確認', wx.YES_NO | wx.ICON_INFORMATION)
         result = dlg.ShowModal()
         if result == wx.ID_YES:
-            # 更新する
-            detail.update_accounting(after_list)
-            wx.MessageBox("更新完了しました。", "更新完了", wx.ICON_INFORMATION)
-            self.Destroy()
+            give_register_info = []
+            for i in range(self.input_length):
+                # 用途取得
+                use = self.combobox_use_list[i].GetValue()
+                # 用途、金額共にデフォルトでない場合は、登録する
+                if self.spinctrl_money_list[i].GetValue() != 0 and use != self.input_defalut_text:
+                    # 新規の用途か判定し、ない場合追加する
+                    if use not in search.search_base():
+                        register.register_base(use)
+                    give_register_info.append([])
+                    give_length = len(give_register_info) - 1
+                    give_register_info[give_length].append(self.combobox_use_list[i].GetValue())
+                    give_register_info[give_length].append(self.spinctrl_money_list[i].GetValue())
+                    give_register_info[give_length].append(self.spinctrl_year_list[i].GetValue())
+                    give_register_info[give_length].append(self.combobox_month_list[i].GetValue())
+                    give_register_info[give_length].append(self.combobox_day_list[i].GetValue())
+            error_msg = register.register(give_register_info)
+            print(error_msg)
+            wx.MessageBox("登録完了しました。", "登録完了", wx.ICON_INFORMATION)
+            self.frame.Destroy()
             wx.Exit()
-            search.call_search()
+            mainGui.call_mainGui()
         dlg.Destroy()
-        give_register_info = []
-        for i in range(self.input_length):
-            # 用途取得
-            use = self.combobox_use_list[i].GetValue()
-
-            # 用途、金額共にデフォルトでない場合は、登録する
-            if self.spinctrl_money_list[i].GetValue() != 0 and use != self.input_defalut_text:
-                # 新規の用途か判定し、ない場合追加する
-                if use not in search.search_base():
-                    register.register_base(use)
-                give_register_info.append([])
-                give_length = len(give_register_info) - 1
-                give_register_info[give_length].append(self.combobox_use_list[i].GetValue())
-                give_register_info[give_length].append(self.spinctrl_money_list[i].GetValue())
-                give_register_info[give_length].append(self.spinctrl_year_list[i].GetValue())
-                give_register_info[give_length].append(self.combobox_month_list[i].GetValue())
-                give_register_info[give_length].append(self.combobox_day_list[i].GetValue())
-        error_msg = register.register(give_register_info)
-        print(error_msg)
 
 def call_register():
     app = wx.App(False)
