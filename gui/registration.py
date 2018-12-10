@@ -121,7 +121,19 @@ class MainPanel(wx.Panel):
 
         self.SetSizer(layout)
 
+    # TODO 関数の名前変更:　取得ではない、登録機構（分裂可能）
     def get_register_info(self, event):
+        # TODO 変更する
+        dlg = wx.MessageDialog(None, f"",' 登録内容確認', wx.YES_NO | wx.ICON_INFORMATION)
+        result = dlg.ShowModal()
+        if result == wx.ID_YES:
+            # 更新する
+            detail.update_accounting(after_list)
+            wx.MessageBox("更新完了しました。", "更新完了", wx.ICON_INFORMATION)
+            self.Destroy()
+            wx.Exit()
+            search.call_search()
+        dlg.Destroy()
         give_register_info = []
         for i in range(self.input_length):
             # 用途取得
