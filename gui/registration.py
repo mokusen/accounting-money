@@ -2,7 +2,7 @@ import wx
 import datetime
 from . import mainGui, common
 from utils import useListCreate, dataListCreate
-from services import register
+from services import register, search
 
 class Register(wx.Frame):
     def __init__(self, parent, id, title):
@@ -124,8 +124,14 @@ class MainPanel(wx.Panel):
     def get_register_info(self, event):
         give_register_info = []
         for i in range(self.input_length):
+            # 用途取得
+            use = self.combobox_use_list[i].GetValue()
+
             # 用途、金額共にデフォルトでない場合は、登録する
-            if self.spinctrl_money_list[i].GetValue() != 0 and self.combobox_use_list[i].GetValue() != self.input_defalut_text:
+            if self.spinctrl_money_list[i].GetValue() != 0 and use != self.input_defalut_text:
+                # 新規の用途か判定し、ない場合追加する
+                if use not in search.search_base():
+                    register.register_base(use)
                 give_register_info.append([])
                 give_length = len(give_register_info) - 1
                 give_register_info[give_length].append(self.combobox_use_list[i].GetValue())
