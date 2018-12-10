@@ -134,7 +134,7 @@ class MainPanel(wx.Panel):
                 # 更新する
                 detail.update_accounting(after_list)
                 wx.MessageBox("更新完了しました。", "更新完了", wx.ICON_INFORMATION)
-                self.Destroy()
+                self.frame.Destroy()
                 wx.Exit()
                 search.call_search()
             dlg.Destroy()
