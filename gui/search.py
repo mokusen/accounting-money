@@ -136,6 +136,7 @@ class MainPanel(wx.Panel):
 
         # ソートイベントを登録する
         self.Bind(wx.EVT_LIST_COL_CLICK, self.call_sort)
+        print(search.search_base())
 
         self.SetSizer(layout)
 

@@ -1,5 +1,8 @@
 from sqls import select
 
+def search_base():
+    return select.select_base()
+
 def search_accounting(use_value=None,money_value_1=None,money_value_2=None,
                         year_value_1=None,year_value_2=None,month_value_1=None,month_value_2=None,
                         day_value_1=None,day_value_2=None):
