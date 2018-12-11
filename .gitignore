@@ -1,6 +1,8 @@
 .vscode
 accounting
+dbInit
 __pycache__
 *.csv
 *.sh
 *.db
+**書.md

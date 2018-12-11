@@ -1,8 +1,8 @@
 import wx
 import datetime
-from utils import useListCreate, dataListCreate
+from utils import dataListCreate
 from . import search, common
-from services import detail
+from services import detail, search as s_search
 
 class Detail(wx.Frame):
     def __init__(self, parent, id, title, detail_info_list):
@@ -36,7 +36,7 @@ class MainPanel(wx.Panel):
         self.myinit()
 
     def myinit(self):
-        use_list = useListCreate.create_list()
+        use_list = s_search.search_base()
         month_list = dataListCreate.create_month()
         day_list = dataListCreate.create_day()
 
@@ -105,15 +105,28 @@ class MainPanel(wx.Panel):
 
         self.SetSizer(layout)
 
+    def get_detail_info(self):
+        detail_list = []
+        detail_list.append(self.detail_id.GetLabel())
+        detail_list.append(self.detail_use.GetValue())
+        detail_list.append(self.detail_money.GetValue())
+        detail_list.append(self.detail_year.GetValue())
+        detail_list.append(self.detail_month.GetValue())
+        detail_list.append(self.detail_day.GetValue())
+        return detail_list
+
+    def create_check_text(self, check_text, detail_list):
+        check_text += f"ID：{detail_list[0]}\n"
+        check_text += f"用途：{detail_list[1]}\n"
+        check_text += f"金額：{detail_list[2]}\n"
+        check_text += f"年：{detail_list[3]}\n"
+        check_text += f"月：{detail_list[4]}\n"
+        check_text += f"日：{detail_list[5]}"
+        return check_text
+
     def call_update(self, event):
         # 更新情報を取得する
-        after_list = []
-        after_list.append(self.detail_id.GetLabel())
-        after_list.append(self.detail_use.GetValue())
-        after_list.append(self.detail_money.GetValue())
-        after_list.append(self.detail_year.GetValue())
-        after_list.append(self.detail_month.GetValue())
-        after_list.append(self.detail_day.GetValue())
+        after_list = self.get_detail_info()
 
         # 更新内容に変更があるか確認する
         if self.frame.detail_info_list == after_list:
@@ -121,13 +134,7 @@ class MainPanel(wx.Panel):
         else:
             # 更新するか確認する
             temp_text = "以下の内容で更新しますが、よろしいでしょうか？\n"
-            temp_id = f"ID：{after_list[0]}\n"
-            temp_use = f"用途：{after_list[1]}\n"
-            temp_money = f"金額：{after_list[2]}\n"
-            temp_year = f"年：{after_list[3]}\n"
-            temp_month = f"月：{after_list[4]}\n"
-            temp_day = f"日：{after_list[5]}"
-            temple_text = temp_text + temp_id + temp_use + temp_money + temp_year + temp_month+ temp_day
+            temple_text = self.create_check_text(temp_text, after_list)
             dlg = wx.MessageDialog(None, f"{temple_text}",' 更新内容確認', wx.YES_NO | wx.ICON_INFORMATION)
             result = dlg.ShowModal()
             if result == wx.ID_YES:
@@ -141,23 +148,11 @@ class MainPanel(wx.Panel):
 
     def call_delete(self, event):
         # 削除情報を取得する
-        delete_list = []
-        delete_list.append(self.detail_id.GetLabel())
-        delete_list.append(self.detail_use.GetValue())
-        delete_list.append(self.detail_money.GetValue())
-        delete_list.append(self.detail_year.GetValue())
-        delete_list.append(self.detail_month.GetValue())
-        delete_list.append(self.detail_day.GetValue())
+        delete_list = self.get_detail_info()
 
         # 削除するか確認する
         temp_text = "以下の内容を削除しますが、よろしいでしょうか？\n"
-        temp_id = f"ID：{delete_list[0]}\n"
-        temp_use = f"用途：{delete_list[1]}\n"
-        temp_money = f"金額：{delete_list[2]}\n"
-        temp_year = f"年：{delete_list[3]}\n"
-        temp_month = f"月：{delete_list[4]}\n"
-        temp_day = f"日：{delete_list[5]}"
-        temple_text = temp_text + temp_id + temp_use + temp_money + temp_year + temp_month+ temp_day
+        temple_text = self.create_check_text(temp_text, delete_list)
         dlg = wx.MessageDialog(None, f"{temple_text}",' 削除内容確認', wx.YES_NO | wx.ICON_INFORMATION)
         result = dlg.ShowModal()
         if result == wx.ID_YES:

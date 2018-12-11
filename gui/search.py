@@ -1,6 +1,6 @@
 import wx
 from . import mainGui, detail, common
-from utils import useListCreate, dataListCreate
+from utils import dataListCreate
 from services import search
 from operator import itemgetter
 
@@ -42,7 +42,7 @@ class MainPanel(wx.Panel):
         # 初期設定
         self.input_defalut_text = "選択"
         Text = (u'ID', u'用途', u'金額', u'年', u'月', u'日', u'作成日', u'更新日')
-        use_list = useListCreate.create_list()
+        use_list = search.search_base()
         month_list = dataListCreate.create_month()
         day_list = dataListCreate.create_day()
 
@@ -258,6 +258,7 @@ class MainPanel(wx.Panel):
 
         # 用途から日までを取得し、リストに格納する
         detail_info_list = []
+        # TODO 用途などの題名テキストをリスト化し、作成、更新日外を長さとして持たせるように変更
         for i in range(6):
             item = self.search_result_text.GetItem(itemIdx=index, col=i)
             detail_info_list.append(item.GetText())

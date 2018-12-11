@@ -1,5 +1,5 @@
 from sqls import create, drop, insert, select
-from utils import useListCreate, accountingListCreate
+from dbInit import useListCreate, accountingListCreate
 from datetime import datetime
 
 drop.drop_base()
