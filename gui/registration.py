@@ -1,7 +1,7 @@
 import wx
 import datetime
 from . import mainGui, common
-from utils import useListCreate, dataListCreate
+from utils import dataListCreate
 from services import register, search
 
 class Register(wx.Frame):
@@ -49,7 +49,7 @@ class MainPanel(wx.Panel):
         # 初期設定
         self.input_length = 10
         self.input_defalut_text = "選択"
-        use_list = useListCreate.create_list()
+        use_list = search.search_base()
         month_list = dataListCreate.create_month()
         day_list = dataListCreate.create_day()
 
@@ -74,11 +74,11 @@ class MainPanel(wx.Panel):
         for text in text_list:
             text.SetFont(self.font)
 
-        # リセット、登録ボタン作成
+        # 登録ボタン作成
         register_button = wx.Button(self, wx.ID_ANY, '登録', size=btn_size)
 
-        # リセット、登録ボタンにイベントを登録する
-        register_button.Bind(wx.EVT_BUTTON, self.get_register_info)
+        # 登録ボタンにイベントを登録する
+        register_button.Bind(wx.EVT_BUTTON, self.call_register)
 
         # 入力欄リスト
         self.text_number_list = []
@@ -122,7 +122,7 @@ class MainPanel(wx.Panel):
         self.SetSizer(layout)
 
     # TODO 関数の名前変更:　取得ではない、登録機構（分裂可能）
-    def get_register_info(self, event):
+    def call_register(self, event):
         temp_text = "以下の内容で登録しますが、よろしいでしょうか？\n"
         input_list = [self.combobox_use_list, self.spinctrl_money_list, self.spinctrl_year_list, self.combobox_month_list, self.combobox_day_list]
         error_counter = 0
@@ -165,6 +165,7 @@ class MainPanel(wx.Panel):
                     give_register_info[give_length].append(self.combobox_month_list[i].GetValue())
                     give_register_info[give_length].append(self.combobox_day_list[i].GetValue())
             error_msg = register.register(give_register_info)
+            # TODO log処理追加
             print(error_msg)
             wx.MessageBox("登録完了しました。", "登録完了", wx.ICON_INFORMATION)
             self.frame.Destroy()
