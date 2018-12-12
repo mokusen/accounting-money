@@ -260,7 +260,7 @@ class MainPanel(wx.Panel):
 
         # 用途から日までを取得し、リストに格納する
         detail_info_list = []
-        # TODO 用途などの題名テキストをリスト化し、作成、更新日外を長さとして持たせるように変更
+        # TODO: 用途などの題名テキストをリスト化し、作成、更新日外を長さとして持たせるように変更
         for i in range(6):
             item = self.search_result_text.GetItem(itemIdx=index, col=i)
             detail_info_list.append(item.GetText())

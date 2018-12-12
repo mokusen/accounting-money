@@ -123,7 +123,7 @@ class MainPanel(wx.Panel):
 
         self.SetSizer(layout)
 
-    # TODO 関数の名前変更:　取得ではない、登録機構（分裂可能）
+    # TODO: 関数の名前変更:　取得ではない、登録機構（分裂可能）
     def call_register(self, event):
         temp_text = "以下の内容で登録しますが、よろしいでしょうか？\n"
         input_list = [self.combobox_use_list, self.spinctrl_money_list, self.spinctrl_year_list, self.combobox_month_list, self.combobox_day_list]
@@ -167,7 +167,7 @@ class MainPanel(wx.Panel):
                     give_register_info[give_length].append(self.combobox_month_list[i].GetValue())
                     give_register_info[give_length].append(self.combobox_day_list[i].GetValue())
             error_msg = register.register(give_register_info)
-            # TODO log処理追加
+            # TODO: log処理追加
             print(error_msg)
             wx.MessageBox("登録完了しました。", "登録完了", wx.ICON_INFORMATION)
             self.frame.Destroy()
