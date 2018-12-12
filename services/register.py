@@ -1,5 +1,6 @@
 from sqls import insert
 
+
 def register_base(use):
     """
     用途を登録する
@@ -9,6 +10,7 @@ def register_base(use):
         新規の用途
     """
     insert.insert_base([use])
+
 
 def register(duble_list):
     """

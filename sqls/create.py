@@ -6,8 +6,9 @@ path = os.getcwd()
 dbpath = path + '\data.db'
 detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
 
+
 def create_base():
-    with closing(sqlite3.connect(dbpath,detect_types=detect_types)) as conn:
+    with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
 
         # executeメソッドでSQL文を実行する
@@ -23,8 +24,9 @@ def create_base():
         c.execute(sql)
     print("===EXIT_CREATE_BASE===")
 
+
 def create_accounting():
-    with closing(sqlite3.connect(dbpath,detect_types=detect_types)) as conn:
+    with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
 
         # executeメソッドでSQL文を実行する

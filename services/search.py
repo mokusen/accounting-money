@@ -1,11 +1,13 @@
 from sqls import select
 
+
 def search_base():
     return select.select_base()
 
-def search_accounting(use_value=None,money_value_1=None,money_value_2=None,
-                        year_value_1=None,year_value_2=None,month_value_1=None,month_value_2=None,
-                        day_value_1=None,day_value_2=None):
+
+def search_accounting(use_value=None, money_value_1=None, money_value_2=None,
+                      year_value_1=None, year_value_2=None, month_value_1=None, month_value_2=None,
+                      day_value_1=None, day_value_2=None):
     """Summary line.
     課金履歴を全件検索結果を取得し、対象期間の累計金額を返却する
 
@@ -41,7 +43,7 @@ def search_accounting(use_value=None,money_value_1=None,money_value_2=None,
     # TODO log処理追加
 
     # 全件検索結果を取得する
-    all_data = select.select_accounting(use_value,money_value_1,money_value_2,year_value_1,year_value_2,month_value_1,month_value_2,day_value_1,day_value_2)
+    all_data = select.select_accounting(use_value, money_value_1, money_value_2, year_value_1, year_value_2, month_value_1, month_value_2, day_value_1, day_value_2)
 
     # 累計金額を算出する
     all_money = 0

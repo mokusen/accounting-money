@@ -4,9 +4,10 @@ from . import mainGui, common
 from utils import dataListCreate
 from services import register, search
 
+
 class Register(wx.Frame):
     def __init__(self, parent, id, title):
-        wx.Frame.__init__(self, parent, id, title, size=(560,390))
+        wx.Frame.__init__(self, parent, id, title, size=(560, 390))
 
         # icon設定
         self.SetIcon(common.get_icon())
@@ -34,6 +35,7 @@ class Register(wx.Frame):
         wx.Exit()
         mainGui.call_mainGui()
 
+
 class MainPanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent)
@@ -56,7 +58,7 @@ class MainPanel(wx.Panel):
         # size設定
         size = (100, 23)
         num_size = (30, 23)
-        btn_size = (200,46)
+        btn_size = (200, 46)
 
         # font設定
         self.font = common.defalut_font_size()
@@ -101,23 +103,23 @@ class MainPanel(wx.Panel):
         for text_number in self.text_number_list:
             text_number.SetFont(self.font)
 
-        layout = wx.GridBagSizer(0,0)
+        layout = wx.GridBagSizer(0, 0)
 
         # テキストレイアウト追加
         for t, text in enumerate(text_list):
-            layout.Add(text, (0,t), (1,1), flag=wx.TOP, border=10)
+            layout.Add(text, (0, t), (1, 1), flag=wx.TOP, border=10)
 
         # 入力欄レイアウト追加
         for i in range(self.input_length):
-            layout.Add(self.text_number_list[i], (i+1,0), (1,1))
-            layout.Add(self.combobox_use_list[i], (i+1,1), (1,1))
-            layout.Add(self.spinctrl_money_list[i], (i+1,2), (1,1))
-            layout.Add(self.spinctrl_year_list[i], (i+1,3), (1,1))
-            layout.Add(self.combobox_month_list[i], (i+1,4), (1,1))
-            layout.Add(self.combobox_day_list[i], (i+1,5), (1,1))
+            layout.Add(self.text_number_list[i], (i+1, 0), (1, 1))
+            layout.Add(self.combobox_use_list[i], (i+1, 1), (1, 1))
+            layout.Add(self.spinctrl_money_list[i], (i+1, 2), (1, 1))
+            layout.Add(self.spinctrl_year_list[i], (i+1, 3), (1, 1))
+            layout.Add(self.combobox_month_list[i], (i+1, 4), (1, 1))
+            layout.Add(self.combobox_day_list[i], (i+1, 5), (1, 1))
 
         # 登録ボタンレイアウト追加
-        layout.Add(register_button, (12,3), (2,3), flag=wx.GROW)
+        layout.Add(register_button, (12, 3), (2, 3), flag=wx.GROW)
 
         self.SetSizer(layout)
 
@@ -145,7 +147,7 @@ class MainPanel(wx.Panel):
             return wx.MessageBox("最低限1行入力して、登録データを作成してください", "入力エラー", wx.ICON_ERROR)
 
         # 登録確認
-        dlg = wx.MessageDialog(None, f"{temp_text}",' 登録内容確認', wx.YES_NO | wx.ICON_INFORMATION)
+        dlg = wx.MessageDialog(None, f"{temp_text}", ' 登録内容確認', wx.YES_NO | wx.ICON_INFORMATION)
         result = dlg.ShowModal()
         if result == wx.ID_YES:
             give_register_info = []
@@ -172,6 +174,7 @@ class MainPanel(wx.Panel):
             wx.Exit()
             mainGui.call_mainGui()
         dlg.Destroy()
+
 
 def call_register():
     app = wx.App(False)

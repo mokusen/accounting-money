@@ -4,10 +4,11 @@ from utils import dataListCreate
 from . import search, common
 from services import detail, search as s_search
 
+
 class Detail(wx.Frame):
     def __init__(self, parent, id, title, detail_info_list):
-        self.frame_size = (675,600)
-        wx.Frame.__init__(self, parent, id, title, size=(300,300))
+        self.frame_size = (675, 600)
+        wx.Frame.__init__(self, parent, id, title, size=(300, 300))
 
         # icon設定
         self.SetIcon(common.get_icon())
@@ -29,6 +30,7 @@ class Detail(wx.Frame):
         wx.Exit()
         search.call_search()
 
+
 class MainPanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent)
@@ -41,9 +43,9 @@ class MainPanel(wx.Panel):
         day_list = dataListCreate.create_day()
 
         # size設定
-        form_size = (100,25)
-        text_size = (50,25)
-        button_size = (100,25)
+        form_size = (100, 25)
+        text_size = (50, 25)
+        button_size = (100, 25)
 
         # font設定
         self.font = common.defalut_font_size()
@@ -67,12 +69,12 @@ class MainPanel(wx.Panel):
         # 修正フォーム作成
         self.detail_id = wx.StaticText(self, wx.ID_ANY, self.frame.detail_info_list[0], size=form_size, style=wx.TE_CENTER)
         self.detail_use = wx.ComboBox(self, wx.ID_ANY, value=self.frame.detail_info_list[1], choices=use_list, style=wx.CB_DROPDOWN, size=form_size)
-        self.detail_money = wx.TextCtrl(self, wx.ID_ANY, value=self.frame.detail_info_list[2],size=form_size)
+        self.detail_money = wx.TextCtrl(self, wx.ID_ANY, value=self.frame.detail_info_list[2], size=form_size)
         self.detail_money.SetMaxLength(5)
-        self.detail_year = wx.TextCtrl(self, wx.ID_ANY, value=self.frame.detail_info_list[3],size=form_size)
+        self.detail_year = wx.TextCtrl(self, wx.ID_ANY, value=self.frame.detail_info_list[3], size=form_size)
         self.detail_year.SetMaxLength(4)
-        self.detail_month = wx.ComboBox(self, wx.ID_ANY, value=self.frame.detail_info_list[4],choices=month_list, style=wx.CB_DROPDOWN, size=form_size)
-        self.detail_day = wx.ComboBox(self, wx.ID_ANY, value=self.frame.detail_info_list[5],choices=day_list, style=wx.CB_DROPDOWN, size=form_size)
+        self.detail_month = wx.ComboBox(self, wx.ID_ANY, value=self.frame.detail_info_list[4], choices=month_list, style=wx.CB_DROPDOWN, size=form_size)
+        self.detail_day = wx.ComboBox(self, wx.ID_ANY, value=self.frame.detail_info_list[5], choices=day_list, style=wx.CB_DROPDOWN, size=form_size)
 
         # 更新、削除ボタン
         update_button = wx.Button(self, wx.ID_ANY, '更新', size=button_size)
@@ -86,18 +88,18 @@ class MainPanel(wx.Panel):
         detail_layout = wx.GridBagSizer(10, 5)
         detail_layout.Add(text_id, (0, 0), (1, 1), flag=wx.EXPAND)
         detail_layout.Add(text_use, (1, 0), (1, 1), flag=wx.EXPAND)
-        detail_layout.Add(text_money, (2, 0), (1,1), flag=wx.EXPAND)
-        detail_layout.Add(text_year, (3, 0), (1,1), flag=wx.EXPAND)
-        detail_layout.Add(text_month, (4, 0), (1,1), flag=wx.EXPAND)
-        detail_layout.Add(text_day, (5, 0), (1,1), flag=wx.EXPAND)
-        detail_layout.Add(self.detail_id, (0, 1), (1,1), flag=wx.EXPAND)
+        detail_layout.Add(text_money, (2, 0), (1, 1), flag=wx.EXPAND)
+        detail_layout.Add(text_year, (3, 0), (1, 1), flag=wx.EXPAND)
+        detail_layout.Add(text_month, (4, 0), (1, 1), flag=wx.EXPAND)
+        detail_layout.Add(text_day, (5, 0), (1, 1), flag=wx.EXPAND)
+        detail_layout.Add(self.detail_id, (0, 1), (1, 1), flag=wx.EXPAND)
         detail_layout.Add(self.detail_use, (1, 1), (1, 1), flag=wx.EXPAND)
-        detail_layout.Add(self.detail_money, (2, 1), (1,1), flag=wx.EXPAND)
-        detail_layout.Add(self.detail_year, (3, 1), (1,1), flag=wx.EXPAND)
-        detail_layout.Add(self.detail_month, (4, 1), (1,1), flag=wx.EXPAND)
-        detail_layout.Add(self.detail_day, (5, 1), (1,1), flag=wx.EXPAND)
-        detail_layout.Add(update_button, (1, 2), (2,1), flag=wx.EXPAND)
-        detail_layout.Add(delete_button, (4, 2), (2,1), flag=wx.EXPAND)
+        detail_layout.Add(self.detail_money, (2, 1), (1, 1), flag=wx.EXPAND)
+        detail_layout.Add(self.detail_year, (3, 1), (1, 1), flag=wx.EXPAND)
+        detail_layout.Add(self.detail_month, (4, 1), (1, 1), flag=wx.EXPAND)
+        detail_layout.Add(self.detail_day, (5, 1), (1, 1), flag=wx.EXPAND)
+        detail_layout.Add(update_button, (1, 2), (2, 1), flag=wx.EXPAND)
+        detail_layout.Add(delete_button, (4, 2), (2, 1), flag=wx.EXPAND)
 
         # 全体レイアウト
         layout = wx.BoxSizer(wx.HORIZONTAL)
@@ -135,7 +137,7 @@ class MainPanel(wx.Panel):
             # 更新するか確認する
             temp_text = "以下の内容で更新しますが、よろしいでしょうか？\n"
             temple_text = self.create_check_text(temp_text, after_list)
-            dlg = wx.MessageDialog(None, f"{temple_text}",' 更新内容確認', wx.YES_NO | wx.ICON_INFORMATION)
+            dlg = wx.MessageDialog(None, f"{temple_text}", ' 更新内容確認', wx.YES_NO | wx.ICON_INFORMATION)
             result = dlg.ShowModal()
             if result == wx.ID_YES:
                 # 更新する
@@ -153,7 +155,7 @@ class MainPanel(wx.Panel):
         # 削除するか確認する
         temp_text = "以下の内容を削除しますが、よろしいでしょうか？\n"
         temple_text = self.create_check_text(temp_text, delete_list)
-        dlg = wx.MessageDialog(None, f"{temple_text}",' 削除内容確認', wx.YES_NO | wx.ICON_INFORMATION)
+        dlg = wx.MessageDialog(None, f"{temple_text}", ' 削除内容確認', wx.YES_NO | wx.ICON_INFORMATION)
         result = dlg.ShowModal()
         if result == wx.ID_YES:
             # 削除する
@@ -163,6 +165,7 @@ class MainPanel(wx.Panel):
             wx.Exit()
             search.call_search()
         dlg.Destroy()
+
 
 def call_detail(detail_info_list):
     app = wx.App(False)

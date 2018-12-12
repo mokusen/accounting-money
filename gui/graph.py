@@ -1,9 +1,10 @@
 import wx
 from . import mainGui, common
 
+
 class Graph(wx.Frame):
     def __init__(self, parent, id, title):
-        wx.Frame.__init__(self, parent, id, title, size=(500,500))
+        wx.Frame.__init__(self, parent, id, title, size=(500, 500))
 
         # icon設定
         self.SetIcon(common.get_icon())
@@ -18,6 +19,7 @@ class Graph(wx.Frame):
         self.Destroy()
         wx.Exit()
         mainGui.call_mainGui()
+
 
 def call_graph():
     app = wx.App(False)

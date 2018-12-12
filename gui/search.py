@@ -4,9 +4,10 @@ from utils import dataListCreate
 from services import search
 from operator import itemgetter
 
+
 class Search(wx.Frame):
     def __init__(self, parent, id, title):
-        self.frame_size = (625,600)
+        self.frame_size = (625, 600)
         wx.Frame.__init__(self, parent, id, title, size=self.frame_size)
 
         # icon設定
@@ -28,11 +29,12 @@ class Search(wx.Frame):
         wx.Exit()
         mainGui.call_mainGui()
 
+
 class MainPanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent)
         self.frame = parent
-        self.frame_size = (625,600)
+        self.frame_size = (625, 600)
         self.myinit()
 
         # 詳細ページ表示イベント
@@ -50,11 +52,11 @@ class MainPanel(wx.Panel):
         self.all_data = []
 
         # 初期値追加
-        use_list.insert(0,'')
+        use_list.insert(0, '')
 
         # size設定
-        form_size = (100,25)
-        text_size = (50,25)
+        form_size = (100, 25)
+        text_size = (50, 25)
 
         # font設定
         self.font = common.defalut_font_size()
@@ -103,7 +105,7 @@ class MainPanel(wx.Panel):
         # ~を作成する
         text_tilde_list = []
         for i in range(4):
-            text_tilde_list.append(wx.StaticText(self, wx.ID_ANY, '～', size=(25,25), style=wx.TE_CENTER))
+            text_tilde_list.append(wx.StaticText(self, wx.ID_ANY, '～', size=(25, 25), style=wx.TE_CENTER))
 
         # 検索ボタン
         search_button = wx.Button(self, wx.ID_ANY, '検索')
@@ -115,10 +117,10 @@ class MainPanel(wx.Panel):
         search_layout = wx.GridBagSizer(10, 5)
         search_layout.Add(text_use, (0, 0), (1, 1), flag=wx.EXPAND)
         search_layout.Add(self.search_use, (0, 1), (1, 1), flag=wx.EXPAND)
-        search_layout.Add(text_money, (1, 0), (1,1), flag=wx.EXPAND)
-        search_layout.Add(text_year, (0, 4), (1,1), flag=wx.EXPAND)
-        search_layout.Add(text_month, (1, 4), (1,1), flag=wx.EXPAND)
-        search_layout.Add(text_day, (2, 4), (1,1), flag=wx.EXPAND)
+        search_layout.Add(text_money, (1, 0), (1, 1), flag=wx.EXPAND)
+        search_layout.Add(text_year, (0, 4), (1, 1), flag=wx.EXPAND)
+        search_layout.Add(text_month, (1, 4), (1, 1), flag=wx.EXPAND)
+        search_layout.Add(text_day, (2, 4), (1, 1), flag=wx.EXPAND)
         for i in range(2):
             search_layout.Add(self.search_money_list[i], (1, 1 + i*2), (1, 1), flag=wx.EXPAND)
             search_layout.Add(self.search_year_list[i], (0, 5 + i*2), (1, 1), flag=wx.EXPAND)
@@ -150,17 +152,17 @@ class MainPanel(wx.Panel):
         month_value_2 = self.search_month_list[1].GetValue()
         day_value_1 = self.search_day_list[0].GetValue()
         day_value_2 = self.search_day_list[1].GetValue()
-        return use_value,money_value_1,money_value_2,year_value_1,year_value_2,month_value_1,month_value_2,day_value_1,day_value_2
+        return use_value, money_value_1, money_value_2, year_value_1, year_value_2, month_value_1, month_value_2, day_value_1, day_value_2
 
     def call_select(self, event):
         # 初期化する
         self.search_result_text.DeleteAllItems()
 
         # 検索ワード取得
-        use_value,money_value_1,money_value_2,year_value_1,year_value_2,month_value_1,month_value_2,day_value_1,day_value_2 = self.adjust_search_info()
+        use_value, money_value_1, money_value_2, year_value_1, year_value_2, month_value_1, month_value_2, day_value_1, day_value_2 = self.adjust_search_info()
 
         # 検索結果取得
-        self.all_data, all_money = search.search_accounting(use_value,money_value_1,money_value_2,year_value_1,year_value_2,month_value_1,month_value_2,day_value_1,day_value_2)
+        self.all_data, all_money = search.search_accounting(use_value, money_value_1, money_value_2, year_value_1, year_value_2, month_value_1, month_value_2, day_value_1, day_value_2)
 
         # 追加する行の指定
         Add_line = self.search_result_text.GetItemCount()
@@ -265,6 +267,7 @@ class MainPanel(wx.Panel):
         self.frame.Destroy()
         wx.Exit()
         detail.call_detail(detail_info_list)
+
 
 def call_search():
     app = wx.App(False)

@@ -4,15 +4,17 @@ from . import search
 from . import graph
 from . import common
 
+
 class Main(wx.Frame):
     def __init__(self, parent, id, title):
-        wx.Frame.__init__(self, parent, id, title, size=(750,300))
+        wx.Frame.__init__(self, parent, id, title, size=(750, 300))
         # icon設定
         self.SetIcon(common.get_icon())
 
         panel = MainPanel(self)
         self.Centre()
         self.Show()
+
 
 class MainPanel(wx.Panel):
     def __init__(self, parent):
@@ -41,9 +43,9 @@ class MainPanel(wx.Panel):
 
         # レイアウト設定
         self.layout = wx.GridBagSizer(0, 0)
-        self.layout.Add(self.button1, (4,0), (1,1), flag=wx.GROW | wx.LEFT | wx.TOP, border=30)
-        self.layout.Add(self.button2, (4,1), (1,1), flag=wx.GROW | wx.LEFT | wx.TOP, border=30)
-        self.layout.Add(self.button3, (4,2), (1,1), flag=wx.GROW | wx.LEFT | wx.TOP, border=30)
+        self.layout.Add(self.button1, (4, 0), (1, 1), flag=wx.GROW | wx.LEFT | wx.TOP, border=30)
+        self.layout.Add(self.button2, (4, 1), (1, 1), flag=wx.GROW | wx.LEFT | wx.TOP, border=30)
+        self.layout.Add(self.button3, (4, 2), (1, 1), flag=wx.GROW | wx.LEFT | wx.TOP, border=30)
 
         self.SetSizer(self.layout)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
@@ -101,6 +103,7 @@ class MainPanel(wx.Panel):
         dc.Clear()
         bmp = wx.Bitmap("image/chms.jpg")
         dc.DrawBitmap(bmp, 0, 0)
+
 
 def call_mainGui():
     app = wx.App(False)
