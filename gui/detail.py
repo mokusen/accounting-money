@@ -2,26 +2,17 @@ import wx
 import datetime
 from utils import dataListCreate
 from . import search, common
-from services import detail, search as s_search
+from services import accountingService, baseService
 
 
 class Detail(wx.Frame):
     def __init__(self, parent, id, title, detail_info_list):
         self.frame_size = (675, 600)
         wx.Frame.__init__(self, parent, id, title, size=(300, 300))
-
-        # icon設定
         self.SetIcon(common.get_icon())
-
-        # 課金情報リスト
         self.detail_info_list = detail_info_list
-
-        # panel作成
         panel = MainPanel(self)
-
-        # 閉じるイベント
         self.Bind(wx.EVT_CLOSE, self.frame_close)
-
         self.Centre()
         self.Show()
 
@@ -35,10 +26,10 @@ class MainPanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent)
         self.frame = parent
-        self.myinit()
+        self.__myinit()
 
-    def myinit(self):
-        use_list = s_search.search_base()
+    def __myinit(self):
+        use_list = baseService.select_base()
         month_list = dataListCreate.create_month()
         day_list = dataListCreate.create_day()
 
@@ -108,6 +99,15 @@ class MainPanel(wx.Panel):
         self.SetSizer(layout)
 
     def get_detail_info(self):
+        """
+        現在選択している、課金情報を取得する
+
+        Returns
+        -------
+        detail_list : list
+            [id, use, money, year, month, day]
+        """
+
         detail_list = []
         detail_list.append(self.detail_id.GetLabel())
         detail_list.append(self.detail_use.GetValue())
@@ -118,6 +118,21 @@ class MainPanel(wx.Panel):
         return detail_list
 
     def create_check_text(self, check_text, detail_list):
+        """
+        確認メッセージ用に選択している課金情報を表示用に整形する
+
+        Parameters
+        ----------
+        check_text : string
+            前情報
+        detail_list : list
+            [id, use, money, year, month, day]
+
+        Returns
+        -------
+        check_text : string
+            check_text += detail_list convert to text
+        """
         check_text += f"ID：{detail_list[0]}\n"
         check_text += f"用途：{detail_list[1]}\n"
         check_text += f"金額：{detail_list[2]}\n"
@@ -126,45 +141,65 @@ class MainPanel(wx.Panel):
         check_text += f"日：{detail_list[5]}"
         return check_text
 
-    def call_update(self, event):
-        # 更新情報を取得する
-        after_list = self.get_detail_info()
+    def call_check_dialog(self, sql_text, sql_list):
+        """
+        sqlの種類を入力させ、確認メッセージを出力する
 
-        # 更新内容に変更があるか確認する
-        if self.frame.detail_info_list == after_list:
-            wx.MessageBox("最低限1つの項目は変更して下さい。", "ERROR", wx.ICON_ERROR)
-        else:
-            # 更新するか確認する
-            temp_text = "以下の内容で更新しますが、よろしいでしょうか？\n"
-            temple_text = self.create_check_text(temp_text, after_list)
-            dlg = wx.MessageDialog(None, f"{temple_text}", ' 更新内容確認', wx.YES_NO | wx.ICON_INFORMATION)
-            result = dlg.ShowModal()
-            if result == wx.ID_YES:
-                # 更新する
-                detail.update_accounting(after_list)
-                wx.MessageBox("更新完了しました。", "更新完了", wx.ICON_INFORMATION)
-                self.frame.Destroy()
-                wx.Exit()
-                search.call_search()
-            dlg.Destroy()
-
-    def call_delete(self, event):
-        # 削除情報を取得する
-        delete_list = self.get_detail_info()
-
-        # 削除するか確認する
-        temp_text = "以下の内容を削除しますが、よろしいでしょうか？\n"
-        temple_text = self.create_check_text(temp_text, delete_list)
-        dlg = wx.MessageDialog(None, f"{temple_text}", ' 削除内容確認', wx.YES_NO | wx.ICON_INFORMATION)
+        Parameters
+        ----------
+        sql_text : string
+            更新 or 削除
+        sql_list : list
+            [id, use, money, year, month, day]
+        """
+        temple_text = f"以下の内容で{sql_text}しますが、よろしいでしょうか？\n"
+        temple_text = self.create_check_text(temple_text, sql_list)
+        dlg = wx.MessageDialog(None, f"{temple_text}", f'{sql_text}内容確認', wx.YES_NO | wx.ICON_INFORMATION)
         result = dlg.ShowModal()
         if result == wx.ID_YES:
-            # 削除する
-            detail.delete_accounting(tuple([delete_list[0]]))
-            wx.MessageBox("削除完了しました。", "削除完了", wx.ICON_INFORMATION)
+            if sql_text == "更新":
+                accountingService.update_accounting(sql_list)
+            elif sql_text == "削除":
+                accountingService.delete_accounting(tuple([sql_list[0]]))
+            else:
+                # TODO: エラーメッセージの修正、ログの追加
+                return "error"
+            wx.MessageBox(f"{sql_text}完了しました。", f"{sql_text}完了", wx.ICON_INFORMATION)
             self.frame.Destroy()
             wx.Exit()
             search.call_search()
         dlg.Destroy()
+
+    def call_update(self, event):
+        """
+        更新処理を呼び出す
+
+        Parameters
+        ----------
+        event : event
+            wxPythonのeventクラス
+
+        """
+        update_list = self.get_detail_info()
+
+        # 更新内容に変更があるか確認する
+        if self.frame.detail_info_list == update_list:
+            wx.MessageBox("最低限1つの項目は変更して下さい。", "ERROR", wx.ICON_ERROR)
+        else:
+            self.call_check_dialog("更新", update_list)
+
+    def call_delete(self, event):
+        """
+        削除処理を呼び出す
+
+        Parameters
+        ----------
+        event : event
+            wxPythonのeventクラス
+
+        """
+        delete_list = self.get_detail_info()
+        self.call_check_dialog("削除", delete_list)
 
 
 def call_detail(detail_info_list):

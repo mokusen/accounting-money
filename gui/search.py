@@ -1,7 +1,7 @@
 import wx
 from . import mainGui, detail, common
 from utils import dataListCreate
-from services import search
+from services import accountingService, baseService
 from operator import itemgetter
 
 
@@ -9,17 +9,9 @@ class Search(wx.Frame):
     def __init__(self, parent, id, title):
         self.frame_size = (625, 600)
         wx.Frame.__init__(self, parent, id, title, size=self.frame_size)
-
-        # icon設定
         self.SetIcon(common.get_icon())
-
-        # ステータスバー作成
         self.CreateStatusBar()
-
-        # panel作成
         panel = MainPanel(self)
-
-        # 閉じるイベント
         self.Bind(wx.EVT_CLOSE, self.frame_close)
         self.Centre()
         self.Show()
@@ -35,16 +27,16 @@ class MainPanel(wx.Panel):
         wx.Panel.__init__(self, parent=parent)
         self.frame = parent
         self.frame_size = (625, 600)
-        self.myinit()
+        self.__myinit()
 
         # 詳細ページ表示イベント
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.detail_open)
 
-    def myinit(self):
+    def __myinit(self):
         # 初期設定
         self.input_defalut_text = "選択"
         Text = (u'ID', u'用途', u'金額', u'年', u'月', u'日', u'作成日', u'更新日')
-        use_list = search.search_base()
+        use_list = baseService.select_base()
         month_list = dataListCreate.create_month()
         day_list = dataListCreate.create_day()
 
@@ -138,31 +130,36 @@ class MainPanel(wx.Panel):
 
         # ソートイベントを登録する
         self.Bind(wx.EVT_LIST_COL_CLICK, self.call_sort)
-        print(search.search_base())
+        print(baseService.select_base())
 
         self.SetSizer(layout)
 
     def adjust_search_info(self):
-        use_value = self.search_use.GetValue()
-        money_value_1 = self.search_money_list[0].GetValue()
-        money_value_2 = self.search_money_list[1].GetValue()
-        year_value_1 = self.search_year_list[0].GetValue()
-        year_value_2 = self.search_year_list[1].GetValue()
-        month_value_1 = self.search_month_list[0].GetValue()
-        month_value_2 = self.search_month_list[1].GetValue()
-        day_value_1 = self.search_day_list[0].GetValue()
-        day_value_2 = self.search_day_list[1].GetValue()
-        return use_value, money_value_1, money_value_2, year_value_1, year_value_2, month_value_1, month_value_2, day_value_1, day_value_2
+        """
+        検索条件を取得し、リスト化して返却する
+
+        Returns
+        -------
+        select_condition_list : list
+            [use, min_money, max_money, min_year, max_year, min_month, max_month, min_day, max_day]
+        """
+        select_condition_list = []
+        select_condition_list.append(self.search_use.GetValue())
+        select_condition_list.append(self.search_money_list[0].GetValue())
+        select_condition_list.append(self.search_money_list[1].GetValue())
+        select_condition_list.append(self.search_year_list[0].GetValue())
+        select_condition_list.append(self.search_year_list[1].GetValue())
+        select_condition_list.append(self.search_month_list[0].GetValue())
+        select_condition_list.append(self.search_month_list[1].GetValue())
+        select_condition_list.append(self.search_day_list[0].GetValue())
+        select_condition_list.append(self.search_day_list[1].GetValue())
+        return select_condition_list
 
     def call_select(self, event):
-        # 初期化する
+        # listctrlを初期化する
         self.search_result_text.DeleteAllItems()
-
-        # 検索ワード取得
-        use_value, money_value_1, money_value_2, year_value_1, year_value_2, month_value_1, month_value_2, day_value_1, day_value_2 = self.adjust_search_info()
-
-        # 検索結果取得
-        self.all_data, all_money = search.search_accounting(use_value, money_value_1, money_value_2, year_value_1, year_value_2, month_value_1, month_value_2, day_value_1, day_value_2)
+        select_condition_list = self.adjust_search_info()
+        self.all_data, all_money = accountingService.select_accounting(select_condition_list)
 
         # 追加する行の指定
         Add_line = self.search_result_text.GetItemCount()
@@ -178,20 +175,30 @@ class MainPanel(wx.Panel):
                 else:
                     self.search_result_text.SetItem(Add_line, item, str(items[item]))
             Add_line += 1
-
-        # 累計金額をステータスバーに表示する
         self.frame.SetStatusText(f'累計金額：{all_money:,}円です。')
 
     def call_sort(self, event):
-        if self.all_data == []:
-            pass
-        else:
-            if event.GetColumn() != 1 and event.GetColumn() != 6 and event.GetColumn() != 7:
+        """
+        検索結果をソート処理を呼び出す
+
+        Parameters
+        ----------
+        event : event
+            wxPythonのeventクラス
+        """
+        if self.all_data != []:
+            if event.GetColumn() not in [1, 6, 7]:
                 self.sort_item(event.GetColumn())
 
     def sort_item(self, col_number):
         """
-        itemのソート
+        listctrlのitemをソートする
+
+        Parameters
+        ----------
+        col_number : int
+            listctrlの列番号
+
         """
         search_list = []
         # 現在のidの順番を把握する
@@ -206,7 +213,7 @@ class MainPanel(wx.Panel):
         # listctrlに情報を追加する
         self.add_listctrl_item(searched_list)
         self.all_data = []
-        # 次のソートのときようにall_dataを作り直す
+        # 次のソートの時用にall_dataを作り直す
         for i in range(self.search_result_text.GetItemCount()):
             self.all_data_create(i)
 
@@ -220,7 +227,6 @@ class MainPanel(wx.Panel):
             列番号
 
         """
-
         self.all_data.append([])
         number = len(self.all_data)
         for j in range(self.search_result_text.GetColumnCount()):
@@ -236,7 +242,6 @@ class MainPanel(wx.Panel):
             idが挿入されたリスト
 
         """
-
         # 追加する行の指定
         Add_line = self.search_result_text.GetItemCount()
         # 検索結果を行に追加する
@@ -255,6 +260,14 @@ class MainPanel(wx.Panel):
             Add_line += 1
 
     def detail_open(self, event):
+        """
+        detailの画面を呼び出す
+
+        Parameters
+        ----------
+        event : event
+            wxPythonのeventクラス
+        """
         # 選択されたindexを取得する
         index = event.GetIndex()
 

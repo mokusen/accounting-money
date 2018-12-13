@@ -1,16 +1,11 @@
 import wx
-from . import registration
-from . import search
-from . import graph
-from . import common
+from . import registration, search, graph, common
 
 
 class Main(wx.Frame):
     def __init__(self, parent, id, title):
         wx.Frame.__init__(self, parent, id, title, size=(750, 300))
-        # icon設定
         self.SetIcon(common.get_icon())
-
         panel = MainPanel(self)
         self.Centre()
         self.Show()
@@ -20,9 +15,9 @@ class MainPanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent)
         self.frame = parent
-        self.myinit()
+        self.__myinit()
 
-    def myinit(self):
+    def __myinit(self):
         # 初期設定
         self.font = common.main_defalut_font_size()
 
@@ -91,7 +86,7 @@ class MainPanel(wx.Panel):
 
     def OnEraseBackground(self, evt):
         """
-        Add a picture to the background
+        バッググラウンドに画像を表示する
         """
         # yanked from ColourDB.py
         dc = evt.GetDC()
