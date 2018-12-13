@@ -6,8 +6,9 @@ path = os.getcwd()
 dbpath = path + '\data.db'
 detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
 
+
 def select_base():
-    with closing(sqlite3.connect(dbpath,detect_types=detect_types)) as conn:
+    with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
         # executeメソッドでSQL文を実行する
         sql = 'select name from base order by name'
@@ -17,9 +18,8 @@ def select_base():
         print("===EXIT_SELECT_BASE===")
     return result
 
-def select_accounting(use_value=None,money_value_1=None,money_value_2=None,
-                        year_value_1=None,year_value_2=None,month_value_1=None,month_value_2=None,
-                        day_value_1=None,day_value_2=None):
+
+def select_accounting(select_condition_list):
     """
     課金履歴をAND検索する
 
@@ -35,40 +35,40 @@ def select_accounting(use_value=None,money_value_1=None,money_value_2=None,
     result : list型
         money, use, year, month, day情報を有するリスト型
     """
-    with closing(sqlite3.connect(dbpath,detect_types=detect_types)) as conn:
+    with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
         # executeメソッドでSQL文を実行する
         sql = 'select * from accounting '
         add_sql = 'where '
         add_item = []
 
-        if use_value != '' and use_value !='選択':
+        if select_condition_list[0] != '' and select_condition_list[0] != '選択':
             add_sql += 'use = ? and '
-            add_item.append(use_value)
-        if money_value_1 != '':
+            add_item.append(select_condition_list[0])
+        if select_condition_list[1] != '':
             add_sql += 'money >= ? and '
-            add_item.append(money_value_1)
-        if money_value_2 != '':
+            add_item.append(select_condition_list[1])
+        if select_condition_list[2] != '':
             add_sql += 'money <= ? and '
-            add_item.append(money_value_2)
-        if year_value_1 != '':
+            add_item.append(select_condition_list[2])
+        if select_condition_list[3] != '':
             add_sql += 'year >= ? and '
-            add_item.append(year_value_1)
-        if year_value_2 != '':
+            add_item.append(select_condition_list[3])
+        if select_condition_list[4] != '':
             add_sql += 'year <= ? and '
-            add_item.append(year_value_2)
-        if month_value_1 != '':
+            add_item.append(select_condition_list[4])
+        if select_condition_list[5] != '':
             add_sql += 'month >= ? and '
-            add_item.append(month_value_1)
-        if month_value_2 != '':
+            add_item.append(select_condition_list[5])
+        if select_condition_list[6] != '':
             add_sql += 'month <= ? and '
-            add_item.append(month_value_2)
-        if day_value_1 != '':
+            add_item.append(select_condition_list[6])
+        if select_condition_list[7] != '':
             add_sql += 'day >= ? and '
-            add_item.append(day_value_1)
-        if day_value_2 != '':
+            add_item.append(select_condition_list[7])
+        if select_condition_list[8] != '':
             add_sql += 'day <= ? and '
-            add_item.append(day_value_2)
+            add_item.append(select_condition_list[8])
         if len(add_item) == 0:
             add_sql = add_sql[6:]
         add_sql = add_sql[:-4]

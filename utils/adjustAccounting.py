@@ -1,4 +1,4 @@
-def adjustAccounting(adjust_list):
+def adjust_accounting(adjust_list):
     """
     sql側に渡す前に型変換を行う
 

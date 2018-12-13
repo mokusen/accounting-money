@@ -7,6 +7,7 @@ path = os.getcwd()
 dbpath = path + '\data.db'
 detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
 
+
 def _change_list(update_list):
     """
     変更情報リストの先頭情報(ID)を末尾に移動する
@@ -25,6 +26,7 @@ def _change_list(update_list):
     id = update_list.pop(0)
     update_list.append(id)
     return update_list
+
 
 def _add_time(update_list):
     """
@@ -46,8 +48,9 @@ def _add_time(update_list):
     update_list = [tuple(update_list)]
     return update_list
 
+
 def update_base(update_list):
-    with closing(sqlite3.connect(dbpath,detect_types=detect_types)) as conn:
+    with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
 
         # 作成時間と更新時間を追加する
@@ -59,8 +62,9 @@ def update_base(update_list):
         conn.commit()
     print("===EXIT_UPDATE_BASE===")
 
+
 def update_accounting(update_list):
-    with closing(sqlite3.connect(dbpath,detect_types=detect_types)) as conn:
+    with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
 
         # 作成時間と更新時間を追加する
