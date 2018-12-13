@@ -45,3 +45,27 @@ def create_accounting():
         '''
         c.execute(sql)
     print("===EXIT_CREATE_ACCOUNTING===")
+
+
+def create_cache():
+    with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
+        c = conn.cursor()
+
+        # executeメソッドでSQL文を実行する
+        sql = '''
+        create table cache
+        (
+        id integer primary key,
+        use text,
+        min_money integer,
+        max_money integer,
+        min_year integer,
+        max_year integer,
+        min_month integer,
+        max_month integer,
+        min_day integer,
+        max_day integer
+        )
+        '''
+        c.execute(sql)
+    print("===EXIT_CREATE_CACHE===")

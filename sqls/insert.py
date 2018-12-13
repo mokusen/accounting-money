@@ -41,3 +41,14 @@ def insert_accounting(insert_list):
         c.executemany(sql, insert_list)
         conn.commit()
     print("===EXIT_INSERT_ACCOUNTING===")
+
+
+def insert_cache(insert_list):
+    with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
+        c = conn.cursor()
+
+        # executeメソッドでSQL文を実行する
+        sql = 'insert into cache (use, min_money, max_money, min_year, max_year, min_month, max_month, min_day, max_day) values (?,?,?,?,?,?,?,?,?)'
+        c.executemany(sql, insert_list)
+        conn.commit()
+    print("===EXIT_INSERT_CACHE===")

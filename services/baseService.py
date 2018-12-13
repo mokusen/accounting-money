@@ -22,14 +22,3 @@ def select_base():
         [use]
     """
     return select.select_base()
-
-
-def insert_base(use):
-    """
-    用途を登録する
-    Parameters
-    ----------
-    use : string
-        新規の用途
-    """
-    insert.insert_base([use])

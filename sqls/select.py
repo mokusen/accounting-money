@@ -86,3 +86,15 @@ def select_accounting(select_condition_list):
                 result.append(i)
         print("===EXIT_SELECT_ACCOUNTING===")
     return result
+
+
+def select_cache():
+    with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
+        c = conn.cursor()
+        # executeメソッドでSQL文を実行する
+        sql = 'select * from cache order by id desc'
+        result = []
+        for i in c.execute(sql):
+            result.append(i)
+        print("===EXIT_SELECT_CACHE===")
+    return result
