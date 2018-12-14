@@ -13,10 +13,11 @@ def insert_cache(insert_list):
     """
     # money、year、month、dayをint型に変換する
     for index in range(1, len(insert_list)):
-        try:
-            insert_list[i] = int(insert_list[i])
-        except:
-            return "金額、年、月、日は選択肢からのみ選択してください"
+        if insert_list[index] != '':
+            try:
+                insert_list[index] = int(insert_list[index])
+            except:
+                return "金額、年、月、日は選択肢からのみ選択してください"
     # TODO: log処理追加
 
     # インサートする
@@ -51,3 +52,23 @@ def select_cache():
     # 全件検索結果を取得する
     cache_info = select.select_cache()
     return cache_info
+
+
+def update_cache(update_list):
+    """
+    課金履歴を更新する
+
+    Parameters
+    ----------
+    update_list : list型
+        [id, use, money, year, month, day]
+
+    """
+    update.update_cache(update_list)
+
+
+def init_cache():
+    """
+    課金履歴を初期化する
+    """
+    update.update_cache(['', '', '', '', '', '', '', '', ''])

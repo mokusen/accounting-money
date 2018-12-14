@@ -291,7 +291,7 @@ class MainPanel(wx.Panel):
 
         # HACK: 未動作のためリファクタリングが必要
         select_condition_list = self.adjust_search_info()
-        cacheService.insert_cache(select_condition_list)
+        cacheService.update_cache(select_condition_list)
         self.frame.Destroy()
         wx.Exit()
         detail.call_detail(detail_info_list)

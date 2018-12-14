@@ -1,5 +1,6 @@
 import wx
 from . import registration, search, graph, common
+from services import cacheService
 
 
 class Main(wx.Frame):
@@ -20,6 +21,9 @@ class MainPanel(wx.Panel):
     def __myinit(self):
         # 初期設定
         self.font = common.main_defalut_font_size()
+
+        # cacheテーブルの初期化を行う
+        cacheService.init_cache()
 
         # ボタンを初期作成する
         self.button1 = wx.Button(self, wx.ID_ANY, u'登録', size=(200, 100))
