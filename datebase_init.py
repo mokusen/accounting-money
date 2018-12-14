@@ -17,7 +17,7 @@ for item in use_list:
     insert.insert_base(item)
 
 # 初期cache情報挿入
-insert.insert_cache([('', '', '', '', '', '', '', '', '')])
+insert.insert_cache(['', '', '', '', '', '', '', '', ''])
 
 # 挿入されているメタデータを検索
 meta_list = select.select_base()
