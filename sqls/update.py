@@ -1,7 +1,7 @@
 import sqlite3
 import os
 from contextlib import closing
-from datetime import datetime
+from . import common
 
 path = os.getcwd()
 dbpath = path + '\data.db'
@@ -28,33 +28,14 @@ def _change_list(update_list):
     return update_list
 
 
-def _add_time(update_list):
-    """
-    変更情報に更新時間を追加し、リスト内を整備する
-
-    Parameters
-    ----------
-    update_list : list型
-        [id, ...]
-
-    Returns
-    -------
-    [update_list] : tuple型
-        (.., id)
-    """
-
-    update_list.append(datetime.now())
-    update_list = _change_list(update_list)
-    update_list = [tuple(update_list)]
-    return update_list
-
-
 def update_base(update_list):
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
 
-        # 作成時間と更新時間を追加する
-        update_list = _add_time(update_list)
+        # 更新時間を追加し、IDを後ろへ回す
+        update_list = common._update_add_time(update_list)
+        update_list = _change_list(update_list)
+        update_list = common.__type_change_sqlValue(update_list)
 
         # executeメソッドでSQL文を実行する
         sql = 'update base set name = ?, update_ts = ? where id = ?'
@@ -67,8 +48,10 @@ def update_accounting(update_list):
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
 
-        # 作成時間と更新時間を追加する
-        update_list = _add_time(update_list)
+        # 更新時間を追加し、IDを後ろへ回す
+        update_list = common._update_add_time(update_list)
+        update_list = _change_list(update_list)
+        update_list = common.__type_change_sqlValue(update_list)
         print(update_list)
 
         # executeメソッドでSQL文を実行する
@@ -76,3 +59,17 @@ def update_accounting(update_list):
         c.executemany(sql, update_list)
         conn.commit()
     print("===EXIT_UPDATE_ACCOUNTING===")
+
+
+def update_cache(update_list):
+    with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
+        c = conn.cursor()
+
+        update_list = common.__type_change_sqlValue(update_list)
+        print(update_list)
+
+        # executeメソッドでSQL文を実行する
+        sql = 'update cache set use=?, min_money=?, max_money=?, min_year=?, max_year=?, min_month=?, max_month=?, min_day=?, max_day=? where id = 1'
+        c.executemany(sql, update_list)
+        conn.commit()
+    print("===EXIT_UPDATE_CACHE===")

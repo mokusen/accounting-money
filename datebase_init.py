@@ -4,8 +4,10 @@ from datetime import datetime
 
 drop.drop_base()
 drop.drop_accounting()
+drop.drop_cache()
 create.create_base()
 create.create_accounting()
+create.create_cache()
 
 # 初期メタデータ取得
 use_list = useListCreate.create_init_list()
@@ -13,6 +15,9 @@ use_list = useListCreate.create_init_list()
 # 初期メタデータ挿入
 for item in use_list:
     insert.insert_base(item)
+
+# 初期cache情報挿入
+insert.insert_cache(['', '', '', '', '', '', '', '', ''])
 
 # 挿入されているメタデータを検索
 meta_list = select.select_base()

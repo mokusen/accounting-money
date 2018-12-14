@@ -35,3 +35,18 @@ def drop_accounting():
         except:
             pass
     print("===EXIT_DROP_ACCOUNTING===")
+
+
+def drop_cache():
+    with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
+        c = conn.cursor()
+
+        # executeメソッドでSQL文を実行する
+        sql = '''
+        drop table cache
+        '''
+        try:
+            c.execute(sql)
+        except:
+            pass
+    print("===EXIT_DROP_CACHE===")

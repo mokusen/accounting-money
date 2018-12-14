@@ -1,7 +1,7 @@
 import wx
 from . import mainGui, detail, common
 from utils import dataListCreate
-from services import accountingService, baseService
+from services import accountingService, baseService, cacheService
 from operator import itemgetter
 
 
@@ -130,7 +130,18 @@ class MainPanel(wx.Panel):
 
         # ソートイベントを登録する
         self.Bind(wx.EVT_LIST_COL_CLICK, self.call_sort)
-        print(baseService.select_base())
+
+        # cache情報を取得し、反映する
+        test_date = cacheService.select_cache()
+        self.search_use.SetValue(str(test_date[0][1]))
+        self.search_money_list[0].SetValue(str(test_date[0][2]))
+        self.search_money_list[1].SetValue(str(test_date[0][3]))
+        self.search_year_list[0].SetValue(str(test_date[0][4]))
+        self.search_year_list[1].SetValue(str(test_date[0][5]))
+        self.search_month_list[0].SetValue(str(test_date[0][6]))
+        self.search_month_list[1].SetValue(str(test_date[0][7]))
+        self.search_day_list[0].SetValue(str(test_date[0][8]))
+        self.search_day_list[1].SetValue(str(test_date[0][9]))
 
         self.SetSizer(layout)
 
@@ -277,6 +288,10 @@ class MainPanel(wx.Panel):
         for i in range(6):
             item = self.search_result_text.GetItem(itemIdx=index, col=i)
             detail_info_list.append(item.GetText())
+
+        # HACK: 未動作のためリファクタリングが必要
+        select_condition_list = self.adjust_search_info()
+        cacheService.update_cache(select_condition_list)
         self.frame.Destroy()
         wx.Exit()
         detail.call_detail(detail_info_list)

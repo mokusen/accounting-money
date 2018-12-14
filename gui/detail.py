@@ -2,7 +2,7 @@ import wx
 import datetime
 from utils import dataListCreate
 from . import search, common
-from services import accountingService, baseService
+from services import accountingService, baseService, cacheService
 
 
 class Detail(wx.Frame):
