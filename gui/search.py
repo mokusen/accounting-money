@@ -11,7 +11,7 @@ class Search(wx.Frame):
         wx.Frame.__init__(self, parent, id, title, size=self.frame_size)
         self.SetIcon(common.get_icon())
         self.CreateStatusBar()
-        panel = MainPanel(self)
+        MainPanel(self)
         self.Bind(wx.EVT_CLOSE, self.frame_close)
         self.Centre()
         self.Show()
@@ -35,7 +35,6 @@ class MainPanel(wx.Panel):
     def __myinit(self):
         # 初期設定
         self.input_defalut_text = "選択"
-        Text = (u'ID', u'用途', u'金額', u'年', u'月', u'日', u'作成日', u'更新日')
         use_list = baseService.select_base()
         month_list = dataListCreate.create_month()
         day_list = dataListCreate.create_day()
@@ -52,16 +51,6 @@ class MainPanel(wx.Panel):
 
         # font設定
         self.font = common.defalut_font_size()
-
-        # 検索結果を表示するリストコントローラ
-        self.search_result_text = wx.ListCtrl(self, wx.ID_ANY, size=self.frame_size, style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES | wx.LC_EDIT_LABELS)
-        for i, text in enumerate(Text):
-            self.search_result_text.InsertColumn(i, text)
-
-        # Textの幅を個別設定する
-        width_list = [30, 80, 60, 60, 50, 50, 130, 130]
-        for index, width in enumerate(width_list):
-            self.search_result_text.SetColumnWidth(index, width)
 
         # 検索フォームのラベル作成
         text_use = wx.StaticText(self, wx.ID_ANY, '用途', size=text_size, style=wx.TE_CENTER)
@@ -105,6 +94,15 @@ class MainPanel(wx.Panel):
         # 検索ボタンにイベントを登録する
         search_button.Bind(wx.EVT_BUTTON, self.call_select)
 
+        # notebook
+        self.notebook = wx.Notebook(self, wx.ID_ANY)
+        self.__create_notebook()
+
+        # Textの幅を個別設定する
+        width_list = [30, 80, 60, 60, 50, 50, 125, 125]
+        for index, width in enumerate(width_list):
+            self.search_result_text.SetColumnWidth(index, width)
+
         # 検索フォームのレイアウト設定
         search_layout = wx.GridBagSizer(10, 5)
         search_layout.Add(text_use, (0, 0), (1, 1), flag=wx.EXPAND)
@@ -126,7 +124,7 @@ class MainPanel(wx.Panel):
         # レイアウト設定
         layout = wx.BoxSizer(wx.VERTICAL)
         layout.Add(search_layout, flag=wx.EXPAND | wx.TOP | wx.BOTTOM, border=10)
-        layout.Add(self.search_result_text, flag=wx.EXPAND)
+        layout.Add(self.notebook, flag=wx.EXPAND)
 
         # ソートイベントを登録する
         self.Bind(wx.EVT_LIST_COL_CLICK, self.call_sort)
@@ -144,6 +142,115 @@ class MainPanel(wx.Panel):
         self.search_day_list[1].SetValue(str(test_date[0][9]))
 
         self.SetSizer(layout)
+
+    def __create_notebook(self):
+        self.search_result_panel = wx.Panel(self.notebook, wx.ID_ANY)
+        self.statistics_panel = wx.Panel(self.notebook, wx.ID_ANY)
+        self.notebook.InsertPage(0, self.search_result_panel, '検索結果')
+        self.notebook.InsertPage(1, self.statistics_panel, '統計情報')
+        self.__create_search_result()
+        self.__create_statistics()
+
+    def __create_search_result(self):
+        Text = (u'ID', u'用途', u'金額', u'年', u'月', u'日', u'作成日', u'更新日')
+        # 検索結果を表示するリストコントローラ
+        self.frame_size = (600, 400)
+        self.search_result_text = wx.ListCtrl(self.search_result_panel, wx.ID_ANY, size=self.frame_size, style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES | wx.LC_EDIT_LABELS)
+        for i, text in enumerate(Text):
+            self.search_result_text.InsertColumn(i, text)
+        layout = wx.GridBagSizer(0, 0)
+        layout.Add(self.search_result_text, (0, 0), (1, 1), flag=wx.EXPAND)
+        self.search_result_panel.SetSizer(layout)
+        self.search_result_panel.Layout()
+
+    def __create_statistics(self):
+        self.fiscal_year_panel = wx.Panel(self.statistics_panel, wx.ID_ANY)
+        self.by_title_panel = wx.Panel(self.statistics_panel, wx.ID_ANY)
+        self.per_transaction_panel = wx.Panel(self.statistics_panel, wx.ID_ANY)
+        self.__fiscal_year()
+        self.__by_title()
+        self.__per_transaction()
+        layout = wx.GridBagSizer(0, 0)
+        layout.Add(self.fiscal_year_panel, (0, 0), (1, 1), flag=wx.EXPAND)
+        layout.Add(self.by_title_panel, (0, 1), (1, 1), flag=wx.EXPAND)
+        layout.Add(self.per_transaction_panel, (0, 2), (1, 1), flag=wx.EXPAND)
+        self.statistics_panel.SetSizer(layout)
+        self.statistics_panel.Layout()
+
+    def __fiscal_year(self):
+        title = wx.StaticText(self.fiscal_year_panel, wx.ID_ANY, "年度別課金額")
+        Text = (u'年', u'金額')
+        # 検索結果を表示するリストコントローラ
+        self.fiscal_year_text = wx.ListCtrl(self.fiscal_year_panel, wx.ID_ANY, size=(200, 400), style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
+        for i, text in enumerate(Text):
+            self.fiscal_year_text.InsertColumn(i, text)
+        layout = wx.GridBagSizer(0, 0)
+        layout.Add(title, (0, 0), (1, 1), flag=wx.EXPAND)
+        layout.Add(self.fiscal_year_text, (1, 0), (1, 1), flag=wx.EXPAND)
+        self.fiscal_year_panel.SetSizer(layout)
+        self.fiscal_year_panel.Layout()
+
+    def __by_title(self):
+        title = wx.StaticText(self.by_title_panel, wx.ID_ANY, "タイトル別課金額")
+        Text = (u'用途', u'金額')
+        # 検索結果を表示するリストコントローラ
+        self.by_title_panel_text = wx.ListCtrl(self.by_title_panel, wx.ID_ANY, size=(200, 380), style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
+        for i, text in enumerate(Text):
+            self.by_title_panel_text.InsertColumn(i, text)
+        layout = wx.GridBagSizer(0, 0)
+        layout.Add(title, (0, 0), (1, 1), flag=wx.EXPAND)
+        layout.Add(self.by_title_panel_text, (1, 0), (1, 1), flag=wx.EXPAND)
+        self.by_title_panel.SetSizer(layout)
+        self.by_title_panel.Layout()
+
+    def __per_transaction(self):
+        title = wx.StaticText(self.per_transaction_panel, wx.ID_ANY, "一回あたりの課金額")
+        Text = (u'金額幅', u'回数')
+        # 検索結果を表示するリストコントローラ
+        self.per_transaction_text = wx.ListCtrl(self.per_transaction_panel, wx.ID_ANY, size=(200, 400), style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
+        for i, text in enumerate(Text):
+            self.per_transaction_text.InsertColumn(i, text)
+        layout = wx.GridBagSizer(0, 0)
+        layout.Add(title, (0, 0), (1, 1), flag=wx.EXPAND)
+        layout.Add(self.per_transaction_text, (1, 0), (1, 1), flag=wx.EXPAND)
+        self.per_transaction_panel.SetSizer(layout)
+        self.per_transaction_panel.Layout()
+
+    def __year_add_listctrl_item(self):
+        year = ['2012', '2013', '2014', '2015', '2016', '2017', '2018']
+        money = [9000, 60475, 120800, 177930, 325200, 355090, 510340]
+        # 追加する行の指定
+        Add_line = self.fiscal_year_text.GetItemCount()
+        # 検索結果を行に追加する
+        for index in range(len(year)):
+            # 行の追加を行う
+            self.fiscal_year_text.InsertItem(Add_line, year[index])
+            self.fiscal_year_text.SetItem(Add_line, 1, str(money[index]))
+            Add_line += 1
+
+    def __title_add_listctrl_item(self):
+        year = ['デレステ', 'ガルパ', 'パズドラ', 'グラブル', 'クリプト', '神撃', '戦国アスカ', '歌マクロス', 'ホウチ', 'ファンキル', 'ドールズ', 'ゴマ乙', 'ハチナイ', 'キンスレ', 'その他', '音楽', 'シノアリス', 'シャドバ', 'LINE', 'アスタ']
+        money = [584240, 325240, 144475, 131880, 72440, 60640, 50400, 46400, 45060, 18000, 17600, 16440, 13130, 10560, 6340, 5750, 3000, 2840, 2800, 1600]
+        # 追加する行の指定
+        Add_line = self.by_title_panel_text.GetItemCount()
+        # 検索結果を行に追加する
+        for index in range(len(year)):
+            # 行の追加を行う
+            self.by_title_panel_text.InsertItem(Add_line, year[index])
+            self.by_title_panel_text.SetItem(Add_line, 1, str(money[index]))
+            Add_line += 1
+
+    def __per_add_listctrl_item(self):
+        year = ['1-1000', '1001-2000', '2001-3000', '3001-4000', '4001-5000', '5001-6000', '6001-7000', '7001-8000', '8001-9000', '9001-10000', '10001-11000', '11001-12000', '12001-13000']
+        money = [68, 45, 12, 11, 28, 24, 12, 0, 2, 100, 3, 1, 1]
+        # 追加する行の指定
+        Add_line = self.per_transaction_text.GetItemCount()
+        # 検索結果を行に追加する
+        for index in range(len(year)):
+            # 行の追加を行う
+            self.per_transaction_text.InsertItem(Add_line, year[index])
+            self.per_transaction_text.SetItem(Add_line, 1, str(money[index]))
+            Add_line += 1
 
     def adjust_search_info(self):
         """
@@ -187,6 +294,9 @@ class MainPanel(wx.Panel):
                     self.search_result_text.SetItem(Add_line, item, str(items[item]))
             Add_line += 1
         self.frame.SetStatusText(f'累計金額：{all_money:,}円です。')
+        self.__year_add_listctrl_item()
+        self.__title_add_listctrl_item()
+        self.__per_add_listctrl_item()
 
     def call_sort(self, event):
         """
@@ -295,6 +405,11 @@ class MainPanel(wx.Panel):
         self.frame.Destroy()
         wx.Exit()
         detail.call_detail(detail_info_list)
+
+
+class GraphPanel(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent=parent)
 
 
 def call_search():
