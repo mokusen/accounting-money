@@ -2,7 +2,6 @@ import wx
 from . import mainGui, detail, common, mainNotebook
 from utils import dataListCreate
 from services import accountingService, baseService, cacheService
-from operator import itemgetter
 
 
 class Search(wx.Frame):
@@ -29,18 +28,12 @@ class MainPanel(wx.Panel):
         self.frame_size = (625, 600)
         self.__myinit()
 
-        # 詳細ページ表示イベント
-        self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.detail_open)
-
     def __myinit(self):
         # 初期設定
         self.input_defalut_text = "選択"
         use_list = baseService.select_base()
         month_list = dataListCreate.create_month()
         day_list = dataListCreate.create_day()
-
-        # 検索結果格納リスト
-        self.all_data = []
 
         # 初期値追加
         use_list.insert(0, '')
@@ -83,11 +76,6 @@ class MainPanel(wx.Panel):
         # notebook
         self.notebook = mainNotebook.NotebookPanel(self)
 
-        # Textの幅を個別設定する
-        width_list = [30, 80, 60, 60, 50, 50, 125, 125]
-        for index, width in enumerate(width_list):
-            self.search_result_text.SetColumnWidth(index, width)
-
         # 検索フォームのレイアウト設定
         search_layout = wx.GridBagSizer(10, 5)
         search_layout.Add(text_use, (0, 0), (1, 1), flag=wx.EXPAND)
@@ -110,9 +98,6 @@ class MainPanel(wx.Panel):
         layout = wx.BoxSizer(wx.VERTICAL)
         layout.Add(search_layout, flag=wx.EXPAND | wx.TOP | wx.BOTTOM, border=10)
         layout.Add(self.notebook, flag=wx.EXPAND)
-
-        # ソートイベントを登録する
-        self.Bind(wx.EVT_LIST_COL_CLICK, self.call_sort)
 
         # cache情報を取得し、反映する
         test_date = cacheService.select_cache()
@@ -149,135 +134,14 @@ class MainPanel(wx.Panel):
         return select_condition_list
 
     def call_select(self, event):
-        # listctrlを初期化する
-        self.search_result_text.DeleteAllItems()
         select_condition_list = self.adjust_search_info()
-        self.all_data, all_money = accountingService.select_accounting(select_condition_list)
-
-        # 追加する行の指定
-        Add_line = self.search_result_text.GetItemCount()
-
-        # 検索結果を行に追加する
-        for items in self.all_data:
-            # 行の追加を行う
-            self.search_result_text.InsertItem(Add_line, str(items[0]))
-            for item in range(1, len(items)):
-                if item == 6 or item == 7:
-                    # 作成日と更新日をYY/MM/DD HH:MM:SSに変換する
-                    self.search_result_text.SetItem(Add_line, item, items[item].strftime('%Y/%m/%d %H:%M:%S'))
-                else:
-                    self.search_result_text.SetItem(Add_line, item, str(items[item]))
-            Add_line += 1
-        self.frame.SetStatusText(f'累計金額：{all_money:,}円です。')
-        self.notebook.add_item()
-
-    def call_sort(self, event):
-        """
-        検索結果をソート処理を呼び出す
-
-        Parameters
-        ----------
-        event : event
-            wxPythonのeventクラス
-        """
-        if self.all_data != []:
-            if event.GetColumn() not in [1, 6, 7]:
-                self.sort_item(event.GetColumn())
-
-    def sort_item(self, col_number):
-        """
-        listctrlのitemをソートする
-
-        Parameters
-        ----------
-        col_number : int
-            listctrlの列番号
-
-        """
-        search_list = []
-        # 現在のidの順番を把握する
-        for i in range(self.search_result_text.GetItemCount()):
-            search_list.append([i, int(self.search_result_text.GetItem(itemIdx=i, col=col_number).GetText())])
-        searched_list = sorted(search_list, key=itemgetter(1))
-        # ソート結果と、初期データ同じ場合、反転する
-        if searched_list == search_list:
-            searched_list = searched_list[::-1]
-        # 既存のlistctrlの情報をすべて消す
-        self.search_result_text.DeleteAllItems()
-        # listctrlに情報を追加する
-        self.add_listctrl_item(searched_list)
-        self.all_data = []
-        # 次のソートの時用にall_dataを作り直す
-        for i in range(self.search_result_text.GetItemCount()):
-            self.all_data_create(i)
-
-    def all_data_create(self, col_number):
-        """
-        ソート後、all_dataを作成し直す
-
-        Parameters
-        ----------
-        col_number : int or string
-            列番号
-
-        """
-        self.all_data.append([])
-        number = len(self.all_data)
-        for j in range(self.search_result_text.GetColumnCount()):
-            self.all_data[number - 1].append(self.search_result_text.GetItemText(col_number, col=j))
-
-    def add_listctrl_item(self, search_list):
-        """
-        ソート後、listctrlに情報を挿入する
-
-        Parameters
-        ----------
-        search_list : list型
-            idが挿入されたリスト
-
-        """
-        # 追加する行の指定
-        Add_line = self.search_result_text.GetItemCount()
-        # 検索結果を行に追加する
-        for date in search_list:
-            # 行の追加を行う
-            self.search_result_text.InsertItem(Add_line, str(self.all_data[date[0]][0]))
-            for item in range(1, len(self.all_data[date[0]])):
-                if item == 6 or item == 7:
-                    # 作成日と更新日をYY/MM/DD HH:MM:SSに変換する
-                    try:
-                        self.search_result_text.SetItem(Add_line, item, self.all_data[date[0]][item].strftime('%Y/%m/%d %H:%M:%S'))
-                    except:
-                        self.search_result_text.SetItem(Add_line, item, str(self.all_data[date[0]][item]))
-                else:
-                    self.search_result_text.SetItem(Add_line, item, str(self.all_data[date[0]][item]))
-            Add_line += 1
-
-    def detail_open(self, event):
-        """
-        detailの画面を呼び出す
-
-        Parameters
-        ----------
-        event : event
-            wxPythonのeventクラス
-        """
-        # 選択されたindexを取得する
-        index = event.GetIndex()
-
-        # 用途から日までを取得し、リストに格納する
-        detail_info_list = []
-        # TODO: 用途などの題名テキストをリスト化し、作成、更新日外を長さとして持たせるように変更
-        for i in range(6):
-            item = self.search_result_text.GetItem(itemIdx=index, col=i)
-            detail_info_list.append(item.GetText())
-
-        # HACK: 未動作のためリファクタリングが必要
-        select_condition_list = self.adjust_search_info()
+        all_data, all_money = accountingService.select_accounting(select_condition_list)
         cacheService.update_cache(select_condition_list)
+        self.notebook.search_accounting(all_data, select_condition_list)
+        self.frame.SetStatusText(f'累計金額：{all_money:,}円です。')
+
+    def close_frame(self):
         self.frame.Destroy()
-        wx.Exit()
-        detail.call_detail(detail_info_list)
 
 
 class GraphPanel(wx.Panel):

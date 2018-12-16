@@ -20,14 +20,16 @@ class TransactionPanel(wx.Panel):
         self.SetSizer(layout)
         self.Layout()
 
-    def per_add_listctrl_item(self):
-        year = ['1-1000', '1001-2000', '2001-3000', '3001-4000', '4001-5000', '5001-6000', '6001-7000', '7001-8000', '8001-9000', '9001-10000', '10001-11000', '11001-12000', '12001-13000']
-        money = [68, 45, 12, 11, 28, 24, 12, 0, 2, 100, 3, 1, 1]
+    def per_add_listctrl_item(self, transaction_accounting_list):
+        self.per_transaction_text.DeleteAllItems()
+        search_money_list = [1000 * index for index in range(16)]
+        accounting_count = transaction_accounting_list[0]
+        print(accounting_count)
         # 追加する行の指定
         Add_line = self.per_transaction_text.GetItemCount()
         # 検索結果を行に追加する
-        for index in range(len(year)):
+        for index in range(len(accounting_count)):
             # 行の追加を行う
-            self.per_transaction_text.InsertItem(Add_line, year[index])
-            self.per_transaction_text.SetItem(Add_line, 1, str(money[index]))
+            self.per_transaction_text.InsertItem(Add_line, f'{search_money_list[index]}～{search_money_list[index+1]}')
+            self.per_transaction_text.SetItem(Add_line, 1, str(accounting_count[index]))
             Add_line += 1

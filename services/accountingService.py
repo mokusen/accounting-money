@@ -1,3 +1,4 @@
+import math
 from sqls import *
 from utils import adjustAccounting
 
@@ -81,3 +82,18 @@ def select_accounting(select_comdition_list):
         all_money += int(data[2])
 
     return all_data, all_money
+
+
+def select_accounting_year(select_comdition_list):
+    return select.select_accounting_year(select_comdition_list)
+
+
+def select_accounting_use(select_comdition_list):
+    return select.select_accounting_use(select_comdition_list)
+
+
+def select_accounting_transaction(select_comdition_list):
+    max_money = select.select_accounting_money()[0][0]
+    hist_lens = math.ceil(max_money/1000)
+    search_money_list = [1000 * index for index in range(hist_lens + 1)]
+    return select.select_accounting_transaction(select_comdition_list, search_money_list)

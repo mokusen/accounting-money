@@ -20,14 +20,15 @@ class TitlePanel(wx.Panel):
         self.SetSizer(layout)
         self.Layout()
 
-    def title_add_listctrl_item(self):
-        year = ['デレステ', 'ガルパ', 'パズドラ', 'グラブル', 'クリプト', '神撃', '戦国アスカ', '歌マクロス', 'ホウチ', 'ファンキル', 'ドールズ', 'ゴマ乙', 'ハチナイ', 'キンスレ', 'その他', '音楽', 'シノアリス', 'シャドバ', 'LINE', 'アスタ']
-        money = [584240, 325240, 144475, 131880, 72440, 60640, 50400, 46400, 45060, 18000, 17600, 16440, 13130, 10560, 6340, 5750, 3000, 2840, 2800, 1600]
+    def title_add_listctrl_item(self, title_accounting_list):
+        self.by_title_panel_text.DeleteAllItems()
+        use = [title_accounting[0] for title_accounting in title_accounting_list]
+        money = [title_accounting[1] for title_accounting in title_accounting_list]
         # 追加する行の指定
         Add_line = self.by_title_panel_text.GetItemCount()
         # 検索結果を行に追加する
-        for index in range(len(year)):
+        for index in range(len(use)):
             # 行の追加を行う
-            self.by_title_panel_text.InsertItem(Add_line, year[index])
+            self.by_title_panel_text.InsertItem(Add_line, str(use[index]))
             self.by_title_panel_text.SetItem(Add_line, 1, str(money[index]))
             Add_line += 1
