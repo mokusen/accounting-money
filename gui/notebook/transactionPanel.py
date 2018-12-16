@@ -24,7 +24,6 @@ class TransactionPanel(wx.Panel):
     def per_add_listctrl_item(self, select_comdition_list):
         self.per_transaction_text.DeleteAllItems()
         search_money_list, transaction_accounting_list = accountingService.select_accounting_transaction(select_comdition_list)
-        # TODO: リストを作成したところから受け取る
         accounting_count = transaction_accounting_list[0]
         print(accounting_count)
         # 追加する行の指定
