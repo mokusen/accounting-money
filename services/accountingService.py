@@ -1,3 +1,4 @@
+import math
 from sqls import *
 from utils import adjustAccounting
 
@@ -70,14 +71,62 @@ def select_accounting(select_comdition_list):
     """
 
     # TODO: log処理追加
-
     # 全件検索結果を取得する
     all_data = select.select_accounting(select_comdition_list)
-
     # 累計金額を算出する
     all_money = 0
+    # TODO: sql取得でも良い
     all_use = []
     for data in all_data:
         all_money += int(data[2])
-
     return all_data, all_money
+
+
+def select_accounting_year(select_comdition_list):
+    """
+    年度別課金額を検索する
+    Parameters
+    ----------
+    select_comdition_list : list型
+        [use, min_money, max_money, min_year, max_year, min_month, max_month, min_day, max_day]
+    Returns
+    -------
+    result : tuple
+        [year , sum(money)]
+    """
+    return select.select_accounting_year(select_comdition_list)
+
+
+def select_accounting_use(select_comdition_list):
+    """
+    用途別課金額を検索する
+    Parameters
+    ----------
+    select_condition_list : list
+        [use, min_money, max_money, min_year, max_year, min_month, max_month, min_day, max_day]
+    Returns
+    -------
+    result : tuple
+        [use, sum(money)]
+    """
+    return select.select_accounting_use(select_comdition_list)
+
+
+def select_accounting_transaction(select_comdition_list):
+    """
+    ヒストグラムの金額に対する課金回数を検索する
+    Parameters
+    ----------
+    select_condition_list : list
+        [use, min_money, max_money, min_year, max_year, min_month, max_month, min_day, max_day]
+    Returns
+    -------
+    search_money_list : list
+        0から課金額の全体最大まで、1000円ずつの刻みで登録されたリスト
+    result : tuple
+        0から課金額の全体最大まで、1000円ずつの刻みに対する、課金回数
+    """
+    max_money = select.select_accounting_money()[0][0]
+    hist_lens = math.ceil(max_money/1000)
+    search_money_list = [1000 * index for index in range(hist_lens + 1)]
+    return search_money_list, select.select_accounting_transaction(select_comdition_list, search_money_list)
