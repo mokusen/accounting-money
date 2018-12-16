@@ -144,11 +144,6 @@ class MainPanel(wx.Panel):
         self.frame.Destroy()
 
 
-class GraphPanel(wx.Panel):
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent=parent)
-
-
 def call_search():
     app = wx.App(False)
     Search(None, wx.ID_ANY, title=u'CHMS | 検索')

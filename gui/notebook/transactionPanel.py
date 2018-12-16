@@ -1,4 +1,5 @@
 import wx
+from services import accountingService
 
 
 class TransactionPanel(wx.Panel):
@@ -20,9 +21,10 @@ class TransactionPanel(wx.Panel):
         self.SetSizer(layout)
         self.Layout()
 
-    def per_add_listctrl_item(self, transaction_accounting_list):
+    def per_add_listctrl_item(self, select_comdition_list):
         self.per_transaction_text.DeleteAllItems()
-        search_money_list = [1000 * index for index in range(16)]
+        search_money_list, transaction_accounting_list = accountingService.select_accounting_transaction(select_comdition_list)
+        # TODO: リストを作成したところから受け取る
         accounting_count = transaction_accounting_list[0]
         print(accounting_count)
         # 追加する行の指定

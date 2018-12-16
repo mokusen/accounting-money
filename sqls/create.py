@@ -10,8 +10,6 @@ detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
 def create_base():
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
-
-        # executeメソッドでSQL文を実行する
         sql = '''
         create table base
         (
@@ -28,8 +26,6 @@ def create_base():
 def create_accounting():
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
-
-        # executeメソッドでSQL文を実行する
         sql = '''
         create table accounting
         (
@@ -50,8 +46,6 @@ def create_accounting():
 def create_cache():
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
-
-        # executeメソッドでSQL文を実行する
         sql = '''
         create table cache
         (

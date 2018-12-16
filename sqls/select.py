@@ -17,7 +17,6 @@ def select_base():
     """
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
-        # executeメソッドでSQL文を実行する
         sql = 'select name from base order by name'
         result = []
         for i in c.execute(sql):
@@ -40,7 +39,6 @@ def select_accounting(select_condition_list):
     """
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
-        # executeメソッドでSQL文を実行する
         sql = 'select * from accounting '
         add_sql, add_item = common._add_general_search_confition(select_condition_list)
         sql += add_sql
@@ -51,9 +49,19 @@ def select_accounting(select_condition_list):
 
 
 def select_accounting_year(select_condition_list):
+    """
+    年度別課金額を検索する
+    Parameters
+    ----------
+    select_condition_list : list
+        [use, min_money, max_money, min_year, max_year, min_month, max_month, min_day, max_day]
+    Returns
+    -------
+    result : tuple
+        [year , sum(money)]
+    """
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
-        # executeメソッドでSQL文を実行する
         sql = 'select year, sum(money) from accounting '
         add_sql, add_item = common._add_general_search_confition(select_condition_list)
         sql += add_sql
@@ -65,9 +73,19 @@ def select_accounting_year(select_condition_list):
 
 
 def select_accounting_use(select_condition_list):
+    """
+    用途別課金額を検索する
+    Parameters
+    ----------
+    select_condition_list : list
+        [use, min_money, max_money, min_year, max_year, min_month, max_month, min_day, max_day]
+    Returns
+    -------
+    result : tuple
+        [use, sum(money)]
+    """
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
-        # executeメソッドでSQL文を実行する
         sql = 'select use, sum(money) from accounting '
         add_sql, add_item = common._add_general_search_confition(select_condition_list)
         sql += add_sql
@@ -79,9 +97,21 @@ def select_accounting_use(select_condition_list):
 
 
 def select_accounting_transaction(select_condition_list, search_money_list):
+    """
+    ヒストグラムの金額に対する課金回数を検索する
+    Parameters
+    ----------
+    select_condition_list : list
+        [use, min_money, max_money, min_year, max_year, min_month, max_month, min_day, max_day]
+    search_money_list : list
+        0から課金額の全体最大まで、1000円ずつの刻みで登録されたリスト
+    Returns
+    -------
+    result : tuple
+        0から課金額の全体最大まで、1000円ずつの刻みに対する、課金回数
+    """
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
-        # executeメソッドでSQL文を実行する
         sql = 'select'
         add_item = []
         for index in range(len(search_money_list)-1):
@@ -90,9 +120,9 @@ def select_accounting_transaction(select_condition_list, search_money_list):
             add_item.append(search_money_list[index + 1])
         sql = sql[:-1]
         sql += ' from accounting '
-        add_sql, r_add_item = common._add_general_search_confition(select_condition_list)
+        add_sql, general_add_item = common._add_general_search_confition(select_condition_list)
         sql += add_sql
-        add_item.extend(r_add_item)
+        add_item.extend(general_add_item)
         print(sql)
         print(add_item)
         result = common.multiple_condition_sql_execution(c, sql, add_item)
@@ -102,9 +132,14 @@ def select_accounting_transaction(select_condition_list, search_money_list):
 
 
 def select_accounting_money():
+    """
+    全体の課金金額の最大値を取得する
+    Returns
+    -------
+    result : max(money)
+    """
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
-        # executeメソッドでSQL文を実行する
         sql = 'select max(money) from accounting '
         result = []
         for i in c.execute(sql):
@@ -115,9 +150,16 @@ def select_accounting_money():
 
 
 def select_cache():
+    """
+    キャッシュ情報を取得する
+    Returns
+    -------
+    result : tuple
+        [use, min_money, max_money, min_year, max_year, min_month, max_month, min_day, max_day]
+    """
+
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
-        # executeメソッドでSQL文を実行する
         sql = 'select * from cache order by id desc'
         result = []
         for i in c.execute(sql):

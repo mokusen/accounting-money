@@ -58,12 +58,9 @@ class NotebookPanel(wx.Notebook):
     """
 
     def search_statistics(self, select_comdition_list):
-        year_accounting_list = accountingService.select_accounting_year(select_comdition_list)
-        title_accounting_list = accountingService.select_accounting_use(select_comdition_list)
-        transaction_accounting_list = accountingService.select_accounting_transaction(select_comdition_list)
-        self.fiscal_year_panel.year_add_listctrl_item(year_accounting_list)
-        self.by_title_panel.title_add_listctrl_item(title_accounting_list)
-        self.per_transaction_panel.per_add_listctrl_item(transaction_accounting_list)
+        self.fiscal_year_panel.year_add_listctrl_item(select_comdition_list)
+        self.by_title_panel.title_add_listctrl_item(select_comdition_list)
+        self.per_transaction_panel.per_add_listctrl_item(select_comdition_list)
 
     """
     検索結果画面の機能

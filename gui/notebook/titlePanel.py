@@ -1,4 +1,5 @@
 import wx
+from services import accountingService
 
 
 class TitlePanel(wx.Panel):
@@ -20,8 +21,9 @@ class TitlePanel(wx.Panel):
         self.SetSizer(layout)
         self.Layout()
 
-    def title_add_listctrl_item(self, title_accounting_list):
+    def title_add_listctrl_item(self, select_comdition_list):
         self.by_title_panel_text.DeleteAllItems()
+        title_accounting_list = accountingService.select_accounting_use(select_comdition_list)
         use = [title_accounting[0] for title_accounting in title_accounting_list]
         money = [title_accounting[1] for title_accounting in title_accounting_list]
         # 追加する行の指定
