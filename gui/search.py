@@ -1,5 +1,5 @@
 import wx
-from . import mainGui, detail, common, mainNotebook
+from . import mainGui, detail, common, graph, mainSearchNote
 from utils import dataListCreate
 from services import accountingService, baseService, cacheService
 
@@ -73,8 +73,8 @@ class MainPanel(wx.Panel):
         search_button = wx.Button(self, wx.ID_ANY, '検索')
         search_button.Bind(wx.EVT_BUTTON, self.call_select)
 
-        # notebook
-        self.notebook = mainNotebook.NotebookPanel(self)
+        # notebookを初期化する
+        self.searchNote = mainSearchNote.NotebookPanel(self)
 
         # 検索フォームのレイアウト設定
         search_layout = wx.GridBagSizer(10, 5)
@@ -97,7 +97,7 @@ class MainPanel(wx.Panel):
         # レイアウト設定
         layout = wx.BoxSizer(wx.VERTICAL)
         layout.Add(search_layout, flag=wx.EXPAND | wx.TOP | wx.BOTTOM, border=10)
-        layout.Add(self.notebook, flag=wx.EXPAND)
+        layout.Add(self.searchNote, flag=wx.EXPAND)
 
         # cache情報を取得し、反映する
         test_date = cacheService.select_cache()
@@ -137,7 +137,7 @@ class MainPanel(wx.Panel):
         select_condition_list = self.adjust_search_info()
         all_data, all_money = accountingService.select_accounting(select_condition_list)
         cacheService.update_cache(select_condition_list)
-        self.notebook.search_accounting(all_data, select_condition_list)
+        self.searchNote.search_accounting(all_data, select_condition_list)
         self.frame.SetStatusText(f'累計金額：{all_money:,}円です。')
 
     def close_frame(self):
