@@ -1,8 +1,8 @@
-import wx
-from .searchNote import titlePanel, transactionPanel, yearPanel
-from services import accountingService, cacheService
-from . import detail
 from operator import itemgetter
+import wx
+from services import accountingService, cacheService
+from . import detail, graph
+from .searchNote import titlePanel, transactionPanel, yearPanel
 
 
 class NotebookPanel(wx.Notebook):
@@ -64,6 +64,7 @@ class NotebookPanel(wx.Notebook):
         self.fiscal_year_panel.year_add_listctrl_item(year_accounting_list)
         self.by_title_panel.title_add_listctrl_item(title_accounting_list)
         self.per_transaction_panel.per_add_listctrl_item(search_money_list, transaction_accounting_list)
+        # graph.call_graph()
 
     """
     検索結果画面の機能
@@ -190,5 +191,5 @@ class NotebookPanel(wx.Notebook):
             detail_info_list.append(item.GetText())
 
         self.main_panel.close_frame()
-        wx.Exit()
+        # wx.Exit()
         detail.call_detail(detail_info_list)

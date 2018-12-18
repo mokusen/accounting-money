@@ -18,7 +18,7 @@ class Detail(wx.Frame):
 
     def frame_close(self, event):
         self.Destroy()
-        wx.Exit()
+        # wx.Exit()
         search.call_search()
 
 
@@ -166,7 +166,7 @@ class MainPanel(wx.Panel):
                 return "error"
             wx.MessageBox(f"{sql_text}完了しました。", f"{sql_text}完了", wx.ICON_INFORMATION)
             self.frame.Destroy()
-            wx.Exit()
+            # wx.Exit()
             search.call_search()
         dlg.Destroy()
 

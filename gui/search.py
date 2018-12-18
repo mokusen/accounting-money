@@ -17,7 +17,7 @@ class Search(wx.Frame):
 
     def frame_close(self, event):
         self.Destroy()
-        wx.Exit()
+        # wx.Exit()
         mainGui.call_mainGui()
 
 
@@ -137,8 +137,8 @@ class MainPanel(wx.Panel):
         select_condition_list = self.adjust_search_info()
         all_data, all_money = accountingService.select_accounting(select_condition_list)
         cacheService.update_cache(select_condition_list)
-        self.searchNote.search_accounting(all_data, select_condition_list)
         self.frame.SetStatusText(f'累計金額：{all_money:,}円です。')
+        self.searchNote.search_accounting(all_data, select_condition_list)
 
     def close_frame(self):
         self.frame.Destroy()
