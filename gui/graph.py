@@ -13,8 +13,6 @@ class Graph(wx.Frame):
 
     def frame_close(self, event):
         self.Destroy()
-        # wx.Exit()
-        # mainGui.call_mainGui()
 
 
 class MainPanel(wx.Panel):
@@ -32,6 +30,4 @@ class MainPanel(wx.Panel):
 
 
 def call_graph():
-    app = wx.App(False)
     Graph(None, wx.ID_ANY, title=u'CHMS | グラフ')
-    app.MainLoop()

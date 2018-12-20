@@ -18,7 +18,7 @@ class Detail(wx.Frame):
 
     def frame_close(self, event):
         self.Destroy()
-        # wx.Exit()
+        wx.Exit()
         search.call_search()
 
 
