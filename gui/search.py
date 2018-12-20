@@ -1,5 +1,5 @@
 import wx
-from . import mainGui, detail, common, graph, mainSearchNote
+from . import mainGui, detail, common, mainSearchNote
 from utils import dataListCreate
 from services import accountingService, baseService, cacheService
 
@@ -17,7 +17,7 @@ class Search(wx.Frame):
 
     def frame_close(self, event):
         self.Destroy()
-        # wx.Exit()
+        wx.Exit()
         mainGui.call_mainGui()
 
 
@@ -142,6 +142,7 @@ class MainPanel(wx.Panel):
 
     def close_frame(self):
         self.frame.Destroy()
+        wx.Exit()
 
 
 def call_search():

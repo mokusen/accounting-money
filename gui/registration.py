@@ -24,7 +24,7 @@ class Register(wx.Frame):
             閉じるイベント
         """
         self.Destroy()
-        # wx.Exit()
+        wx.Exit()
         mainGui.call_mainGui()
 
 
@@ -201,7 +201,7 @@ class MainPanel(wx.Panel):
             print(error_msg)
             wx.MessageBox("登録完了しました。", "登録完了", wx.ICON_INFORMATION)
             self.frame.Destroy()
-            # wx.Exit()
+            wx.Exit()
             mainGui.call_mainGui()
         dlg.Destroy()
 

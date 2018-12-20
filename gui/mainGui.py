@@ -14,6 +14,7 @@ class Main(wx.Frame):
 
     def frame_close(self, event):
         self.Destroy()
+        event.Skip()
         wx.Exit()
 
 
@@ -60,7 +61,7 @@ class MainPanel(wx.Panel):
 
         """
         self.frame.Destroy()
-        # wx.Exit()
+        wx.Exit()
         registration.call_register()
 
     def click_button2(self, event):
