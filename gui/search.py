@@ -7,12 +7,15 @@ from services import accountingService, baseService, cacheService
 class Search(wx.Frame):
     def __init__(self, parent, id, title):
         self.frame_size = (625, 600)
-        wx.Frame.__init__(self, parent, id, title, size=self.frame_size)
+        current_display_size = wx.DisplaySize()
+        use_display_size = ((current_display_size[0]-1200) / 2, (current_display_size[1]-600-40) / 2)
+        print(use_display_size)
+        wx.Frame.__init__(self, parent, id, title, size=self.frame_size, pos=use_display_size)
         self.SetIcon(common.get_icon())
         self.CreateStatusBar()
         MainPanel(self)
         self.Bind(wx.EVT_CLOSE, self.frame_close)
-        self.Centre()
+        # self.Center()
         self.Show()
 
     def frame_close(self, event):

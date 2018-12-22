@@ -130,3 +130,7 @@ def select_accounting_transaction(select_comdition_list):
     hist_lens = math.ceil(max_money/1000)
     search_money_list = [1000 * index for index in range(hist_lens + 1)]
     return search_money_list, select.select_accounting_transaction(select_comdition_list, search_money_list)
+
+
+def test(select_comdition_list):
+    return select.select_accounting_amount(select_comdition_list)
