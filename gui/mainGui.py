@@ -9,7 +9,7 @@ class Main(wx.Frame):
         self.SetIcon(common.get_icon())
         MainPanel(self)
         self.Bind(wx.EVT_CLOSE, self.frame_close)
-        self.Centre()
+        self.Center()
         self.Show()
 
     def frame_close(self, event):

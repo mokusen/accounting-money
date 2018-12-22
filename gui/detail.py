@@ -13,7 +13,7 @@ class Detail(wx.Frame):
         self.detail_info_list = detail_info_list
         panel = MainPanel(self)
         self.Bind(wx.EVT_CLOSE, self.frame_close)
-        self.Centre()
+        self.Center()
         self.Show()
 
     def frame_close(self, event):
