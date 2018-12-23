@@ -1,6 +1,5 @@
 .vscode
 accounting
-dbInit
 __pycache__
 *.csv
 *.sh
