@@ -13,13 +13,16 @@ class Search(wx.Frame):
         wx.Frame.__init__(self, parent, id, title, size=self.frame_size, pos=use_display_size)
         self.SetIcon(common.get_icon())
         self.CreateStatusBar()
-        MainPanel(self)
+        self.main_panel = MainPanel(self)
         self.Bind(wx.EVT_CLOSE, self.frame_close)
-        # self.Center()
         self.Show()
 
     def frame_close(self, event):
         self.Destroy()
+        try:
+            self.main_panel.searchNote.graph.frame_close_oparate()
+        except:
+            pass
         wx.Exit()
         mainGui.call_mainGui()
 
