@@ -2,6 +2,10 @@ import sqlite3
 import os
 from contextlib import closing
 from . import common
+from utils import logger
+import re
+
+sql_logger = logger.set_sql_logger(__name__)
 
 path = os.getcwd()
 dbpath = path + '\data.db'
@@ -37,6 +41,8 @@ def update_base(update_list):
         update_list = common.__type_change_sqlValue(update_list)
         sql = 'update base set name = ?, update_ts = ? where id = ?'
         c.executemany(sql, update_list)
+        re_sql = re.sub('\n|    ', '', sql)
+        sql_logger.info(f"{re_sql} {update_list}")
         conn.commit()
     print("===EXIT_UPDATE_BASE===")
 
@@ -50,6 +56,8 @@ def update_accounting(update_list):
         update_list = common.__type_change_sqlValue(update_list)
         sql = 'update accounting set use = ?, money = ?, year = ?, month = ?, day = ?, update_ts = ? where id = ?'
         c.executemany(sql, update_list)
+        re_sql = re.sub('\n|    ', '', sql)
+        sql_logger.info(f"{re_sql} {update_list}")
         conn.commit()
     print("===EXIT_UPDATE_ACCOUNTING===")
 
@@ -60,5 +68,7 @@ def update_cache(update_list):
         update_list = common.__type_change_sqlValue(update_list)
         sql = 'update cache set use=?, min_money=?, max_money=?, min_year=?, max_year=?, min_month=?, max_month=?, min_day=?, max_day=? where id = 1'
         c.executemany(sql, update_list)
+        re_sql = re.sub('\n|    ', '', sql)
+        sql_logger.info(f"{re_sql} {update_list}")
         conn.commit()
     print("===EXIT_UPDATE_CACHE===")

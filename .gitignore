@@ -6,3 +6,5 @@ __pycache__
 *.db
 *.sql
 **書.md
+log/operate/**
+log/sql/**

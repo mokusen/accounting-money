@@ -1,5 +1,8 @@
 import wx
 from services import accountingService
+from utils import logger
+
+logger = logger.set_operate_logger(__name__)
 
 
 class TitlePanel(wx.Panel):

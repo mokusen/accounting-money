@@ -7,9 +7,11 @@ import math
 import wx
 from matplotlib import rcParams
 import matplotlib
+from utils import logger
+
+logger = logger.set_operate_logger(__name__)
 matplotlib.interactive(True)
 matplotlib.use('WXAgg')
-
 rcParams.update({'figure.autolayout': True})
 
 

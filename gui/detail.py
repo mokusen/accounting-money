@@ -3,6 +3,9 @@ import datetime
 from utils import dataListCreate
 from . import search, common
 from services import accountingService, baseService, cacheService
+from utils import logger
+
+logger = logger.set_operate_logger(__name__)
 
 
 class Detail(wx.Frame):
@@ -162,11 +165,9 @@ class MainPanel(wx.Panel):
             elif sql_text == "削除":
                 accountingService.delete_accounting(tuple([sql_list[0]]))
             else:
-                # TODO: エラーメッセージの修正、ログの追加
-                return "error"
+                logger.error(f"ダイアログから取得した値が不正です。プログラムの修正が必要です。 {sql_text}")
             wx.MessageBox(f"{sql_text}完了しました。", f"{sql_text}完了", wx.ICON_INFORMATION)
             self.frame.Destroy()
-            # wx.Exit()
             search.call_search()
         dlg.Destroy()
 
@@ -204,5 +205,6 @@ class MainPanel(wx.Panel):
 
 def call_detail(detail_info_list):
     app = wx.App(False)
+    logger.info("START Detail")
     Detail(None, wx.ID_ANY, title=u'CHMS | 更新 削除', detail_info_list=detail_info_list)
     app.MainLoop()

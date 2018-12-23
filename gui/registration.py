@@ -3,6 +3,9 @@ import datetime
 from . import mainGui, common
 from utils import dataListCreate
 from services import accountingService, baseService
+from utils import logger
+
+logger = logger.set_operate_logger(__name__)
 
 
 class Register(wx.Frame):
@@ -197,8 +200,8 @@ class MainPanel(wx.Panel):
         if result == wx.ID_YES:
             insert_info = self.create_insert_list()
             error_msg = accountingService.insert_accounting(insert_info)
-            # TODO: log処理追加
-            print(error_msg)
+            if error_msg is not False:
+                return wx.MessageBox(error_msg, "Error", wx.ICON_ERROR)
             wx.MessageBox("登録完了しました。", "登録完了", wx.ICON_INFORMATION)
             self.frame.Destroy()
             wx.Exit()
@@ -208,5 +211,6 @@ class MainPanel(wx.Panel):
 
 def call_register():
     app = wx.App(False)
+    logger.info("START Register")
     Register(None, wx.ID_ANY, title=u'CHMS | 登録')
     app.MainLoop()
