@@ -7,9 +7,15 @@ class Main(wx.Frame):
     def __init__(self, parent, id, title):
         wx.Frame.__init__(self, parent, id, title, size=(750, 300))
         self.SetIcon(common.get_icon())
-        panel = MainPanel(self)
-        self.Centre()
+        MainPanel(self)
+        self.Bind(wx.EVT_CLOSE, self.frame_close)
+        self.Center()
         self.Show()
+
+    def frame_close(self, event):
+        self.Destroy()
+        event.Skip()
+        wx.Exit()
 
 
 class MainPanel(wx.Panel):
@@ -21,33 +27,29 @@ class MainPanel(wx.Panel):
     def __myinit(self):
         # 初期設定
         self.font = common.main_defalut_font_size()
+        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
 
         # cacheテーブルの初期化を行う
         cacheService.init_cache()
 
         # ボタンを初期作成する
-        self.button1 = wx.Button(self, wx.ID_ANY, u'登録', size=(200, 100))
-        self.button2 = wx.Button(self, wx.ID_ANY, u'検索', size=(200, 100))
-        self.button3 = wx.Button(self, wx.ID_ANY, u'グラフ', size=(200, 100))
+        self.button1 = wx.Button(self, wx.ID_ANY, u'登録', size=(315, 100))
+        self.button2 = wx.Button(self, wx.ID_ANY, u'検索', size=(315, 100))
 
         # ボタンにフォントサイズを適応する
         self.button1.SetFont(self.font)
         self.button2.SetFont(self.font)
-        self.button3.SetFont(self.font)
 
         # ボタンにアクションを追加する
         self.button1.Bind(wx.EVT_BUTTON, self.click_button1)
         self.button2.Bind(wx.EVT_BUTTON, self.click_button2)
-        self.button3.Bind(wx.EVT_BUTTON, self.click_button3)
 
         # レイアウト設定
         self.layout = wx.GridBagSizer(0, 0)
         self.layout.Add(self.button1, (4, 0), (1, 1), flag=wx.GROW | wx.LEFT | wx.TOP, border=30)
         self.layout.Add(self.button2, (4, 1), (1, 1), flag=wx.GROW | wx.LEFT | wx.TOP, border=30)
-        self.layout.Add(self.button3, (4, 2), (1, 1), flag=wx.GROW | wx.LEFT | wx.TOP, border=30)
 
         self.SetSizer(self.layout)
-        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
 
     def click_button1(self, event):
         """登録を呼び出す
@@ -74,19 +76,6 @@ class MainPanel(wx.Panel):
         self.frame.Destroy()
         wx.Exit()
         search.call_search()
-
-    def click_button3(self, event):
-        """グラフを呼び出す
-
-        Parameters
-        ----------
-        event : クリックイベント
-            クリックイベント
-
-        """
-        self.frame.Destroy()
-        wx.Exit()
-        graph.call_graph()
 
     def OnEraseBackground(self, evt):
         """

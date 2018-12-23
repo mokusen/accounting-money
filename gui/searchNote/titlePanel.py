@@ -4,12 +4,12 @@ from services import accountingService
 
 class TitlePanel(wx.Panel):
     def __init__(self, parent):
-        wx.Notebook.__init__(self, parent=parent)
+        wx.Panel.__init__(self, parent=parent)
         self.frame = parent
         self.__myinit()
 
     def __myinit(self):
-        title = wx.StaticText(self, wx.ID_ANY, "タイトル別課金額")
+        title = wx.StaticText(self, wx.ID_ANY, "用途別金額")
         Text = (u'用途', u'金額')
         # 検索結果を表示するリストコントローラ
         self.by_title_panel_text = wx.ListCtrl(self, wx.ID_ANY, size=(200, 380), style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
@@ -21,9 +21,8 @@ class TitlePanel(wx.Panel):
         self.SetSizer(layout)
         self.Layout()
 
-    def title_add_listctrl_item(self, select_comdition_list):
+    def title_add_listctrl_item(self, title_accounting_list):
         self.by_title_panel_text.DeleteAllItems()
-        title_accounting_list = accountingService.select_accounting_use(select_comdition_list)
         use = [title_accounting[0] for title_accounting in title_accounting_list]
         money = [title_accounting[1] for title_accounting in title_accounting_list]
         # 追加する行の指定

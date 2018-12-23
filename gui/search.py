@@ -1,5 +1,5 @@
 import wx
-from . import mainGui, detail, common, mainNotebook
+from . import mainGui, detail, common, mainSearchNote
 from utils import dataListCreate
 from services import accountingService, baseService, cacheService
 
@@ -7,16 +7,22 @@ from services import accountingService, baseService, cacheService
 class Search(wx.Frame):
     def __init__(self, parent, id, title):
         self.frame_size = (625, 600)
-        wx.Frame.__init__(self, parent, id, title, size=self.frame_size)
+        current_display_size = wx.DisplaySize()
+        use_display_size = ((current_display_size[0]-1200) / 2, (current_display_size[1]-600-40) / 2)
+        print(use_display_size)
+        wx.Frame.__init__(self, parent, id, title, size=self.frame_size, pos=use_display_size)
         self.SetIcon(common.get_icon())
         self.CreateStatusBar()
-        MainPanel(self)
+        self.main_panel = MainPanel(self)
         self.Bind(wx.EVT_CLOSE, self.frame_close)
-        self.Centre()
         self.Show()
 
     def frame_close(self, event):
         self.Destroy()
+        try:
+            self.main_panel.searchNote.graph.frame_close_oparate()
+        except:
+            pass
         wx.Exit()
         mainGui.call_mainGui()
 
@@ -73,8 +79,8 @@ class MainPanel(wx.Panel):
         search_button = wx.Button(self, wx.ID_ANY, '検索')
         search_button.Bind(wx.EVT_BUTTON, self.call_select)
 
-        # notebook
-        self.notebook = mainNotebook.NotebookPanel(self)
+        # notebookを初期化する
+        self.searchNote = mainSearchNote.NotebookPanel(self)
 
         # 検索フォームのレイアウト設定
         search_layout = wx.GridBagSizer(10, 5)
@@ -97,7 +103,7 @@ class MainPanel(wx.Panel):
         # レイアウト設定
         layout = wx.BoxSizer(wx.VERTICAL)
         layout.Add(search_layout, flag=wx.EXPAND | wx.TOP | wx.BOTTOM, border=10)
-        layout.Add(self.notebook, flag=wx.EXPAND)
+        layout.Add(self.searchNote, flag=wx.EXPAND)
 
         # cache情報を取得し、反映する
         test_date = cacheService.select_cache()
@@ -137,11 +143,12 @@ class MainPanel(wx.Panel):
         select_condition_list = self.adjust_search_info()
         all_data, all_money = accountingService.select_accounting(select_condition_list)
         cacheService.update_cache(select_condition_list)
-        self.notebook.search_accounting(all_data, select_condition_list)
         self.frame.SetStatusText(f'累計金額：{all_money:,}円です。')
+        self.searchNote.search_accounting(all_data, select_condition_list)
 
     def close_frame(self):
         self.frame.Destroy()
+        wx.Exit()
 
 
 def call_search():

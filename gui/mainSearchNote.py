@@ -1,8 +1,8 @@
-import wx
-from .notebook import titlePanel, transactionPanel, yearPanel
-from services import accountingService, cacheService
-from . import detail
 from operator import itemgetter
+import wx
+from services import accountingService, cacheService
+from . import detail, graph
+from .searchNote import titlePanel, transactionPanel, yearPanel
 
 
 class NotebookPanel(wx.Notebook):
@@ -58,9 +58,18 @@ class NotebookPanel(wx.Notebook):
     """
 
     def search_statistics(self, select_comdition_list):
-        self.fiscal_year_panel.year_add_listctrl_item(select_comdition_list)
-        self.by_title_panel.title_add_listctrl_item(select_comdition_list)
-        self.per_transaction_panel.per_add_listctrl_item(select_comdition_list)
+        year_accounting_list = accountingService.select_accounting_year(select_comdition_list)
+        title_accounting_list = accountingService.select_accounting_use(select_comdition_list)
+        search_money_list, transaction_accounting_list = accountingService.select_accounting_transaction(select_comdition_list)
+        test = accountingService.test(select_comdition_list)
+        self.fiscal_year_panel.year_add_listctrl_item(year_accounting_list)
+        self.by_title_panel.title_add_listctrl_item(title_accounting_list)
+        self.per_transaction_panel.per_add_listctrl_item(search_money_list, transaction_accounting_list)
+        try:
+            self.graph.frame_close_oparate()
+        except:
+            pass
+        self.graph = graph.call_graph(year_accounting_list, title_accounting_list, self.all_data, test)
 
     """
     検索結果画面の機能
@@ -187,5 +196,4 @@ class NotebookPanel(wx.Notebook):
             detail_info_list.append(item.GetText())
 
         self.main_panel.close_frame()
-        wx.Exit()
         detail.call_detail(detail_info_list)

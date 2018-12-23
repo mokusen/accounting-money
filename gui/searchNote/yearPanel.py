@@ -4,8 +4,8 @@ from services import accountingService
 
 class YearPanel(wx.Panel):
     def __init__(self, parent):
-        wx.Notebook.__init__(self, parent=parent)
-        self.notebook = parent
+        wx.Panel.__init__(self, parent=parent)
+        self.search_notebook = parent
         self.__myinit()
 
     def __myinit(self):
@@ -21,9 +21,8 @@ class YearPanel(wx.Panel):
         self.SetSizer(layout)
         self.Layout()
 
-    def year_add_listctrl_item(self, select_comdition_list):
+    def year_add_listctrl_item(self, year_accounting_list):
         self.fiscal_year_text.DeleteAllItems()
-        year_accounting_list = accountingService.select_accounting_year(select_comdition_list)
         year = [year_accounting[0] for year_accounting in year_accounting_list]
         money = [year_accounting[1] for year_accounting in year_accounting_list]
         # 追加する行の指定

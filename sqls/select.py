@@ -89,7 +89,7 @@ def select_accounting_use(select_condition_list):
         sql = 'select use, sum(money) from accounting '
         add_sql, add_item = common._add_general_search_confition(select_condition_list)
         sql += add_sql
-        sql += 'group by use order by use'
+        sql += 'group by use order by sum(money) desc'
         result = common.multiple_condition_sql_execution(c, sql, add_item)
         print("===EXIT_SELECT_ACCOUNTING_USE===")
         print(result)
@@ -144,6 +144,19 @@ def select_accounting_money():
         result = []
         for i in c.execute(sql):
             result.append(i)
+        print("===EXIT_SELECT_ACCOUNTING_MONEY===")
+        print(result)
+    return result
+
+
+def select_accounting_amount(select_condition_list):
+    with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
+        c = conn.cursor()
+        sql = 'select use, sum(money), year, month from accounting '
+        add_sql, add_item = common._add_general_search_confition(select_condition_list)
+        sql += add_sql
+        sql += 'group by year, month, use '
+        result = common.multiple_condition_sql_execution(c, sql, add_item)
         print("===EXIT_SELECT_ACCOUNTING_MONEY===")
         print(result)
     return result

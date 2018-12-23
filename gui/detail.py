@@ -13,7 +13,7 @@ class Detail(wx.Frame):
         self.detail_info_list = detail_info_list
         panel = MainPanel(self)
         self.Bind(wx.EVT_CLOSE, self.frame_close)
-        self.Centre()
+        self.Center()
         self.Show()
 
     def frame_close(self, event):
@@ -166,7 +166,7 @@ class MainPanel(wx.Panel):
                 return "error"
             wx.MessageBox(f"{sql_text}完了しました。", f"{sql_text}完了", wx.ICON_INFORMATION)
             self.frame.Destroy()
-            wx.Exit()
+            # wx.Exit()
             search.call_search()
         dlg.Destroy()
 
