@@ -1,5 +1,8 @@
 import wx
 from .graphNote import yearGraph, useGraph, periodGraph, amountGraph
+from utils import logger
+
+logger = logger.set_operate_logger(__name__)
 
 
 class GraphNotePanel(wx.Notebook):

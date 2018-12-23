@@ -1,6 +1,9 @@
 import wx
 from . import registration, search, graph, common
 from services import cacheService
+from utils import logger
+
+logger = logger.set_operate_logger(__name__)
 
 
 class Main(wx.Frame):
@@ -95,5 +98,6 @@ class MainPanel(wx.Panel):
 
 def call_mainGui():
     app = wx.App(False)
+    logger.info("START mainGui")
     Main(None, wx.ID_ANY, title=u'CHMS')
     app.MainLoop()

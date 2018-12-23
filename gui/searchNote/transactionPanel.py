@@ -1,5 +1,8 @@
 import wx
 from services import accountingService
+from utils import logger
+
+logger = logger.set_operate_logger(__name__)
 
 
 class TransactionPanel(wx.Panel):
@@ -24,7 +27,6 @@ class TransactionPanel(wx.Panel):
     def per_add_listctrl_item(self, search_money_list, transaction_accounting_list):
         self.per_transaction_text.DeleteAllItems()
         accounting_count = transaction_accounting_list[0]
-        print(accounting_count)
         # 追加する行の指定
         Add_line = self.per_transaction_text.GetItemCount()
         # 検索結果を行に追加する

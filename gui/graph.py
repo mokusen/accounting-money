@@ -1,5 +1,8 @@
 import wx
 from . import mainGui, common, mainGraphNote
+from utils import logger
+
+logger = logger.set_operate_logger(__name__)
 
 
 class Graph(wx.Frame):
@@ -34,5 +37,6 @@ class MainPanel(wx.Panel):
 
 
 def call_graph(year_accounting_list, title_accounting_list, all_data, test):
-    a = Graph(None, wx.ID_ANY, title=u'CHMS | グラフ', year_accounting_list=year_accounting_list, title_accounting_list=title_accounting_list, all_data=all_data, test=test)
-    return a
+    logger.info("START Graph")
+    graph = Graph(None, wx.ID_ANY, title=u'CHMS | グラフ', year_accounting_list=year_accounting_list, title_accounting_list=title_accounting_list, all_data=all_data, test=test)
+    return graph

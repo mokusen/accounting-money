@@ -2,6 +2,10 @@ import wx
 from . import mainGui, detail, common, mainSearchNote
 from utils import dataListCreate
 from services import accountingService, baseService, cacheService
+from logging import getLogger, DEBUG, INFO
+from utils import logger
+
+logger = logger.set_operate_logger(__name__)
 
 
 class Search(wx.Frame):
@@ -9,7 +13,6 @@ class Search(wx.Frame):
         self.frame_size = (625, 600)
         current_display_size = wx.DisplaySize()
         use_display_size = ((current_display_size[0]-1200) / 2, (current_display_size[1]-600-40) / 2)
-        print(use_display_size)
         wx.Frame.__init__(self, parent, id, title, size=self.frame_size, pos=use_display_size)
         self.SetIcon(common.get_icon())
         self.CreateStatusBar()
@@ -153,5 +156,6 @@ class MainPanel(wx.Panel):
 
 def call_search():
     app = wx.App(False)
+    logger.info("START Search")
     Search(None, wx.ID_ANY, title=u'CHMS | 検索')
     app.MainLoop()

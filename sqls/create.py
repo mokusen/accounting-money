@@ -1,6 +1,10 @@
 import sqlite3
 import os
 from contextlib import closing
+from utils import logger
+import re
+
+sql_logger = logger.set_sql_logger(__name__)
 
 path = os.getcwd()
 dbpath = path + '\data.db'
@@ -20,6 +24,7 @@ def create_base():
         )
         '''
         c.execute(sql)
+        sql_logger.info(re.sub('\n|    ', '', sql))
     print("===EXIT_CREATE_BASE===")
 
 
@@ -40,6 +45,7 @@ def create_accounting():
         )
         '''
         c.execute(sql)
+        sql_logger.info(re.sub('\n|    ', '', sql))
     print("===EXIT_CREATE_ACCOUNTING===")
 
 
@@ -62,4 +68,5 @@ def create_cache():
         )
         '''
         c.execute(sql)
+        sql_logger.info(re.sub('\n|    ', '', sql))
     print("===EXIT_CREATE_CACHE===")

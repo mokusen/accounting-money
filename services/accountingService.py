@@ -1,6 +1,9 @@
 import math
 from sqls import *
 from utils import adjustAccounting
+from utils import logger
+
+logger = logger.set_operate_logger(__name__)
 
 
 def insert_accounting(insert_list):
@@ -18,12 +21,13 @@ def insert_accounting(insert_list):
             insert_list[i][3] = int(insert_list[i][3])
             insert_list[i][4] = int(insert_list[i][4])
         except:
+            logger.error(f"月、日の入力値の型不正。プログラムの修正が必要です。 {insert_list}")
             return "月、日は選択肢からのみ選択してください"
-    # TODO: log処理追加
 
     # インサートする
     for item in insert_list:
         insert.insert_accounting(item)
+    return False
 
 
 def update_accounting(update_list):
@@ -69,13 +73,10 @@ def select_accounting(select_comdition_list):
     all_money : int
         対象期間内の累計金額
     """
-
-    # TODO: log処理追加
     # 全件検索結果を取得する
     all_data = select.select_accounting(select_comdition_list)
     # 累計金額を算出する
     all_money = 0
-    # TODO: sql取得でも良い
     all_use = []
     for data in all_data:
         all_money += int(data[2])

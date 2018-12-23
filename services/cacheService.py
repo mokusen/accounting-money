@@ -1,5 +1,8 @@
 from sqls import *
 from utils import adjustAccounting
+from utils import logger
+
+logger = logger.set_operate_logger(__name__)
 
 
 def insert_cache(insert_list):
@@ -17,8 +20,8 @@ def insert_cache(insert_list):
             try:
                 insert_list[index] = int(insert_list[index])
             except:
+                logger.error(f"金額、年、月、日の入力値の型不正。プログラムの修正が必要です。 {insert_list}")
                 return "金額、年、月、日は選択肢からのみ選択してください"
-    # TODO: log処理追加
 
     # インサートする
     insert.insert_cache(insert_list)
@@ -46,9 +49,6 @@ def select_cache():
     all_cache_infodata : list
         検索条件を格納したリスト。全要素が含まれる
     """
-
-    # TODO: log処理追加
-
     # 全件検索結果を取得する
     cache_info = select.select_cache()
     return cache_info

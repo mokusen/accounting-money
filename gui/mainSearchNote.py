@@ -190,10 +190,14 @@ class NotebookPanel(wx.Notebook):
 
         # 用途から日までを取得し、リストに格納する
         detail_info_list = []
-        # TODO: 用途などの題名テキストをリスト化し、作成、更新日外を長さとして持たせるように変更
-        for i in range(6):
+        column = self.search_result_text.GetColumnCount()-2
+        for i in range(column):
             item = self.search_result_text.GetItem(itemIdx=index, col=i)
             detail_info_list.append(item.GetText())
 
         self.main_panel.close_frame()
+        try:
+            self.graph.frame_close_oparate()
+        except:
+            pass
         detail.call_detail(detail_info_list)

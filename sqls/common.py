@@ -104,8 +104,6 @@ def _add_general_search_confition(select_condition_list):
     if len(add_item) == 0:
         add_sql = add_sql[6:]
     add_sql = add_sql[:-4]
-    print(add_sql)
-    print(add_item)
     return add_sql, add_item
 
 
