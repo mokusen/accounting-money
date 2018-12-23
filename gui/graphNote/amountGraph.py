@@ -22,10 +22,10 @@ class AmountGraph(wx.Panel):
         # matplotlib figure
         self.figure = Figure()
         self.ax = self.figure.subplots()
-        a = 15000
-        b = round(a / 1000)
         test = [item[2] for item in all_data]
-        self.ax.hist(test, histtype='barstacked', bins=b, range=(0, a), rwidth=1)
+        a = max(test)
+        b = round(a / 1000)
+        self.ax.hist(test, histtype='barstacked', bins=b, range=(0, b*1000), rwidth=1)
 
         # canvas
         self.canvas = FigureCanvasWxAgg(self, wx.ID_ANY, self.figure)
