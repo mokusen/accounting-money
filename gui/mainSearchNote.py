@@ -25,7 +25,7 @@ class NotebookPanel(wx.Notebook):
 
     def __create_search_result(self):
         Text = (u'ID', u'用途', u'金額', u'年', u'月', u'日', u'作成日', u'更新日')
-        self.frame_size = (600, 400)
+        self.frame_size = (600, 425)
         self.search_result_text = wx.ListCtrl(self.search_result_panel, wx.ID_ANY, size=self.frame_size, style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES | wx.LC_EDIT_LABELS)
         for i, text in enumerate(Text):
             self.search_result_text.InsertColumn(i, text)
@@ -86,7 +86,7 @@ class NotebookPanel(wx.Notebook):
             # 行の追加を行う
             self.search_result_text.InsertItem(Add_line, str(items[0]))
             for item in range(1, len(items)):
-                if item == 6 or item == 7:
+                if item in [6, 7]:
                     # 作成日と更新日をYY/MM/DD HH:MM:SSに変換する
                     self.search_result_text.SetItem(Add_line, item, items[item].strftime('%Y/%m/%d %H:%M:%S'))
                 else:
@@ -166,7 +166,7 @@ class NotebookPanel(wx.Notebook):
             # 行の追加を行う
             self.search_result_text.InsertItem(Add_line, str(self.all_data[date[0]][0]))
             for item in range(1, len(self.all_data[date[0]])):
-                if item == 6 or item == 7:
+                if item in [6, 7]:
                     # 作成日と更新日をYY/MM/DD HH:MM:SSに変換する
                     try:
                         self.search_result_text.SetItem(Add_line, item, self.all_data[date[0]][item].strftime('%Y/%m/%d %H:%M:%S'))

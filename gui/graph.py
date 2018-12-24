@@ -7,9 +7,9 @@ logger = logger.set_operate_logger(__name__)
 
 class Graph(wx.Frame):
     def __init__(self, parent, id, title, year_accounting_list, title_accounting_list, all_data, test):
-        current_display_size = wx.DisplaySize()
-        use_display_size = ((current_display_size[0]-1200) / 2+625, (current_display_size[1]-600-40) / 2)
-        wx.Frame.__init__(self, parent, id, title, size=(650, 547), pos=use_display_size)
+        self.frame_size = common.graph_frame_size()
+        use_display_size = common.graph_use_display_size()
+        wx.Frame.__init__(self, parent, id, title, size=self.frame_size, pos=use_display_size)
         self.SetIcon(common.get_icon())
         MainPanel(self, year_accounting_list, title_accounting_list, all_data, test)
         self.Bind(wx.EVT_CLOSE, self.frame_close)
