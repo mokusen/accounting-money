@@ -1,6 +1,6 @@
-from dbInit import dbInit
-from gui import mainGui
-from utils import logger
+from method.dbInit import dbInit
+from method.gui import mainGui
+from method.utils import logger
 
 logger = logger.set_operate_logger(__name__)
 
