@@ -1,5 +1,5 @@
 import wx
-from . import registration, search, graph, common
+from . import registration, search, operateCsvDb, graph, common
 from services import cacheService
 from utils import logger
 
@@ -36,21 +36,25 @@ class MainPanel(wx.Panel):
         cacheService.init_cache()
 
         # ボタンを初期作成する
-        self.button1 = wx.Button(self, wx.ID_ANY, u'登録', size=(315, 100))
-        self.button2 = wx.Button(self, wx.ID_ANY, u'検索', size=(315, 100))
+        self.button1 = wx.Button(self, wx.ID_ANY, u'登録', size=(200, 100))
+        self.button2 = wx.Button(self, wx.ID_ANY, u'検索', size=(200, 100))
+        self.button3 = wx.Button(self, wx.ID_ANY, u'CSV操作/DB初期化', size=(200, 100))
 
         # ボタンにフォントサイズを適応する
         self.button1.SetFont(self.font)
         self.button2.SetFont(self.font)
+        self.button3.SetFont(self.font)
 
         # ボタンにアクションを追加する
         self.button1.Bind(wx.EVT_BUTTON, self.click_button1)
         self.button2.Bind(wx.EVT_BUTTON, self.click_button2)
+        self.button3.Bind(wx.EVT_BUTTON, self.click_button3)
 
         # レイアウト設定
         self.layout = wx.GridBagSizer(0, 0)
         self.layout.Add(self.button1, (4, 0), (1, 1), flag=wx.GROW | wx.LEFT | wx.TOP, border=30)
         self.layout.Add(self.button2, (4, 1), (1, 1), flag=wx.GROW | wx.LEFT | wx.TOP, border=30)
+        self.layout.Add(self.button3, (4, 2), (1, 1), flag=wx.GROW | wx.LEFT | wx.TOP, border=30)
 
         self.SetSizer(self.layout)
 
@@ -79,6 +83,11 @@ class MainPanel(wx.Panel):
         self.frame.Destroy()
         wx.Exit()
         search.call_search()
+
+    def click_button3(self, event):
+        self.frame.Destroy()
+        wx.Exit()
+        operateCsvDb.call_csvOperation()
 
     def OnEraseBackground(self, evt):
         """

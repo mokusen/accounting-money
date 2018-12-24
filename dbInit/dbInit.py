@@ -25,3 +25,15 @@ def db_init():
         except:
             logger.info("PASS datebase insert process")
         logger.info("END datebase init process")
+
+
+def db_all_init():
+    logger.info("START datebase all init process")
+    drop.drop_base()
+    drop.drop_accounting()
+    drop.drop_cache()
+    create.create_base()
+    create.create_accounting()
+    create.create_cache()
+    insert.insert_cache(['', '', '', '', '', '', '', '', ''])
+    logger.info("END datebase all init process")

@@ -1,4 +1,3 @@
-import wx
 from dbInit import dbInit
 from gui import mainGui
 from utils import logger

@@ -1,8 +1,6 @@
 import csv
 from sqls import select
 
-base_meta_name = "dbInit/base.csv"
-
 
 def create_init_list():
     """
@@ -13,7 +11,7 @@ def create_init_list():
     base_list : list型
         用途のデータリストを格納してあるcsvからlistを作成する
     """
-
+    base_meta_name = "CsvIn/base.csv"
     # 対象ファイル名(実行ディレクトリはmain.pyである)
     with open(base_meta_name, newline='', encoding="utf-8") as before:
         reader = csv.reader(before)
@@ -22,6 +20,7 @@ def create_init_list():
 
 
 def csv_export():
+    base_meta_name = "CsvOut/base.csv"
     data_list = [[data] for data in select.select_base()]
     with open(base_meta_name, 'w', newline='', encoding="utf-8") as f:
         writer = csv.writer(f, lineterminator='\n')
