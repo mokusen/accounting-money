@@ -20,7 +20,6 @@ def drop_base():
             sql_logger.info(sql)
         except:
             pass
-    print("===EXIT_DROP_BASE===")
 
 
 def drop_accounting():
@@ -32,7 +31,6 @@ def drop_accounting():
             sql_logger.info(sql)
         except:
             pass
-    print("===EXIT_DROP_ACCOUNTING===")
 
 
 def drop_cache():
@@ -44,4 +42,3 @@ def drop_cache():
             sql_logger.info(sql)
         except:
             pass
-    print("===EXIT_DROP_CACHE===")

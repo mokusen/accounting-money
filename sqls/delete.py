@@ -19,7 +19,6 @@ def delete_base(delete_id):
         re_sql = re.sub('\n|    ', '', sql)
         sql_logger.info(f"{re_sql} {delete_id}")
         conn.commit()
-    print("===EXIT_DELETE_BASE===")
 
 
 def delete_accounting(delete_id):
@@ -30,7 +29,6 @@ def delete_accounting(delete_id):
         re_sql = re.sub('\n|    ', '', sql)
         sql_logger.info(f"{re_sql} {delete_id}")
         conn.commit()
-    print("===EXIT_DELETE_ACCOUNTING===")
 
 
 def delete_cache(delete_id):
@@ -41,4 +39,3 @@ def delete_cache(delete_id):
         re_sql = re.sub('\n|    ', '', sql)
         sql_logger.info(f"{re_sql} {delete_id}")
         conn.commit()
-    print("===EXIT_DELETE_CACHE===")

@@ -1,4 +1,5 @@
 import csv
+from sqls import select
 
 
 def create_list():
@@ -10,9 +11,7 @@ def create_list():
     base_list : list型
         課金履歴のデータリストを格納してあるcsvからlistを作成する
     """
-
-    # 対象ファイル名(実行ディレクトリはmain.pyである)
-    base_meta_name = "dbinit/accounting.csv"
+    base_meta_name = "CsvIn/accounting.csv"
     with open(base_meta_name, newline='', encoding="utf-8") as before:
         reader = csv.reader(before)
         base_list = []
@@ -25,3 +24,11 @@ def create_list():
             add_list.append(int(row[4]))
             base_list.append(add_list)
     return base_list
+
+
+def csv_export():
+    base_meta_name = "CsvOut/accounting.csv"
+    data_list = [data for data in select.select_accounting_export()]
+    with open(base_meta_name, 'w', encoding="utf-8") as f:
+        writer = csv.writer(f, lineterminator='\n')
+        writer.writerows(data_list)

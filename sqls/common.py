@@ -125,11 +125,8 @@ def multiple_condition_sql_execution(c, sql, add_item):
     [type]
         [description]
     """
-    result = []
     if len(add_item) == 0:
-        for i in c.execute(sql):
-            result.append(i)
+        result = [i for i in c.execute(sql)]
     else:
-        for i in c.execute(sql, add_item):
-            result.append(i)
+        result = [i for i in c.execute(sql, add_item)]
     return result

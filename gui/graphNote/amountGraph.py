@@ -25,7 +25,11 @@ class AmountGraph(wx.Panel):
         self.figure = Figure()
         self.ax = self.figure.subplots()
         test = [item[2] for item in all_data]
-        a = max(test)
+        # FIXME: やばい
+        if test == []:
+            a = 1000
+        else:
+            a = max(test)
         b = round(a / 1000)
         self.ax.hist(test, histtype='barstacked', bins=b, range=(0, b*1000), rwidth=1)
 

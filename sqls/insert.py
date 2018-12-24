@@ -29,7 +29,6 @@ def insert_base(insert_list):
         re_sql = re.sub('\n|    ', '', sql)
         sql_logger.info(f"{re_sql} {insert_list}")
         conn.commit()
-    print("===EXIT_INSERT_BASE===")
 
 
 def insert_accounting(insert_list):
@@ -49,7 +48,6 @@ def insert_accounting(insert_list):
         re_sql = re.sub('\n|    ', '', sql)
         sql_logger.info(f"{re_sql} {insert_list}")
         conn.commit()
-    print("===EXIT_INSERT_ACCOUNTING===")
 
 
 def insert_cache(insert_list):
@@ -68,4 +66,3 @@ def insert_cache(insert_list):
         re_sql = re.sub('\n|    ', '', sql)
         sql_logger.info(f"{re_sql} {insert_list}")
         conn.commit()
-    print("===EXIT_INSERT_CACHE===")

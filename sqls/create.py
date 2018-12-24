@@ -15,7 +15,7 @@ def create_base():
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
         sql = '''
-        create table base
+        create table if not exists base
         (
         id integer primary key,
         name  text,
@@ -25,14 +25,13 @@ def create_base():
         '''
         c.execute(sql)
         sql_logger.info(re.sub('\n|    ', '', sql))
-    print("===EXIT_CREATE_BASE===")
 
 
 def create_accounting():
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
         sql = '''
-        create table accounting
+        create table if not exists accounting
         (
         id integer primary key,
         use text,
@@ -46,14 +45,13 @@ def create_accounting():
         '''
         c.execute(sql)
         sql_logger.info(re.sub('\n|    ', '', sql))
-    print("===EXIT_CREATE_ACCOUNTING===")
 
 
 def create_cache():
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
         sql = '''
-        create table cache
+        create table if not exists cache
         (
         id integer primary key,
         use text,
@@ -69,4 +67,3 @@ def create_cache():
         '''
         c.execute(sql)
         sql_logger.info(re.sub('\n|    ', '', sql))
-    print("===EXIT_CREATE_CACHE===")

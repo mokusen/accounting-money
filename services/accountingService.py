@@ -127,7 +127,10 @@ def select_accounting_transaction(select_comdition_list):
     result : tuple
         0から課金額の全体最大まで、1000円ずつの刻みに対する、課金回数
     """
+    # FIXME: やばい
     max_money = select.select_accounting_money()[0][0]
+    if max_money is None:
+        max_money = 1000
     hist_lens = math.ceil(max_money/1000)
     search_money_list = [1000 * index for index in range(hist_lens + 1)]
     return search_money_list, select.select_accounting_transaction(select_comdition_list, search_money_list)
