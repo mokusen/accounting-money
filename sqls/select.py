@@ -22,9 +22,17 @@ def select_base():
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
         sql = 'select name from base order by name'
-        result = []
-        for i in c.execute(sql):
-            result.append(i[0])
+        result = [i[0] for i in c.execute(sql)]
+        sql_logger.info(sql)
+        print("===EXIT_SELECT_BASE===")
+    return result
+
+
+def select_accounting_export():
+    with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
+        c = conn.cursor()
+        sql = 'select use, money, year, month, day from accounting'
+        result = [i for i in c.execute(sql)]
         sql_logger.info(sql)
         print("===EXIT_SELECT_BASE===")
     return result
@@ -148,9 +156,7 @@ def select_accounting_money():
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
         sql = 'select max(money) from accounting '
-        result = []
-        for i in c.execute(sql):
-            result.append(i)
+        result = [i for i in c.execute(sql)]
         sql_logger.info(sql)
         print("===EXIT_SELECT_ACCOUNTING_MONEY===")
     return result
@@ -182,9 +188,7 @@ def select_cache():
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
         sql = 'select * from cache order by id desc'
-        result = []
-        for i in c.execute(sql):
-            result.append(i)
+        result = [i for i in c.execute(sql)]
         sql_logger.info(sql)
         print("===EXIT_SELECT_CACHE===")
     return result

@@ -4,7 +4,7 @@ meta.csvをソートするための機能
 """
 
 # 対象ファイル名
-base_meta_name = "base.csv"
+base_meta_name = "dbInit/base.csv"
 
 # 元データをリスト化する
 with open(base_meta_name, newline='', encoding="utf-8") as before:
