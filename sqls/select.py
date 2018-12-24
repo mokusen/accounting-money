@@ -24,7 +24,6 @@ def select_base():
         sql = 'select name from base order by name'
         result = [i[0] for i in c.execute(sql)]
         sql_logger.info(sql)
-        print("===EXIT_SELECT_BASE===")
     return result
 
 
@@ -34,7 +33,6 @@ def select_accounting_export():
         sql = 'select use, money, year, month, day from accounting'
         result = [i for i in c.execute(sql)]
         sql_logger.info(sql)
-        print("===EXIT_SELECT_BASE===")
     return result
 
 
@@ -58,7 +56,6 @@ def select_accounting(select_condition_list):
         result = common.multiple_condition_sql_execution(c, sql, add_item)
         re_sql = re.sub('\n|    ', '', sql)
         sql_logger.info(f"{re_sql} {add_item}")
-        print("===EXIT_SELECT_ACCOUNTING===")
     return result
 
 
@@ -83,7 +80,6 @@ def select_accounting_year(select_condition_list):
         result = common.multiple_condition_sql_execution(c, sql, add_item)
         re_sql = re.sub('\n|    ', '', sql)
         sql_logger.info(f"{re_sql} {add_item}")
-        print("===EXIT_SELECT_ACCOUNTING_YEAR===")
     return result
 
 
@@ -108,7 +104,6 @@ def select_accounting_use(select_condition_list):
         result = common.multiple_condition_sql_execution(c, sql, add_item)
         re_sql = re.sub('\n|    ', '', sql)
         sql_logger.info(f"{re_sql} {add_item}")
-        print("===EXIT_SELECT_ACCOUNTING_USE===")
     return result
 
 
@@ -142,7 +137,6 @@ def select_accounting_transaction(select_condition_list, search_money_list):
         result = common.multiple_condition_sql_execution(c, sql, add_item)
         re_sql = re.sub('\n|    ', '', sql)
         sql_logger.info(f"{re_sql} {add_item}")
-        print("===EXIT_SELECT_ACCOUNTING_TRANSACTION===")
     return result
 
 
@@ -158,7 +152,6 @@ def select_accounting_money():
         sql = 'select max(money) from accounting '
         result = [i for i in c.execute(sql)]
         sql_logger.info(sql)
-        print("===EXIT_SELECT_ACCOUNTING_MONEY===")
     return result
 
 
@@ -172,7 +165,6 @@ def select_accounting_amount(select_condition_list):
         result = common.multiple_condition_sql_execution(c, sql, add_item)
         re_sql = re.sub('\n|    ', '', sql)
         sql_logger.info(f"{re_sql} {add_item}")
-        print("===EXIT_SELECT_ACCOUNTING_MONEY===")
     return result
 
 
@@ -190,5 +182,4 @@ def select_cache():
         sql = 'select * from cache order by id desc'
         result = [i for i in c.execute(sql)]
         sql_logger.info(sql)
-        print("===EXIT_SELECT_CACHE===")
     return result

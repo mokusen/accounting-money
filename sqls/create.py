@@ -25,7 +25,6 @@ def create_base():
         '''
         c.execute(sql)
         sql_logger.info(re.sub('\n|    ', '', sql))
-    print("===EXIT_CREATE_BASE===")
 
 
 def create_accounting():
@@ -46,7 +45,6 @@ def create_accounting():
         '''
         c.execute(sql)
         sql_logger.info(re.sub('\n|    ', '', sql))
-    print("===EXIT_CREATE_ACCOUNTING===")
 
 
 def create_cache():
@@ -69,4 +67,3 @@ def create_cache():
         '''
         c.execute(sql)
         sql_logger.info(re.sub('\n|    ', '', sql))
-    print("===EXIT_CREATE_CACHE===")

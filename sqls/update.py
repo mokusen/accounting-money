@@ -44,7 +44,6 @@ def update_base(update_list):
         re_sql = re.sub('\n|    ', '', sql)
         sql_logger.info(f"{re_sql} {update_list}")
         conn.commit()
-    print("===EXIT_UPDATE_BASE===")
 
 
 def update_accounting(update_list):
@@ -59,7 +58,6 @@ def update_accounting(update_list):
         re_sql = re.sub('\n|    ', '', sql)
         sql_logger.info(f"{re_sql} {update_list}")
         conn.commit()
-    print("===EXIT_UPDATE_ACCOUNTING===")
 
 
 def update_cache(update_list):
@@ -71,4 +69,3 @@ def update_cache(update_list):
         re_sql = re.sub('\n|    ', '', sql)
         sql_logger.info(f"{re_sql} {update_list}")
         conn.commit()
-    print("===EXIT_UPDATE_CACHE===")
