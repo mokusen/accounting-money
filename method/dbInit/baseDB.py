@@ -14,7 +14,7 @@ def create_init_list():
     base_list : list型
         用途のデータリストを格納してあるcsvからlistを作成する
     """
-    logger.Info("DO insert db from base.csv")
+    logger.info("DO insert db from base.csv")
     base_meta_name = "CsvIn/base.csv"
     # 対象ファイル名(実行ディレクトリはmain.pyである)
     with open(base_meta_name, newline='', encoding="utf-8") as before:
@@ -24,7 +24,7 @@ def create_init_list():
 
 
 def csv_export():
-    logger.Info("DO export db from base.csv")
+    logger.info("DO export db from base.csv")
     base_meta_name = "CsvOut/base.csv"
     data_list = [[data] for data in select.select_base()]
     with open(base_meta_name, 'w', newline='', encoding="utf-8") as f:
