@@ -14,22 +14,22 @@ def check_logfile():
 
 
 def __check_logfile_limit(path):
-    logger.info("START check logfile limit")
+    logger.info("START")
     file_list = sorted([os.path.basename(p) for p in glob.glob(path+"\**")])
     file_len = len(file_list)
     # ファイル数を7個制限にする
     if file_len >= 7:
-        logger.info("ACT check logfile limit by 7")
+        logger.info("DO by 7")
         for index in range(file_len-7):
             os.remove(f"{path}\{file_list[index]}")
     # ディレクトリ容量を10MB制限にする
     directory_size_list = __get_directory_size_list(path)
     while sum(directory_size_list) >= 1024 * 1024 * 10:
-        logger.info("ACT check logfile limit by 10MB")
+        logger.info("DO by 10MB")
         os.remove(f"{path}\{file_list[0]}")
         file_list.pop(0)
         directory_size_list.pop(0)
-    logger.info("END check logfile limit")
+    logger.info("END")
 
 
 def __get_directory_size_list(path):

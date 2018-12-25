@@ -1,5 +1,8 @@
 import csv
 from method.sqls import select
+from method.utils import logger
+
+logger = logger.set_operate_logger(__name__)
 
 
 def create_list():
@@ -11,6 +14,7 @@ def create_list():
     base_list : list型
         課金履歴のデータリストを格納してあるcsvからlistを作成する
     """
+    logger.Info("DO insert db from accounting.csv")
     base_meta_name = "CsvIn/accounting.csv"
     with open(base_meta_name, newline='', encoding="utf-8") as before:
         reader = csv.reader(before)
@@ -27,6 +31,7 @@ def create_list():
 
 
 def csv_export():
+    logger.Info("DO export db from accounting.csv")
     base_meta_name = "CsvOut/accounting.csv"
     data_list = [data for data in select.select_accounting_export()]
     with open(base_meta_name, 'w', encoding="utf-8") as f:
