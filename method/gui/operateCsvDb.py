@@ -70,32 +70,45 @@ class MainPanel(wx.Panel):
     def db_export_csv(self, event):
         dlg = wx.MessageDialog(None, "CSV出力を開始します。\n用途によって必要であればbase.csvとaccounting.csvの\nバックアップを取ることをオススメします", "CSV出力確認", wx.YES_NO | wx.ICON_INFORMATION)
         result = dlg.ShowModal()
+        dlg.Destroy()
         if result == wx.ID_YES:
             baseDB.csv_export()
             accountingDB.csv_export()
             wx.MessageBox("CSV出力が完了しました。", "CSV出力完了", wx.ICON_INFORMATION)
-        dlg.Destroy()
 
     def csv_insert_db(self, event):
         dlg = wx.MessageDialog(None, "CSV取込を開始します。", "CSV取込確認", wx.YES_NO | wx.ICON_INFORMATION)
         result = dlg.ShowModal()
-        if result == wx.ID_YES:
-            use_list = baseDB.create_init_list()
-            for item in use_list:
-                insert.insert_base(item)
-            accounting_list = accountingDB.create_list()
-            for item in accounting_list:
-                insert.insert_accounting(item)
-            wx.MessageBox("CSV取込が完了しました。", "CSV取込完了", wx.ICON_INFORMATION)
         dlg.Destroy()
+        if result == wx.ID_YES:
+            # base情報を登録する
+            use_list = baseDB.create_init_list()
+            max_use_list = len(use_list)-1
+            base_prog_dlg = wx.ProgressDialog("base情報登録", f"base情報登録中･･･ {0}/{max_use_list}", max_use_list)
+            base_prog_dlg.ShowModal()
+            for index, item in enumerate(use_list):
+                insert.insert_base(item)
+                base_prog_dlg.Update(index, f"base情報登録中･･･ {index}/{max_use_list}")
+            base_prog_dlg.Destroy()
+            # accounting情報を登録する
+            accounting_list = accountingDB.create_list()
+            max_accounting_list = len(accounting_list)-1
+            accounting_prog_dlg = wx.ProgressDialog("accounting情報登録", f"accounting情報登録中･･･ {0}/{max_accounting_list}", max_accounting_list)
+            accounting_prog_dlg.ShowModal()
+            for index, item in enumerate(accounting_list):
+                insert.insert_accounting(item)
+                accounting_prog_dlg.Update(index, f"accounting情報登録中･･･ {index}/{max_accounting_list}")
+            accounting_prog_dlg.Destroy()
+            # 終了メッセージ
+            wx.MessageBox("CSV取込が完了しました。", "CSV取込完了", wx.ICON_INFORMATION)
 
     def db_init(self, event):
         dlg = wx.MessageDialog(None, "DB初期化を開始します。\n用途によって必要であればCSV出力して、バックアップを取ることをオススメします", "DB初期化確認", wx.YES_NO | wx.ICON_INFORMATION)
         result = dlg.ShowModal()
+        dlg.Destroy()
         if result == wx.ID_YES:
             dbInit.db_all_init()
             wx.MessageBox("DB初期化が完了しました。", "DB初期化完了", wx.ICON_INFORMATION)
-        dlg.Destroy()
 
 
 def call_csvOperation():
