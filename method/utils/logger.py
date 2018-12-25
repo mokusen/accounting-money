@@ -3,7 +3,7 @@ import datetime
 
 
 today = datetime.date.today().strftime('%Y%m%d')
-fmt = Formatter('%(asctime)s %(levelname)s %(name)s %(msg)s')
+fmt = Formatter('%(asctime)s %(levelname)s %(name)s %(funcName)s %(msg)s')
 
 
 def set_operate_logger(file_name):
