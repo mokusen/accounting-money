@@ -1,8 +1,8 @@
 import wx
 from . import mainGui, common, mainGraphNote
-from method.utils import logger
+from method.utils import chms_logger
 
-logger = logger.set_operate_logger(__name__)
+logger = chms_logger.set_operate_logger(__name__)
 
 
 class Graph(wx.Frame):

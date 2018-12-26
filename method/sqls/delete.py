@@ -1,10 +1,10 @@
 import sqlite3
 import os
 from contextlib import closing
-from method.utils import logger
+from method.utils import chms_logger
 import re
 
-sql_logger = logger.set_sql_logger(__name__)
+sql_logger = chms_logger.set_sql_logger(__name__)
 
 path = os.getcwd()
 dbpath = path + '\data.db'

@@ -3,9 +3,9 @@ from . import mainGui, detail, common, mainSearchNote
 from method.utils import dataListCreate
 from method.services import accountingService, baseService, cacheService
 from logging import getLogger, DEBUG, INFO
-from method.utils import logger
+from method.utils import chms_logger
 
-logger = logger.set_operate_logger(__name__)
+logger = chms_logger.set_operate_logger(__name__)
 
 
 class Search(wx.Frame):
