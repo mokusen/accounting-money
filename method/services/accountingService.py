@@ -1,9 +1,9 @@
 import math
 from method.sqls import *
 from method.utils import adjustAccounting
-from method.utils import logger
+from method.utils import chms_logger
 
-logger = logger.set_operate_logger(__name__)
+logger = chms_logger.set_operate_logger(__name__)
 
 
 def insert_accounting(insert_list):

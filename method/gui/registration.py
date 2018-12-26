@@ -3,9 +3,9 @@ import datetime
 from . import mainGui, common
 from method.utils import dataListCreate
 from method.services import accountingService, baseService
-from method.utils import logger
+from method.utils import chms_logger
 
-logger = logger.set_operate_logger(__name__)
+logger = chms_logger.set_operate_logger(__name__)
 
 
 class Register(wx.Frame):
