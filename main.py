@@ -1,6 +1,6 @@
 def init_check_process():
     from method.utils import logFileExist
-    logFileExist.exist_log_directory()
+    logFileExist.exist_csv_log_directory()
 
 
 def main():
