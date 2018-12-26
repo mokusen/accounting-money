@@ -84,20 +84,20 @@ class MainPanel(wx.Panel):
             # base情報を登録する
             use_list = baseDB.create_init_list()
             max_use_list = len(use_list)-1
-            base_prog_dlg = wx.ProgressDialog("base情報登録", f"base情報登録中･･･ {0}/{max_use_list}", max_use_list)
+            base_prog_dlg = wx.ProgressDialog("base情報登録", f"base情報登録中･･･ {0}/{max_use_list+1}", max_use_list)
             base_prog_dlg.ShowModal()
             for index, item in enumerate(use_list):
                 insert.insert_base(item)
-                base_prog_dlg.Update(index, f"base情報登録中･･･ {index}/{max_use_list}")
+                base_prog_dlg.Update(index, f"base情報登録中･･･ {index+1}/{max_use_list+1}")
             base_prog_dlg.Destroy()
             # accounting情報を登録する
             accounting_list = accountingDB.create_list()
             max_accounting_list = len(accounting_list)-1
-            accounting_prog_dlg = wx.ProgressDialog("accounting情報登録", f"accounting情報登録中･･･ {0}/{max_accounting_list}", max_accounting_list)
+            accounting_prog_dlg = wx.ProgressDialog("accounting情報登録", f"accounting情報登録中･･･ {0}/{max_accounting_list+1}", max_accounting_list)
             accounting_prog_dlg.ShowModal()
             for index, item in enumerate(accounting_list):
                 insert.insert_accounting(item)
-                accounting_prog_dlg.Update(index, f"accounting情報登録中･･･ {index}/{max_accounting_list}")
+                accounting_prog_dlg.Update(index, f"accounting情報登録中･･･ {index+1}/{max_accounting_list+1}")
             accounting_prog_dlg.Destroy()
             # 終了メッセージ
             wx.MessageBox("CSV取込が完了しました。", "CSV取込完了", wx.ICON_INFORMATION)
