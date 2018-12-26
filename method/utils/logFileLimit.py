@@ -1,8 +1,9 @@
 import glob
 import os
 import re
-import pathlib
-from method.utils import logger, handleYaml
+from . import chms_logger, handleYaml
+
+logger = chms_logger.set_operate_logger(__name__)
 
 
 def check_logfile():
@@ -11,22 +12,8 @@ def check_logfile():
     """
     operate_path = os.getcwd() + "/log/operate"
     sql_path = os.getcwd() + "/log/sql"
-    __exist_log_directory(operate_path)
-    __exist_log_directory(sql_path)
     __check_logfile_limit(operate_path)
     __check_logfile_limit(sql_path)
-
-
-def __exist_log_directory(path):
-    """
-    保存先のディレクトリが存在するか確認し、存在しない場合は作成する
-    Parameters
-    ----------
-    path : log directory path
-    """
-    log_directory = pathlib.Path(path)
-    if log_directory.is_dir() is False:
-        os.makedirs(path)
 
 
 def __check_logfile_limit(path):
@@ -36,7 +23,6 @@ def __check_logfile_limit(path):
     ----------
     path : log directory path
     """
-    logger = logger.set_operate_logger(__name__)
     logger.info("START")
     # 設定ファイルから、設定情報を取得する
     file_limit = handleYaml.get_config_file_limit()
