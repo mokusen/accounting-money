@@ -72,7 +72,8 @@ class MainPanel(wx.Panel):
             text.SetFont(self.font)
 
         # 登録ボタン作成
-        register_button = wx.Button(self, wx.ID_ANY, '登録', size=btn_size)
+        register_button = wx.Button(self, wx.ID_ANY, '登　録', size=btn_size)
+        register_button.SetFont(self.font)
 
         # 登録ボタンにイベントを登録する
         register_button.Bind(wx.EVT_BUTTON, self.call_insert)

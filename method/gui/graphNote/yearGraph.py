@@ -20,15 +20,18 @@ class YearGraph(wx.Panel):
         wx.Panel.__init__(self, parent=parent)
         self.parent = parent
         plt.style.use('bmh')
-        xx = [year_accounting[0] for year_accounting in year_accounting_list]
-        yy = [year_accounting[1] for year_accounting in year_accounting_list]
-        ave_yy = [int(np.average(yy)) for _ in range(len(xx))]
+        year_list = sorted(list(set([year_accounting[0] for year_accounting in year_accounting_list])))
+        dict_money = {year: 0 for year in year_list}
+        for index in range(len(year_accounting_list)):
+            dict_money[year_accounting_list[index][0]] += int(year_accounting_list[index][1])
+        money_list = [dict_money[years] for years in year_list]
+        ave_yy = [int(np.average(money_list)) for _ in range(len(year_list))]
 
         # matplotlib figure
         self.figure = Figure()
         self.subplot = self.figure.add_subplot(111)
-        self.subplot.plot(xx, yy, marker='o', label=u'課金額')
-        self.subplot.plot(xx, ave_yy, marker='o', label=u'平均課金額')
+        self.subplot.plot(year_list, money_list, marker='o', label=u'課金額')
+        self.subplot.plot(year_list, ave_yy, marker='o', label=u'平均課金額')
         self.subplot.legend(bbox_to_anchor=(1, -0.1), loc='upper right', ncol=2)
 
         # canvas
