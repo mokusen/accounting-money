@@ -3,7 +3,7 @@ logger:
     # false or 0にするとログの出力しなくなります。Default：true or 1
     outputFlg: true
     # 保存するログファイルの数を設定できます。Default：7
-    fileLimit: 1
+    fileLimit: 7
     # ログを保存するディレクトリの容量を設定できます。
     # 設定値を超えると自動的に古いログファイルが削除されます。設定単位はBytesです。Defalut：10485760[Bytes] (10MB)
     directoryCapacity: 10485760
