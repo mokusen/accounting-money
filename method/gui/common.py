@@ -14,16 +14,16 @@ def get_icon():
 
 
 def search_frame_size():
-    return (625, 706)
+    return (625, 730)
 
 
 def search_ctrl_size():
-    return (600, 500)
+    return (600, 523)
 
 
 def search_use_display_size():
     current_display_size = wx.DisplaySize()
-    use_display_size = ((current_display_size[0] - 1200) / 2, (current_display_size[1] - 631 - 40) / 2)
+    use_display_size = ((current_display_size[0] - 1200) / 2, (current_display_size[1] - 730 - 40) / 2)
     return use_display_size
 
 
@@ -33,13 +33,13 @@ def graph_frame_size():
 
 def graph_use_display_size():
     current_display_size = wx.DisplaySize()
-    use_display_size = ((current_display_size[0] - 1200) / 2 + 625, (current_display_size[1] - 631 - 40) / 2)
+    use_display_size = ((current_display_size[0] - 1200) / 2 + 625, (current_display_size[1] - 730 - 40) / 2)
     return use_display_size
 
 
 def statistics_ctrl_size():
-    return (200, 480)
+    return (190, 460)
 
 
 def statistics_data_ctrl_size():
-    return (200, 234)
+    return (190, 237)

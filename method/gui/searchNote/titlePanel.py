@@ -14,16 +14,17 @@ class TitlePanel(wx.Panel):
         self.__myinit()
 
     def __myinit(self):
-        title = wx.StaticText(self, wx.ID_ANY, "用途別金額")
         # 検索結果を表示するリストコントローラ
         ctrl_size = common.statistics_ctrl_size()
         self.by_title_panel_text = wx.ListCtrl(self, wx.ID_ANY, size=ctrl_size, style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
         self.by_title_panel_text.InsertColumn(0, u'用途', wx.LIST_FORMAT_LEFT, 90)
-        self.by_title_panel_text.InsertColumn(1, u'金額', wx.LIST_FORMAT_RIGHT, 90)
+        self.by_title_panel_text.InsertColumn(1, u'金額', wx.LIST_FORMAT_RIGHT, 80)
+        box = wx.StaticBox(self, wx.ID_ANY, '用途別金額')
         layout = wx.GridBagSizer(0, 0)
-        layout.Add(title, (0, 0), (1, 1), flag=wx.EXPAND)
-        layout.Add(self.by_title_panel_text, (1, 0), (1, 1), flag=wx.EXPAND)
-        self.SetSizer(layout)
+        layout.Add(self.by_title_panel_text, (0, 0), (1, 1), flag=wx.EXPAND)
+        mylayout = wx.StaticBoxSizer(box, wx.HORIZONTAL)
+        mylayout.Add(layout)
+        self.SetSizer(mylayout)
         self.Layout()
 
     def title_add_listctrl_item(self, title_accounting_list):

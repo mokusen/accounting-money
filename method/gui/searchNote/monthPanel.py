@@ -13,21 +13,22 @@ class MonthPanel(wx.Panel):
         self.__myinit()
 
     def __myinit(self):
-        self.title = wx.StaticText(self, wx.ID_ANY, "月別課金額")
         # 検索結果を表示するリストコントローラ
         ctrl_size = common.statistics_data_ctrl_size()
         self.fiscal_month_text = wx.ListCtrl(self, wx.ID_ANY, size=ctrl_size, style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
         self.fiscal_month_text.InsertColumn(0, u'月', wx.LIST_FORMAT_LEFT, 90)
-        self.fiscal_month_text.InsertColumn(1, u'金額', wx.LIST_FORMAT_RIGHT, 90)
+        self.fiscal_month_text.InsertColumn(1, u'金額', wx.LIST_FORMAT_RIGHT, 80)
+        self.box = wx.StaticBox(self, wx.ID_ANY, '月別課金額')
         layout = wx.GridBagSizer(0, 0)
-        layout.Add(self.title, (0, 0), (1, 1), flag=wx.EXPAND)
-        layout.Add(self.fiscal_month_text, (1, 0), (1, 1), flag=wx.EXPAND)
-        self.SetSizer(layout)
+        layout.Add(self.fiscal_month_text, (0, 0), (1, 1), flag=wx.EXPAND)
+        mylayout = wx.StaticBoxSizer(self.box, wx.HORIZONTAL)
+        mylayout.Add(layout)
+        self.SetSizer(mylayout)
         self.Layout()
 
     def month_add_listctrl_item(self, year_accounting_list, year):
         self.fiscal_month_text.DeleteAllItems()
-        self.title.SetLabel(f"{year}年：月別課金額")
+        self.box.SetLabel(f"{year}年：月別課金額")
         if year == "累計":
             month = [m for m in range(1, 13)]
             dict_money = {m: 0 for m in month}
@@ -51,4 +52,4 @@ class MonthPanel(wx.Panel):
 
     def month_reset_listctrl(self):
         self.fiscal_month_text.DeleteAllItems()
-        self.title.SetLabel("月別課金額")
+        # self.title.SetLabel("月別課金額")

@@ -13,17 +13,17 @@ class TransactionPanel(wx.Panel):
         self.__myinit()
 
     def __myinit(self):
-        title = wx.StaticText(self, wx.ID_ANY, "一回あたりの課金額")
-        Text = (u'金額幅', u'回数')
         # 検索結果を表示するリストコントローラ
         ctrl_size = common.statistics_ctrl_size()
         self.per_transaction_text = wx.ListCtrl(self, wx.ID_ANY, size=ctrl_size, style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
         self.per_transaction_text.InsertColumn(0, u'金額幅', wx.LIST_FORMAT_LEFT, 90)
-        self.per_transaction_text.InsertColumn(1, u'回数', wx.LIST_FORMAT_RIGHT, 90)
+        self.per_transaction_text.InsertColumn(1, u'回数', wx.LIST_FORMAT_RIGHT, 80)
+        box = wx.StaticBox(self, wx.ID_ANY, '一回あたりの課金額')
         layout = wx.GridBagSizer(0, 0)
-        layout.Add(title, (0, 0), (1, 1), flag=wx.EXPAND)
-        layout.Add(self.per_transaction_text, (1, 0), (1, 1), flag=wx.EXPAND)
-        self.SetSizer(layout)
+        layout.Add(self.per_transaction_text, (0, 0), (1, 1), flag=wx.EXPAND)
+        mylayout = wx.StaticBoxSizer(box, wx.HORIZONTAL)
+        mylayout.Add(layout)
+        self.SetSizer(mylayout)
         self.Layout()
 
     def per_add_listctrl_item(self, search_money_list, transaction_accounting_list):

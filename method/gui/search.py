@@ -79,6 +79,7 @@ class MainPanel(wx.Panel):
 
         # 検索ボタン
         search_button = wx.Button(self, wx.ID_ANY, '検索')
+        search_button.SetFont(self.font)
         search_button.Bind(wx.EVT_BUTTON, self.call_select)
 
         # notebookを初期化する
