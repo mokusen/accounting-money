@@ -2,7 +2,7 @@ from operator import itemgetter
 import wx
 from method.services import accountingService, cacheService
 from . import detail, graph
-from .searchNote import titlePanel, transactionPanel, yearPanel
+from .searchNote import titlePanel, transactionPanel, yearPanel, monthPanel
 
 
 class NotebookPanel(wx.Notebook):
@@ -44,13 +44,16 @@ class NotebookPanel(wx.Notebook):
 
     def __create_statistics(self):
         self.fiscal_year_panel = yearPanel.YearPanel(self.statistics_panel)
+        self.fiscal_month_panel = monthPanel.MonthPanel(self.statistics_panel)
         self.by_title_panel = titlePanel.TitlePanel(self.statistics_panel)
         self.per_transaction_panel = transactionPanel.TransactionPanel(self.statistics_panel)
         layout = wx.GridBagSizer(0, 0)
         layout.Add(self.fiscal_year_panel, (0, 0), (1, 1), flag=wx.EXPAND)
-        layout.Add(self.by_title_panel, (0, 1), (1, 1), flag=wx.EXPAND)
-        layout.Add(self.per_transaction_panel, (0, 2), (1, 1), flag=wx.EXPAND)
+        layout.Add(self.fiscal_month_panel, (1, 0), (1, 1), flag=wx.EXPAND)
+        layout.Add(self.by_title_panel, (0, 1), (2, 1), flag=wx.EXPAND)
+        layout.Add(self.per_transaction_panel, (0, 2), (2, 1), flag=wx.EXPAND)
         self.statistics_panel.SetSizer(layout)
+        self.statistics_panel.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.test_open)
         self.statistics_panel.Layout()
 
     """
@@ -58,18 +61,19 @@ class NotebookPanel(wx.Notebook):
     """
 
     def search_statistics(self, select_comdition_list):
-        year_accounting_list = accountingService.select_accounting_year(select_comdition_list)
+        self.year_accounting_list = accountingService.select_accounting_year(select_comdition_list)
         title_accounting_list = accountingService.select_accounting_use(select_comdition_list)
         search_money_list, transaction_accounting_list = accountingService.select_accounting_transaction(select_comdition_list)
         test = accountingService.test(select_comdition_list)
-        self.fiscal_year_panel.year_add_listctrl_item(year_accounting_list)
+        self.fiscal_year_panel.year_add_listctrl_item(self.year_accounting_list)
+        self.fiscal_month_panel.month_reset_listctrl()
         self.by_title_panel.title_add_listctrl_item(title_accounting_list)
         self.per_transaction_panel.per_add_listctrl_item(search_money_list, transaction_accounting_list)
         try:
             self.graph.frame_close_oparate()
         except:
             pass
-        self.graph = graph.call_graph(year_accounting_list, title_accounting_list, self.all_data, test)
+        self.graph = graph.call_graph(self.year_accounting_list, title_accounting_list, self.all_data, test)
 
     """
     検索結果画面の機能
@@ -201,3 +205,8 @@ class NotebookPanel(wx.Notebook):
         except:
             pass
         detail.call_detail(detail_info_list)
+
+    def test_open(self, event):
+        index = event.GetIndex()
+        year = self.fiscal_year_panel.fiscal_year_text.GetItem(itemIdx=index, col=0).GetText()
+        self.fiscal_month_panel.month_add_listctrl_item(self.year_accounting_list, year)

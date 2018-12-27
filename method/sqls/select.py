@@ -73,10 +73,10 @@ def select_accounting_year(select_condition_list):
     """
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
-        sql = 'select year, sum(money) from accounting '
+        sql = 'select year, sum(money), month from accounting '
         add_sql, add_item = common._add_general_search_confition(select_condition_list)
         sql += add_sql
-        sql += 'group by year order by year'
+        sql += 'group by year, month order by year'
         result = common.multiple_condition_sql_execution(c, sql, add_item)
         re_sql = re.sub('\n|    ', '', sql)
         sql_logger.info(f"{re_sql} {add_item}")

@@ -35,3 +35,7 @@ def graph_use_display_size():
 
 def statistics_ctrl_size():
     return (200, 409)
+
+
+def statistics_data_ctrl_size():
+    return (200, 200)
