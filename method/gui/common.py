@@ -14,7 +14,11 @@ def get_icon():
 
 
 def search_frame_size():
-    return (625, 631)
+    return (625, 706)
+
+
+def search_ctrl_size():
+    return (600, 500)
 
 
 def search_use_display_size():
@@ -34,8 +38,8 @@ def graph_use_display_size():
 
 
 def statistics_ctrl_size():
-    return (200, 409)
+    return (200, 480)
 
 
 def statistics_data_ctrl_size():
-    return (200, 200)
+    return (200, 234)

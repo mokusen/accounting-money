@@ -1,7 +1,7 @@
 from operator import itemgetter
 import wx
 from method.services import accountingService, cacheService
-from . import detail, graph
+from . import detail, graph, common
 from .searchNote import titlePanel, transactionPanel, yearPanel, monthPanel
 
 
@@ -25,7 +25,7 @@ class NotebookPanel(wx.Notebook):
 
     def __create_search_result(self):
         Text = (u'ID', u'用途', u'金額', u'年', u'月', u'日', u'作成日', u'更新日')
-        self.frame_size = (600, 425)
+        self.frame_size = common.search_ctrl_size()
         self.search_result_text = wx.ListCtrl(self.search_result_panel, wx.ID_ANY, size=self.frame_size, style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES | wx.LC_EDIT_LABELS)
         for i, text in enumerate(Text):
             self.search_result_text.InsertColumn(i, text)

@@ -28,8 +28,15 @@ class MonthPanel(wx.Panel):
     def month_add_listctrl_item(self, year_accounting_list, year):
         self.fiscal_month_text.DeleteAllItems()
         self.title.SetLabel(f"{year}年：月別課金額")
-        month = [year_accounting[2] for year_accounting in year_accounting_list if year_accounting[0] == int(year)]
-        money = [year_accounting[1] for year_accounting in year_accounting_list if year_accounting[0] == int(year)]
+        if year == "累計":
+            month = [m for m in range(1, 13)]
+            dict_money = {m: 0 for m in month}
+            for index in range(len(year_accounting_list)):
+                dict_money[year_accounting_list[index][2]] += int(year_accounting_list[index][1])
+            money = [dict_money[m] for m in month]
+        else:
+            month = [year_accounting[2] for year_accounting in year_accounting_list if year_accounting[0] == int(year)]
+            money = [year_accounting[1] for year_accounting in year_accounting_list if year_accounting[0] == int(year)]
         # 追加する行の指定
         Add_line = self.fiscal_month_text.GetItemCount()
         # 検索結果を行に追加する
