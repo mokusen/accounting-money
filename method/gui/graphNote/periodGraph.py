@@ -18,7 +18,6 @@ rcParams.update({'figure.autolayout': True})
 class PeriodGraph(wx.Panel):
     def __init__(self, parent, test):
         wx.Panel.__init__(self, parent=parent)
-        self.parent = parent
         plt.style.use('bmh')
 
         # matplotlib figure

@@ -11,7 +11,8 @@ logger = chms_logger.set_operate_logger(__name__)
 
 class CsvOperation(wx.Frame):
     def __init__(self, parent, id, title):
-        wx.Frame.__init__(self, parent, id, title, size=(500, 310))
+        frame_size = common.csvdb_frame_size()
+        wx.Frame.__init__(self, parent, id, title, size=frame_size)
         self.SetIcon(common.get_icon())
         panel = MainPanel(self)
         self.Bind(wx.EVT_CLOSE, self.frame_close)
@@ -68,6 +69,12 @@ class MainPanel(wx.Panel):
         self.SetSizer(layout)
 
     def db_export_csv(self, event):
+        """
+        dbに登録されている情報をcsvoutに出力する
+        Parameters
+        ----------
+        event : クリックイベント
+        """
         dlg = wx.MessageDialog(None, "CSV出力を開始します。\n用途によって必要であればbase.csvとaccounting.csvの\nバックアップを取ることをオススメします", "CSV出力確認", wx.YES_NO | wx.ICON_INFORMATION)
         result = dlg.ShowModal()
         dlg.Destroy()
@@ -77,6 +84,13 @@ class MainPanel(wx.Panel):
             wx.MessageBox("CSV出力が完了しました。", "CSV出力完了", wx.ICON_INFORMATION)
 
     def csv_insert_db(self, event):
+        """
+        csvinにあるcsv情報をdbに登録する
+        Parameters
+        ----------
+        event : クリックイベント
+        """
+
         dlg = wx.MessageDialog(None, "CSV取込を開始します。", "CSV取込確認", wx.YES_NO | wx.ICON_INFORMATION)
         result = dlg.ShowModal()
         dlg.Destroy()
@@ -103,6 +117,12 @@ class MainPanel(wx.Panel):
             wx.MessageBox("CSV取込が完了しました。", "CSV取込完了", wx.ICON_INFORMATION)
 
     def db_init(self, event):
+        """
+        dbを初期化する
+        Parameters
+        ----------
+        event : クリックイベント
+        """
         dlg = wx.MessageDialog(None, "DB初期化を開始します。\n用途によって必要であればCSV出力して、バックアップを取ることをオススメします", "DB初期化確認", wx.YES_NO | wx.ICON_INFORMATION)
         result = dlg.ShowModal()
         dlg.Destroy()

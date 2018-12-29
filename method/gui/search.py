@@ -2,7 +2,6 @@ import wx
 from . import mainGui, detail, common, mainSearchNote
 from method.utils import dataListCreate
 from method.services import accountingService, baseService, cacheService
-from logging import getLogger, DEBUG, INFO
 from method.utils import chms_logger
 
 logger = chms_logger.set_operate_logger(__name__)
@@ -109,16 +108,16 @@ class MainPanel(wx.Panel):
         layout.Add(self.searchNote, flag=wx.EXPAND)
 
         # cache情報を取得し、反映する
-        test_date = cacheService.select_cache()
-        self.search_use.SetValue(str(test_date[0][1]))
-        self.search_money_list[0].SetValue(str(test_date[0][2]))
-        self.search_money_list[1].SetValue(str(test_date[0][3]))
-        self.search_year_list[0].SetValue(str(test_date[0][4]))
-        self.search_year_list[1].SetValue(str(test_date[0][5]))
-        self.search_month_list[0].SetValue(str(test_date[0][6]))
-        self.search_month_list[1].SetValue(str(test_date[0][7]))
-        self.search_day_list[0].SetValue(str(test_date[0][8]))
-        self.search_day_list[1].SetValue(str(test_date[0][9]))
+        cache_date = cacheService.select_cache()
+        self.search_use.SetValue(str(cache_date[0][1]))
+        self.search_money_list[0].SetValue(str(cache_date[0][2]))
+        self.search_money_list[1].SetValue(str(cache_date[0][3]))
+        self.search_year_list[0].SetValue(str(cache_date[0][4]))
+        self.search_year_list[1].SetValue(str(cache_date[0][5]))
+        self.search_month_list[0].SetValue(str(cache_date[0][6]))
+        self.search_month_list[1].SetValue(str(cache_date[0][7]))
+        self.search_day_list[0].SetValue(str(cache_date[0][8]))
+        self.search_day_list[1].SetValue(str(cache_date[0][9]))
         self.SetSizer(layout)
 
     def adjust_search_info(self):
@@ -143,6 +142,14 @@ class MainPanel(wx.Panel):
         return select_condition_list
 
     def call_select(self, event):
+        """
+        検索画面を呼び出す。この時、検索条件を取得し、全県のデータを取得する。
+        同時に統計情報を取得する関数に検索条件を付与し、実行する
+        Parameters
+        ----------
+        event : クリックイベント
+            クリックイベント
+        """
         select_condition_list = self.adjust_search_info()
         all_data, all_money = accountingService.select_accounting(select_condition_list)
         cacheService.update_cache(select_condition_list)

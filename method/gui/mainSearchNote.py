@@ -2,7 +2,7 @@ from operator import itemgetter
 import wx
 from method.services import accountingService, cacheService
 from . import detail, graph, common
-from .searchNote import titlePanel, transactionPanel, yearPanel, monthPanel
+from .searchNote import usePanel, amountPanel, yearPanel, monthPanel
 
 
 class NotebookPanel(wx.Notebook):
@@ -19,11 +19,12 @@ class NotebookPanel(wx.Notebook):
         self.__create_search_result()
         self.__create_statistics()
 
-    """
-    notebookのpanel作成
-    """
+    """　notebookのpanel作成　"""
 
     def __create_search_result(self):
+        """
+        検索結果を表示するNoteBookパネルを作成する
+        """
         Text = (u'ID', u'用途', u'金額', u'年', u'月', u'日', u'作成日', u'更新日')
         self.frame_size = common.search_ctrl_size()
         self.search_result_text = wx.ListCtrl(self.search_result_panel, wx.ID_ANY, size=self.frame_size, style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES | wx.LC_EDIT_LABELS)
@@ -43,43 +44,61 @@ class NotebookPanel(wx.Notebook):
         self.search_result_panel.Layout()
 
     def __create_statistics(self):
+        """
+        統計情報を表示するNoteBookパネルを作成する
+        """
         self.fiscal_year_panel = yearPanel.YearPanel(self.statistics_panel)
         self.fiscal_month_panel = monthPanel.MonthPanel(self.statistics_panel)
-        self.by_title_panel = titlePanel.TitlePanel(self.statistics_panel)
-        self.per_transaction_panel = transactionPanel.TransactionPanel(self.statistics_panel)
+        self.by_use_panel = usePanel.UsePanel(self.statistics_panel)
+        self.every_amount_panel = amountPanel.AmountPanel(self.statistics_panel)
         layout = wx.GridBagSizer(0, 0)
         layout.Add(self.fiscal_year_panel, (0, 0), (1, 1), flag=wx.EXPAND)
         layout.Add(self.fiscal_month_panel, (1, 0), (1, 1), flag=wx.EXPAND)
-        layout.Add(self.by_title_panel, (0, 1), (2, 1), flag=wx.EXPAND)
-        layout.Add(self.per_transaction_panel, (0, 2), (2, 1), flag=wx.EXPAND)
+        layout.Add(self.by_use_panel, (0, 1), (2, 1), flag=wx.EXPAND)
+        layout.Add(self.every_amount_panel, (0, 2), (2, 1), flag=wx.EXPAND)
         self.statistics_panel.SetSizer(layout)
         self.statistics_panel.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.test_open)
         self.statistics_panel.Layout()
 
-    """
-    共通機能作成
-    """
+    """ 共通機能作成 """
 
     def search_statistics(self, select_comdition_list):
+        """
+        統計情報を取得する。
+        年度別、用途別、課金額毎、期間別を取得する
+        Parameters
+        ----------
+        select_comdition_list : list
+            [use, min_money, max_money, min_year, max_year, min_month, max_month, min_day, max_day]
+        """
         self.year_accounting_list = accountingService.select_accounting_year(select_comdition_list)
-        title_accounting_list = accountingService.select_accounting_use(select_comdition_list)
-        search_money_list, transaction_accounting_list = accountingService.select_accounting_transaction(select_comdition_list)
-        test = accountingService.test(select_comdition_list)
+        use_accounting_list = accountingService.select_accounting_use(select_comdition_list)
+        search_money_list, amount_accounting_list = accountingService.select_accounting_amount(select_comdition_list)
+        period_accounting_list = accountingService.select_accounting_period(select_comdition_list)
+        # 統計情報のパネル設定
         self.fiscal_year_panel.year_add_listctrl_item(self.year_accounting_list)
         self.fiscal_month_panel.month_reset_listctrl()
-        self.by_title_panel.title_add_listctrl_item(title_accounting_list)
-        self.per_transaction_panel.per_add_listctrl_item(search_money_list, transaction_accounting_list)
+        self.by_use_panel.use_add_listctrl_item(use_accounting_list)
+        self.every_amount_panel.amount_add_listctrl_item(search_money_list, amount_accounting_list)
         try:
             self.graph.frame_close_oparate()
         except:
             pass
-        self.graph = graph.call_graph(self.year_accounting_list, title_accounting_list, self.all_data, test)
+        statistics_info_dict = {"year": self.year_accounting_list, "use": use_accounting_list, "amount": self.all_data, "period": period_accounting_list}
+        self.graph = graph.call_graph(statistics_info_dict)
 
-    """
-    検索結果画面の機能
-    """
+    """ 検索結果画面の機能 """
 
     def search_accounting(self, all_data, select_condition_list):
+        """
+        検索条件を元に、検索を行い、検索結果に表示する。
+        Parameters
+        ----------
+        all_data : list
+            全件データを格納する
+        select_condition_list : list
+            [use, min_money, max_money, min_year, max_year, min_month, max_month, min_day, max_day]
+        """
         # 検索結果格納リスト
         self.all_data = all_data
         self.search_result_text.DeleteAllItems()

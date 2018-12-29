@@ -1,5 +1,4 @@
 from method.sqls import *
-from method.utils import adjustAccounting
 from method.utils import chms_logger
 
 logger = chms_logger.set_operate_logger(__name__)

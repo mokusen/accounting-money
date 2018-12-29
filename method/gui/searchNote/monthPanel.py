@@ -9,7 +9,6 @@ logger = chms_logger.set_operate_logger(__name__)
 class MonthPanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent)
-        self.search_notebook = parent
         self.__myinit()
 
     def __myinit(self):
@@ -27,6 +26,15 @@ class MonthPanel(wx.Panel):
         self.Layout()
 
     def month_add_listctrl_item(self, year_accounting_list, year):
+        """
+        月別課金額のlistctrlに追加する
+        Parameters
+        ----------
+        year_accounting_list : list in tuple
+            [(year, money, month), (), ...]
+        year : str
+            検索対象の年度
+        """
         self.fiscal_month_text.DeleteAllItems()
         self.box.SetLabel(f"{year}年：月別課金額")
         if year == "累計":
@@ -52,4 +60,4 @@ class MonthPanel(wx.Panel):
 
     def month_reset_listctrl(self):
         self.fiscal_month_text.DeleteAllItems()
-        # self.title.SetLabel("月別課金額")
+        self.box.SetLabel("月別課金額")

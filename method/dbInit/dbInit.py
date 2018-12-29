@@ -8,6 +8,11 @@ logger = chms_logger.set_operate_logger(__name__)
 
 
 def db_init():
+    """
+    アプリ起動時に、data.dbが存在するか、確認し、存在しない場合は初期化処理を行う
+    csvinに既存ファイルが存在する場合、自動でdbに登録する
+    """
+
     if not os.path.exists("./data.db"):
         logger.info("START datebase init process")
         create.create_base()
@@ -28,6 +33,9 @@ def db_init():
 
 
 def db_all_init():
+    """
+    dbの初期化処理を行う。既存テーブルを削除し、再生成する
+    """
     logger.info("START datebase all init process")
     drop.drop_base()
     drop.drop_accounting()

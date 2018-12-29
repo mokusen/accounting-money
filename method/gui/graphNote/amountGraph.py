@@ -18,20 +18,18 @@ rcParams.update({'figure.autolayout': True})
 class AmountGraph(wx.Panel):
     def __init__(self, parent, all_data):
         wx.Panel.__init__(self, parent=parent)
-        self.parent = parent
         plt.style.use('bmh')
 
         # matplotlib figure
         self.figure = Figure()
         self.ax = self.figure.subplots()
-        test = [item[2] for item in all_data]
-        # FIXME: やばい
-        if test == []:
-            a = 1000
+        money_list = [money[2] for money in all_data]
+        if money_list == []:
+            max_money = 1000
         else:
-            a = max(test)
-        b = round(a / 1000)
-        self.ax.hist(test, histtype='barstacked', bins=b, range=(0, b*1000), rwidth=1)
+            max_money = max(money_list)
+        hist_bins = round(max_money / 1000)
+        self.ax.hist(money_list, histtype='barstacked', bins=hist_bins, range=(0, hist_bins*1000), rwidth=1)
 
         # canvas
         self.canvas = FigureCanvasWxAgg(self, wx.ID_ANY, self.figure)

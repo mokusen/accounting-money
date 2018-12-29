@@ -24,6 +24,9 @@ def create_init_list():
 
 
 def csv_export():
+    """
+    dbから情報を取り、csvに出力する
+    """
     logger.info("DO export db from base.csv")
     base_meta_name = "CsvOut/base.csv"
     data_list = [[data] for data in select.select_base()]
