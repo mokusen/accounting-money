@@ -8,7 +8,8 @@ logger = chms_logger.set_operate_logger(__name__)
 
 class Main(wx.Frame):
     def __init__(self, parent, id, title):
-        wx.Frame.__init__(self, parent, id, title, size=(750, 300))
+        frame_size = common.main_frame_size()
+        wx.Frame.__init__(self, parent, id, title, size=frame_size)
         self.SetIcon(common.get_icon())
         MainPanel(self)
         self.Bind(wx.EVT_CLOSE, self.frame_close)
@@ -36,9 +37,10 @@ class MainPanel(wx.Panel):
         cacheService.init_cache()
 
         # ボタンを初期作成する
-        self.button1 = wx.Button(self, wx.ID_ANY, u'登録', size=(200, 100))
-        self.button2 = wx.Button(self, wx.ID_ANY, u'検索', size=(200, 100))
-        self.button3 = wx.Button(self, wx.ID_ANY, u'CSV操作/DB初期化', size=(200, 100))
+        button_size = common.main_button_size()
+        self.button1 = wx.Button(self, wx.ID_ANY, u'登録', size=button_size)
+        self.button2 = wx.Button(self, wx.ID_ANY, u'検索', size=button_size)
+        self.button3 = wx.Button(self, wx.ID_ANY, u'CSV操作/DB初期化', size=button_size)
 
         # ボタンにフォントサイズを適応する
         self.button1.SetFont(self.font)
@@ -93,7 +95,6 @@ class MainPanel(wx.Panel):
         """
         バッググラウンドに画像を表示する
         """
-        # yanked from ColourDB.py
         dc = evt.GetDC()
 
         if not dc:

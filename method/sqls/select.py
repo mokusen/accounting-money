@@ -107,7 +107,7 @@ def select_accounting_use(select_condition_list):
     return result
 
 
-def select_accounting_transaction(select_condition_list, search_money_list):
+def select_accounting_amount(select_condition_list, search_money_list):
     """
     ヒストグラムの金額に対する課金回数を検索する
     Parameters
@@ -155,7 +155,18 @@ def select_accounting_money():
     return result
 
 
-def select_accounting_amount(select_condition_list):
+def select_accounting_period(select_condition_list):
+    """
+    期間別課金額を検索する
+    Parameters
+    ----------
+    select_condition_list : list
+        [use, min_money, max_money, min_year, max_year, min_month, max_month, min_day, max_day]
+    Returns
+    -------
+    result : tuple
+        [use, sum(money)]
+    """
     with closing(sqlite3.connect(dbpath, detect_types=detect_types)) as conn:
         c = conn.cursor()
         sql = 'select use, sum(money), year, month from accounting '

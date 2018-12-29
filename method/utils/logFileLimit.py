@@ -32,7 +32,7 @@ def __check_logfile_limit(path):
     file_len = len(file_list)
     # ファイル数を7個制限にする
     if file_len >= file_limit:
-        logger.info(f"DO by {file_limit}")
+        logger.info(f"DO by {file_limit}files")
         for index in range(file_len-file_limit):
             os.remove(f"{path}\{file_list[index]}")
     # ファイル数が0の時は、容量チェックを行わない

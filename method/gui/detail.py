@@ -10,8 +10,8 @@ logger = chms_logger.set_operate_logger(__name__)
 
 class Detail(wx.Frame):
     def __init__(self, parent, id, title, detail_info_list):
-        self.frame_size = (675, 600)
-        wx.Frame.__init__(self, parent, id, title, size=(300, 300))
+        frame_size = common.detail_frame_size()
+        wx.Frame.__init__(self, parent, id, title, size=frame_size)
         self.SetIcon(common.get_icon())
         self.detail_info_list = detail_info_list
         panel = MainPanel(self)
@@ -37,9 +37,9 @@ class MainPanel(wx.Panel):
         day_list = dataListCreate.create_day()
 
         # size設定
-        form_size = (100, 25)
-        text_size = (50, 25)
-        button_size = (100, 25)
+        form_size = common.detail_form_size()
+        text_size = common.detail_text_size()
+        button_size = common.detail_button_size()
 
         # font設定
         self.font = common.defalut_font_size()
@@ -72,7 +72,9 @@ class MainPanel(wx.Panel):
 
         # 更新、削除ボタン
         update_button = wx.Button(self, wx.ID_ANY, '更新', size=button_size)
+        update_button.SetFont(self.font)
         delete_button = wx.Button(self, wx.ID_ANY, '削除', size=button_size)
+        delete_button.SetFont(self.font)
 
         # 更新、削除ボタンにイベントを登録する
         update_button.Bind(wx.EVT_BUTTON, self.call_update)

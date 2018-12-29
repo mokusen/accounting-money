@@ -18,7 +18,6 @@ rcParams.update({'figure.autolayout': True})
 class YearGraph(wx.Panel):
     def __init__(self, parent, year_accounting_list):
         wx.Panel.__init__(self, parent=parent)
-        self.parent = parent
         plt.style.use('bmh')
         year_list = sorted(list(set([year_accounting[0] for year_accounting in year_accounting_list])))
         dict_money = {year: 0 for year in year_list}

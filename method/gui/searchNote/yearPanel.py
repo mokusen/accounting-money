@@ -9,7 +9,6 @@ logger = chms_logger.set_operate_logger(__name__)
 class YearPanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent)
-        self.search_notebook = parent
         self.__myinit()
 
     def __myinit(self):
@@ -27,6 +26,13 @@ class YearPanel(wx.Panel):
         self.Layout()
 
     def year_add_listctrl_item(self, year_accounting_list):
+        """
+        年度別課金額のlistctrlに追加する
+        Parameters
+        ----------
+        year_accounting_list : list in tuple
+            [(year, money, month), (), ...]
+        """
         self.fiscal_year_text.DeleteAllItems()
         year = [year_accounting[0] for year_accounting in year_accounting_list]
         money = [year_accounting[1] for year_accounting in year_accounting_list]

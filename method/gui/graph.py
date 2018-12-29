@@ -6,12 +6,12 @@ logger = chms_logger.set_operate_logger(__name__)
 
 
 class Graph(wx.Frame):
-    def __init__(self, parent, id, title, year_accounting_list, title_accounting_list, all_data, test):
-        self.frame_size = common.graph_frame_size()
+    def __init__(self, parent, id, title, statistics_info_dict):
+        frame_size = common.graph_frame_size()
         use_display_size = common.graph_use_display_size()
-        wx.Frame.__init__(self, parent, id, title, size=self.frame_size, pos=use_display_size)
+        wx.Frame.__init__(self, parent, id, title, size=frame_size, pos=use_display_size)
         self.SetIcon(common.get_icon())
-        MainPanel(self, year_accounting_list, title_accounting_list, all_data, test)
+        MainPanel(self, statistics_info_dict)
         self.Bind(wx.EVT_CLOSE, self.frame_close)
         self.Show()
 
@@ -23,10 +23,9 @@ class Graph(wx.Frame):
 
 
 class MainPanel(wx.Panel):
-    def __init__(self, parent, year_accounting_list, title_accounting_list, all_data, test):
+    def __init__(self, parent, statistics_info_dict):
         wx.Panel.__init__(self, parent=parent)
-        self.frame = parent
-        self.graphNote = mainGraphNote.GraphNotePanel(self, year_accounting_list, title_accounting_list, all_data, test)
+        self.graphNote = mainGraphNote.GraphNotePanel(self, statistics_info_dict)
         self.__myinit()
 
     def __myinit(self):
@@ -36,7 +35,7 @@ class MainPanel(wx.Panel):
         self.SetSizer(layout)
 
 
-def call_graph(year_accounting_list, title_accounting_list, all_data, test):
+def call_graph(statistics_info_dict):
     logger.info("START Graph")
-    graph = Graph(None, wx.ID_ANY, title=u'CHMS | グラフ', year_accounting_list=year_accounting_list, title_accounting_list=title_accounting_list, all_data=all_data, test=test)
+    graph = Graph(None, wx.ID_ANY, title=u'CHMS | グラフ', statistics_info_dict=statistics_info_dict)
     return graph
