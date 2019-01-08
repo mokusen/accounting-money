@@ -52,7 +52,7 @@ class PeriodGraph(wx.Panel):
                 use_data.extend(data)
             use_data = np.array(use_data)
             all_list += use_data
-            self.ax1.plot(data_print_list, use_data)
+            self.ax1.plot(data_print_list, use_data, marker='o')
             self.ax1.set_xticklabels(data_print_list, rotation=270, fontsize='small')
         self.ax2 = self.ax1.twinx()
         res = np.cumsum(all_list)
