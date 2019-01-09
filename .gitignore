@@ -1,5 +1,6 @@
 .vscode
 accounting
+test
 __pycache__
 *.csv
 *.sh

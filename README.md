@@ -16,7 +16,7 @@ My environment is as follows.
 |  | Version |
 | :--- | :--- |
 | Python | 3.7.1 |
-| wxPython | 4.0.3 |
+| wxPython | 4.0.4 |
 | matplotlib | 3.0.2 |
 | pandas | 0.23.4 |
 
@@ -27,7 +27,7 @@ My environment is as follows.
 # Windows
 > mkdir (Clone destination directory)
 > cd (Clone destination directory)
-> python -m (any environment name) venv
+> python -m venv (any environment name)
 > `\(any environment name)\scripts\activate.ps1
 ```
 
@@ -35,7 +35,7 @@ My environment is as follows.
 # Linux
 $ mkdir (Clone destination directory)
 $ cd (Clone destination directory)
-$ python -m (any environment name) venv
+$ python -m venv (any environment name)
 $ source (any environment name)/bin/activate
 ```
 
@@ -56,8 +56,8 @@ pip install -r requirement.txt
 ```
 
 ### 4. init data
-if you want to insert data into the db, please prepare base.csv and accounting.csv in dbInit.<br>
-
+if you want to insert data into the db, please prepare base.csv and accounting.csv in CsvIn.<br>
+Please create CsvIn in the directory where `main.py` is located.
 
 #### File structure of base.csv
 to save use name.<br>
@@ -84,15 +84,7 @@ test,5200,2013,1,2
 test,450,2013,1,6
 ```
 
-### 5. init db
-In the case of 4. init data, please remove `#` from datebase_init.py.<br>
-After, Please execute the following code
-
-```bash
-python datebase_init.py
-```
-
-### 6. start main
+### 5. start main
 Please execute the following code
 
 ```bash
